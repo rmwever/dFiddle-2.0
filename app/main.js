@@ -23,7 +23,10 @@
      shim:{
         gridstack: {
             deps: ['jquery', 'lodash', 'jquery-ui', 'gridstack-jquery']
-        }
+        },
+         'jquery-ui': {
+            deps: ['jquery']
+         }
      },
      map: {
         '*': {
