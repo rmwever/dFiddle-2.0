@@ -62,13 +62,12 @@
     
      
      var vm = {
-         widgets: [
+    controller: new Controller([
                 {x: 0, y: 0, width: 2, height: 2},
                 {x: 2, y: 0, width: 4, height: 2},
                 {x: 6, y: 0, width: 2, height: 4},
                 {x: 1, y: 2, width: 4, height: 2}
-            ],
-    controller: new Controller(vm.widgets)
+            ])
     };
      
      return vm;
