@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+﻿define(['knockout', 'gridstack'], function (ko, gridstack) {
     
         ko.components.register('dashboard-grid', {
             viewModel: {
