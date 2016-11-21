@@ -5,14 +5,49 @@
         'plugins': '../lib/durandal/js/plugins',
         'transitions': '../lib/durandal/js/transitions',
         'knockout': [
-            '//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min',
-            '../lib/knockout/knockout-3.1.0'
+            '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js'
+            //'../lib/knockout/knockout-3.4.1'
         ],
         'jquery': [
-            '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min',
-            '../lib/jquery/jquery-1.9.1.min'
-        ]
-    }
+            '//code.jquery.com/jquery-3.1.1.min.js'
+            //'../lib/jquery/jquery-1.9.1.min'
+        ],
+        'lodash': [
+            '//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js'
+            //'../lib/lodash'
+        ],
+        'jquery-ui': '//code.jquery.com/ui/1.12.1/jquery-ui.min.js',
+        'gridstack': '../lib/gridstack/gridstack.min'
+    },
+     shim:{
+        gridstack: {
+            deps: ['jquery', 'lodash', 'jquery-ui']
+        }
+     },
+     map: {
+        '*': {
+            'jquery-ui/widget': 'jquery-ui',
+            'jquery-ui/widgets/mouse': 'jquery-ui',
+            'jquery-ui/widgets/draggable': 'jquery-ui',
+            'jquery-ui/widgets/resizable': 'jquery-ui',
+            'jquery-ui/widgets/droppable': 'jquery-ui',
+            'jquery-ui/version': 'jquery-ui',
+            'jquery-ui/unique-id': 'jquery-ui',
+            'jquery-ui/tabbable': 'jquery-ui',
+            'jquery-ui/scroll-parent': 'jquery-ui',
+            'jquery-ui/safe-blur': 'jquery-ui',
+            'jquery-ui/labels': 'jquery-ui',
+            'jquery-ui/plugin': 'jquery-ui',
+            'jquery-ui/jquery-1-7': 'jquery-ui',
+            'jquery-ui/safe-active-element': 'jquery-ui',
+            'jquery-ui/keycode': 'jquery-ui',
+            'jquery-ui/form': 'jquery-ui',
+            'jquery-ui/disable-selection': 'jquery-ui',
+            'jquery-ui/focusable': 'jquery-ui',
+            'jquery-ui/ie': 'jquery-ui',
+            'jquery-ui/data': 'jquery-ui'
+        }
+     }
 });
 
 define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function( system, app, viewLocator ) {
