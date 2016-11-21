@@ -1,4 +1,5 @@
-﻿define(['knockout', 'gridstack', 'lodash'], function (ko, gridstack, _) {
+﻿define(['knockout', 'jquery-ui', 'gridstack-jquery', 'gridstack', 'lodash'], 
+        function (ko, jquery-ui, gridstack-jquery, gridstack, _) {
     
         ko.components.register('dashboard-grid', {
             viewModel: {
