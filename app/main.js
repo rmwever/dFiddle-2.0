@@ -17,11 +17,12 @@
             //'../lib/lodash'
         ],
         'jquery-ui': '//code.jquery.com/ui/1.12.1/jquery-ui.min',
-        'gridstack': '../lib/gridstack/gridstack.min'
+        'gridstack': '../lib/gridstack/gridstack.min',
+        'gridstack-jquery': '../lib/gridstack/gridstack.jqueryui.min'
     },
      shim:{
         gridstack: {
-            deps: ['jquery', 'lodash', 'jquery-ui']
+            deps: ['jquery', 'lodash', 'jquery-ui', 'gridstack-jquery']
         }
      },
      map: {
