@@ -1,11 +1,5 @@
 ﻿<div>
-    <h2>Hello World</h2>
-    <div class="well liveExample">
-        <p>First name: <input data-bind="value: firstName" /></p>
-        <p>Last name: <input data-bind="value: lastName" /></p>
-        <h3>Hello, <span data-bind="text: fullName"> </span>!</h3>
-    </div>
-     
+    <h2>Hello World</h2>     
      <div data-bind="component: {name: 'dashboard-grid', params: controller}">
          <div class="grid-stack grid-stack-instance-8418" data-bind="foreach: {data: controller.widgets, afterRender: afterAddWidget}" data-gs-current-height="4" style="height: 300px;">
              <div class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide" data-bind="attr: {'data-gs-x': $data.x, 'data-gs-y': $data.y, 'data-gs-width': $data.width, 'data-gs-height': $data.height, 'data-gs-auto-position': $data.auto_position}" data-gs-x="0" data-gs-y="0" data-gs-width="2" data-gs-height="2">       
