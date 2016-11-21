@@ -21,9 +21,9 @@
         'gridstack-jquery': '../lib/gridstack/gridstack.jqueryui.min'
     },
      shim:{
-        gridstack: {
-            deps: ['jquery', 'lodash', 'jquery-ui', 'gridstack-jquery']
-        },
+        //'gridstack': {
+          //  deps: ['jquery', 'lodash', 'jquery-ui', 'gridstack-jquery']
+        //},
          'jquery-ui': {
             deps: ['jquery']
          }
