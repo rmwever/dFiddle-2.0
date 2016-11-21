@@ -5,18 +5,18 @@
         'plugins': '../lib/durandal/js/plugins',
         'transitions': '../lib/durandal/js/transitions',
         'knockout': [
-            '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug.js'
+            '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-debug'
             //'../lib/knockout/knockout-3.4.1'
         ],
         'jquery': [
-            '//code.jquery.com/jquery-3.1.1.min.js'
+            '//code.jquery.com/jquery-3.1.1.min'
             //'../lib/jquery/jquery-1.9.1.min'
         ],
         'lodash': [
-            '//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js'
+            '//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min'
             //'../lib/lodash'
         ],
-        'jquery-ui': '//code.jquery.com/ui/1.12.1/jquery-ui.min.js',
+        'jquery-ui': '//code.jquery.com/ui/1.12.1/jquery-ui.min',
         'gridstack': '../lib/gridstack/gridstack.min'
     },
      shim:{
