@@ -1,8 +1,7 @@
 {
-  "name": "Dashboard",
-  "version": "2.1.1",
-  "versionprev": "2.1.0",
-  "description": "Real time situational awareness application",
+  "name": "dFiddle",
+  "version": "1.0",
+  "description": "test test test",
   "directories": {
     "test": "test"
   },
@@ -11,10 +10,7 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^1.0.2",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-less": "^1.4.0",
     "grunt-contrib-requirejs": "^1.0.0",
-    "grunt-text-replace": "^0.4.0",
     "mout": "^1.0.0"
   },
   "dependencies": {
