@@ -102,8 +102,6 @@
  * ======================================================================== */
 
 if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(t){"use strict";function e(){var t=document.createElement("bootstrap"),e={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var i in e)if(void 0!==t.style[i])return{end:e[i]};return!1}t.fn.emulateTransitionEnd=function(e){var i=!1,o=this;t(this).one(t.support.transition.end,function(){i=!0});var n=function(){i||t(o).trigger(t.support.transition.end)};return setTimeout(n,e),this},t(function(){t.support.transition=e()})}(jQuery),+function(t){"use strict";var e='[data-dismiss="alert"]',i=function(i){t(i).on("click",e,this.close)};i.prototype.close=function(e){function i(){s.trigger("closed.bs.alert").remove()}var o=t(this),n=o.attr("data-target");n||(n=o.attr("href"),n=n&&n.replace(/.*(?=#[^\s]*$)/,""));var s=t(n);e&&e.preventDefault(),s.length||(s=o.hasClass("alert")?o:o.parent()),s.trigger(e=t.Event("close.bs.alert")),e.isDefaultPrevented()||(s.removeClass("in"),t.support.transition&&s.hasClass("fade")?s.one(t.support.transition.end,i).emulateTransitionEnd(150):i())};var o=t.fn.alert;t.fn.alert=function(e){return this.each(function(){var o=t(this),n=o.data("bs.alert");n||o.data("bs.alert",n=new i(this)),"string"==typeof e&&n[e].call(o)})},t.fn.alert.Constructor=i,t.fn.alert.noConflict=function(){return t.fn.alert=o,this},t(document).on("click.bs.alert.data-api",e,i.prototype.close)}(jQuery),+function(t){"use strict";var e=function(i,o){this.$element=t(i),this.options=t.extend({},e.DEFAULTS,o),this.isLoading=!1};e.DEFAULTS={loadingText:"loading..."},e.prototype.setState=function(e){var i="disabled",o=this.$element,n=o.is("input")?"val":"html",s=o.data();e+="Text",s.resetText||o.data("resetText",o[n]()),o[n](s[e]||this.options[e]),setTimeout(t.proxy(function(){"loadingText"==e?(this.isLoading=!0,o.addClass(i).attr(i,i)):this.isLoading&&(this.isLoading=!1,o.removeClass(i).removeAttr(i))},this),0)},e.prototype.toggle=function(){var t=!0,e=this.$element.closest('[data-toggle="buttons"]');if(e.length){var i=this.$element.find("input");"radio"==i.prop("type")&&(i.prop("checked")&&this.$element.hasClass("active")?t=!1:e.find(".active").removeClass("active")),t&&i.prop("checked",!this.$element.hasClass("active")).trigger("change")}t&&this.$element.toggleClass("active")};var i=t.fn.button;t.fn.button=function(i){return this.each(function(){var o=t(this),n=o.data("bs.button"),s="object"==typeof i&&i;n||o.data("bs.button",n=new e(this,s)),"toggle"==i?n.toggle():i&&n.setState(i)})},t.fn.button.Constructor=e,t.fn.button.noConflict=function(){return t.fn.button=i,this},t(document).on("click.bs.button.data-api","[data-toggle^=button]",function(e){var i=t(e.target);i.hasClass("btn")||(i=i.closest(".btn")),i.button("toggle"),e.preventDefault()})}(jQuery),+function(t){"use strict";var e=function(e,i){this.$element=t(e),this.$indicators=this.$element.find(".carousel-indicators"),this.options=i,this.paused=this.sliding=this.interval=this.$active=this.$items=null,"hover"==this.options.pause&&this.$element.on("mouseenter",t.proxy(this.pause,this)).on("mouseleave",t.proxy(this.cycle,this))};e.DEFAULTS={interval:5e3,pause:"hover",wrap:!0},e.prototype.cycle=function(e){return e||(this.paused=!1),this.interval&&clearInterval(this.interval),this.options.interval&&!this.paused&&(this.interval=setInterval(t.proxy(this.next,this),this.options.interval)),this},e.prototype.getActiveIndex=function(){return this.$active=this.$element.find(".item.active"),this.$items=this.$active.parent().children(),this.$items.index(this.$active)},e.prototype.to=function(e){var i=this,o=this.getActiveIndex();if(!(e>this.$items.length-1||e<0))return this.sliding?this.$element.one("slid.bs.carousel",function(){i.to(e)}):o==e?this.pause().cycle():this.slide(e>o?"next":"prev",t(this.$items[e]))},e.prototype.pause=function(e){return e||(this.paused=!0),this.$element.find(".next, .prev").length&&t.support.transition&&(this.$element.trigger(t.support.transition.end),this.cycle(!0)),this.interval=clearInterval(this.interval),this},e.prototype.next=function(){if(!this.sliding)return this.slide("next")},e.prototype.prev=function(){if(!this.sliding)return this.slide("prev")},e.prototype.slide=function(e,i){var o=this.$element.find(".item.active"),n=i||o[e](),s=this.interval,a="next"==e?"left":"right",r="next"==e?"first":"last",l=this;if(!n.length){if(!this.options.wrap)return;n=this.$element.find(".item")[r]()}if(n.hasClass("active"))return this.sliding=!1;var h=t.Event("slide.bs.carousel",{relatedTarget:n[0],direction:a});return this.$element.trigger(h),h.isDefaultPrevented()?void 0:(this.sliding=!0,s&&this.pause(),this.$indicators.length&&(this.$indicators.find(".active").removeClass("active"),this.$element.one("slid.bs.carousel",function(){var e=t(l.$indicators.children()[l.getActiveIndex()]);e&&e.addClass("active")})),t.support.transition&&this.$element.hasClass("slide")?(n.addClass(e),n[0].offsetWidth,o.addClass(a),n.addClass(a),o.one(t.support.transition.end,function(){n.removeClass([e,a].join(" ")).addClass("active"),o.removeClass(["active",a].join(" ")),l.sliding=!1,setTimeout(function(){l.$element.trigger("slid.bs.carousel")},0)}).emulateTransitionEnd(1e3*o.css("transition-duration").slice(0,-1))):(o.removeClass("active"),n.addClass("active"),this.sliding=!1,this.$element.trigger("slid.bs.carousel")),s&&this.cycle(),this)};var i=t.fn.carousel;t.fn.carousel=function(i){return this.each(function(){var o=t(this),n=o.data("bs.carousel"),s=t.extend({},e.DEFAULTS,o.data(),"object"==typeof i&&i),a="string"==typeof i?i:s.slide;n||o.data("bs.carousel",n=new e(this,s)),"number"==typeof i?n.to(i):a?n[a]():s.interval&&n.pause().cycle()})},t.fn.carousel.Constructor=e,t.fn.carousel.noConflict=function(){return t.fn.carousel=i,this},t(document).on("click.bs.carousel.data-api","[data-slide], [data-slide-to]",function(e){var i,o=t(this),n=t(o.attr("data-target")||(i=o.attr("href"))&&i.replace(/.*(?=#[^\s]+$)/,"")),s=t.extend({},n.data(),o.data()),a=o.attr("data-slide-to");a&&(s.interval=!1),n.carousel(s),(a=o.attr("data-slide-to"))&&n.data("bs.carousel").to(a),e.preventDefault()}),t(window).on("load",function(){t('[data-ride="carousel"]').each(function(){var e=t(this);e.carousel(e.data())})})}(jQuery),+function(t){"use strict";var e=function(i,o){this.$element=t(i),this.options=t.extend({},e.DEFAULTS,o),this.transitioning=null,this.options.parent&&(this.$parent=t(this.options.parent)),this.options.toggle&&this.toggle()};e.DEFAULTS={toggle:!0},e.prototype.dimension=function(){var t=this.$element.hasClass("width");return t?"width":"height"},e.prototype.show=function(){if(!this.transitioning&&!this.$element.hasClass("in")){var e=t.Event("show.bs.collapse");if(this.$element.trigger(e),!e.isDefaultPrevented()){var i=this.$parent&&this.$parent.find("> .panel > .in");if(i&&i.length){var o=i.data("bs.collapse");if(o&&o.transitioning)return;i.collapse("hide"),o||i.data("bs.collapse",null)}var n=this.dimension();this.$element.removeClass("collapse").addClass("collapsing")[n](0),this.transitioning=1;var s=function(){this.$element.removeClass("collapsing").addClass("collapse in")[n]("auto"),this.transitioning=0,this.$element.trigger("shown.bs.collapse")};if(!t.support.transition)return s.call(this);var a=t.camelCase(["scroll",n].join("-"));this.$element.one(t.support.transition.end,t.proxy(s,this)).emulateTransitionEnd(350)[n](this.$element[0][a])}}},e.prototype.hide=function(){if(!this.transitioning&&this.$element.hasClass("in")){var e=t.Event("hide.bs.collapse");if(this.$element.trigger(e),!e.isDefaultPrevented()){var i=this.dimension();this.$element[i](this.$element[i]())[0].offsetHeight,this.$element.addClass("collapsing").removeClass("collapse").removeClass("in"),this.transitioning=1;var o=function(){this.transitioning=0,this.$element.trigger("hidden.bs.collapse").removeClass("collapsing").addClass("collapse")};return t.support.transition?void this.$element[i](0).one(t.support.transition.end,t.proxy(o,this)).emulateTransitionEnd(350):o.call(this)}}},e.prototype.toggle=function(){this[this.$element.hasClass("in")?"hide":"show"]()};var i=t.fn.collapse;t.fn.collapse=function(i){return this.each(function(){var o=t(this),n=o.data("bs.collapse"),s=t.extend({},e.DEFAULTS,o.data(),"object"==typeof i&&i);!n&&s.toggle&&"show"==i&&(i=!i),n||o.data("bs.collapse",n=new e(this,s)),"string"==typeof i&&n[i]()})},t.fn.collapse.Constructor=e,t.fn.collapse.noConflict=function(){return t.fn.collapse=i,this},t(document).on("click.bs.collapse.data-api","[data-toggle=collapse]",function(e){var i,o=t(this),n=o.attr("data-target")||e.preventDefault()||(i=o.attr("href"))&&i.replace(/.*(?=#[^\s]+$)/,""),s=t(n),a=s.data("bs.collapse"),r=a?"toggle":o.data(),l=o.attr("data-parent"),h=l&&t(l);a&&a.transitioning||(h&&h.find('[data-toggle=collapse][data-parent="'+l+'"]').not(o).addClass("collapsed"),o[s.hasClass("in")?"addClass":"removeClass"]("collapsed")),s.collapse(r)})}(jQuery),+function(t){"use strict";function e(e){t(o).remove(),t(n).each(function(){var o=i(t(this)),n={relatedTarget:this};o.hasClass("open")&&(o.trigger(e=t.Event("hide.bs.dropdown",n)),e.isDefaultPrevented()||o.removeClass("open").trigger("hidden.bs.dropdown",n))})}function i(e){var i=e.attr("data-target");i||(i=e.attr("href"),i=i&&/#[A-Za-z]/.test(i)&&i.replace(/.*(?=#[^\s]*$)/,""));var o=i&&t(i);return o&&o.length?o:e.parent()}var o=".dropdown-backdrop",n="[data-toggle=dropdown]",s=function(e){t(e).on("click.bs.dropdown",this.toggle)};s.prototype.toggle=function(o){var n=t(this);if(!n.is(".disabled, :disabled")){var s=i(n),a=s.hasClass("open");if(e(),!a){"ontouchstart"in document.documentElement&&!s.closest(".navbar-nav").length&&t('<div class="dropdown-backdrop"/>').insertAfter(t(this)).on("click",e);var r={relatedTarget:this};if(s.trigger(o=t.Event("show.bs.dropdown",r)),o.isDefaultPrevented())return;s.toggleClass("open").trigger("shown.bs.dropdown",r),n.focus()}return!1}},s.prototype.keydown=function(e){if(/(38|40|27)/.test(e.keyCode)){var o=t(this);if(e.preventDefault(),e.stopPropagation(),!o.is(".disabled, :disabled")){var s=i(o),a=s.hasClass("open");if(!a||a&&27==e.keyCode)return 27==e.which&&s.find(n).focus(),o.click();var r=" li:not(.divider):visible a",l=s.find("[role=menu]"+r+", [role=listbox]"+r);if(l.length){var h=l.index(l.filter(":focus"));38==e.keyCode&&h>0&&h--,40==e.keyCode&&h<l.length-1&&h++,~h||(h=0),l.eq(h).focus()}}}};var a=t.fn.dropdown;t.fn.dropdown=function(e){return this.each(function(){var i=t(this),o=i.data("bs.dropdown");o||i.data("bs.dropdown",o=new s(this)),"string"==typeof e&&o[e].call(i)})},t.fn.dropdown.Constructor=s,t.fn.dropdown.noConflict=function(){return t.fn.dropdown=a,this},t(document).on("click.bs.dropdown.data-api",e).on("click.bs.dropdown.data-api",".dropdown form",function(t){t.stopPropagation()}).on("click.bs.dropdown.data-api",n,s.prototype.toggle).on("keydown.bs.dropdown.data-api",n+", [role=menu], [role=listbox]",s.prototype.keydown)}(jQuery),+function(t){"use strict";var e=function(e,i){this.options=i,this.$element=t(e),this.$backdrop=this.isShown=null,this.options.remote&&this.$element.find(".modal-content").load(this.options.remote,t.proxy(function(){this.$element.trigger("loaded.bs.modal")},this))};e.DEFAULTS={backdrop:!0,keyboard:!0,show:!0},e.prototype.toggle=function(t){return this[this.isShown?"hide":"show"](t)},e.prototype.show=function(e){var i=this,o=t.Event("show.bs.modal",{relatedTarget:e});this.$element.trigger(o),this.isShown||o.isDefaultPrevented()||(this.isShown=!0,this.escape(),this.$element.on("click.dismiss.bs.modal",'[data-dismiss="modal"]',t.proxy(this.hide,this)),this.backdrop(function(){var o=t.support.transition&&i.$element.hasClass("fade");i.$element.parent().length||i.$element.appendTo(document.body),i.$element.show().scrollTop(0),o&&i.$element[0].offsetWidth,i.$element.addClass("in").attr("aria-hidden",!1),i.enforceFocus();var n=t.Event("shown.bs.modal",{relatedTarget:e});o?i.$element.find(".modal-dialog").one(t.support.transition.end,function(){i.$element.focus().trigger(n)}).emulateTransitionEnd(300):i.$element.focus().trigger(n)}))},e.prototype.hide=function(e){e&&e.preventDefault(),e=t.Event("hide.bs.modal"),this.$element.trigger(e),this.isShown&&!e.isDefaultPrevented()&&(this.isShown=!1,this.escape(),t(document).off("focusin.bs.modal"),this.$element.removeClass("in").attr("aria-hidden",!0).off("click.dismiss.bs.modal"),t.support.transition&&this.$element.hasClass("fade")?this.$element.one(t.support.transition.end,t.proxy(this.hideModal,this)).emulateTransitionEnd(300):this.hideModal())},e.prototype.enforceFocus=function(){t(document).off("focusin.bs.modal").on("focusin.bs.modal",t.proxy(function(t){this.$element[0]===t.target||this.$element.has(t.target).length||this.$element.focus()},this))},e.prototype.escape=function(){this.isShown&&this.options.keyboard?this.$element.on("keyup.dismiss.bs.modal",t.proxy(function(t){27==t.which&&this.hide()},this)):this.isShown||this.$element.off("keyup.dismiss.bs.modal")},e.prototype.hideModal=function(){var t=this;this.$element.hide(),this.backdrop(function(){t.removeBackdrop(),t.$element.trigger("hidden.bs.modal")})},e.prototype.removeBackdrop=function(){this.$backdrop&&this.$backdrop.remove(),this.$backdrop=null},e.prototype.backdrop=function(e){var i=this.$element.hasClass("fade")?"fade":"";if(this.isShown&&this.options.backdrop){var o=t.support.transition&&i;if(this.$backdrop=t('<div class="modal-backdrop '+i+'" />').appendTo(document.body),this.$element.on("click.dismiss.bs.modal",t.proxy(function(t){t.target===t.currentTarget&&("static"==this.options.backdrop?this.$element[0].focus.call(this.$element[0]):this.hide.call(this))},this)),o&&this.$backdrop[0].offsetWidth,this.$backdrop.addClass("in"),!e)return;o?this.$backdrop.one(t.support.transition.end,e).emulateTransitionEnd(150):e()}else!this.isShown&&this.$backdrop?(this.$backdrop.removeClass("in"),t.support.transition&&this.$element.hasClass("fade")?this.$backdrop.one(t.support.transition.end,e).emulateTransitionEnd(150):e()):e&&e()};var i=t.fn.modal;t.fn.modal=function(i,o){return this.each(function(){var n=t(this),s=n.data("bs.modal"),a=t.extend({},e.DEFAULTS,n.data(),"object"==typeof i&&i);s||n.data("bs.modal",s=new e(this,a)),"string"==typeof i?s[i](o):a.show&&s.show(o)})},t.fn.modal.Constructor=e,t.fn.modal.noConflict=function(){return t.fn.modal=i,this},t(document).on("click.bs.modal.data-api",'[data-toggle="modal"]',function(e){var i=t(this),o=i.attr("href"),n=t(i.attr("data-target")||o&&o.replace(/.*(?=#[^\s]+$)/,"")),s=n.data("bs.modal")?"toggle":t.extend({remote:!/#/.test(o)&&o},n.data(),i.data());i.is("a")&&e.preventDefault(),n.modal(s,this).one("hide",function(){i.is(":visible")&&i.focus()})}),t(document).on("show.bs.modal",".modal",function(){t(document.body).addClass("modal-open")}).on("hidden.bs.modal",".modal",function(){t(document.body).removeClass("modal-open")})}(jQuery),+function(t){"use strict";var e=function(t,e){this.type=this.options=this.enabled=this.timeout=this.hoverState=this.$element=null,this.init("tooltip",t,e)};e.DEFAULTS={animation:!0,placement:"top",selector:!1,template:'<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,container:!1},e.prototype.init=function(e,i,o){this.enabled=!0,this.type=e,this.$element=t(i),this.options=this.getOptions(o);for(var n=this.options.trigger.split(" "),s=n.length;s--;){var a=n[s];if("click"==a)this.$element.on("click."+this.type,this.options.selector,t.proxy(this.toggle,this));else if("manual"!=a){var r="hover"==a?"mouseenter":"focusin",l="hover"==a?"mouseleave":"focusout";this.$element.on(r+"."+this.type,this.options.selector,t.proxy(this.enter,this)),this.$element.on(l+"."+this.type,this.options.selector,t.proxy(this.leave,this))}}this.options.selector?this._options=t.extend({},this.options,{trigger:"manual",selector:""}):this.fixTitle()},e.prototype.getDefaults=function(){return e.DEFAULTS},e.prototype.getOptions=function(e){return e=t.extend({},this.getDefaults(),this.$element.data(),e),e.delay&&"number"==typeof e.delay&&(e.delay={show:e.delay,hide:e.delay}),e},e.prototype.getDelegateOptions=function(){var e={},i=this.getDefaults();return this._options&&t.each(this._options,function(t,o){i[t]!=o&&(e[t]=o)}),e},e.prototype.enter=function(e){var i=e instanceof this.constructor?e:t(e.currentTarget)[this.type](this.getDelegateOptions()).data("bs."+this.type);return clearTimeout(i.timeout),i.hoverState="in",i.options.delay&&i.options.delay.show?void(i.timeout=setTimeout(function(){"in"==i.hoverState&&i.show()},i.options.delay.show)):i.show()},e.prototype.leave=function(e){var i=e instanceof this.constructor?e:t(e.currentTarget)[this.type](this.getDelegateOptions()).data("bs."+this.type);return clearTimeout(i.timeout),i.hoverState="out",i.options.delay&&i.options.delay.hide?void(i.timeout=setTimeout(function(){"out"==i.hoverState&&i.hide()},i.options.delay.hide)):i.hide()},e.prototype.show=function(){var e=t.Event("show.bs."+this.type);if(this.hasContent()&&this.enabled){if(this.$element.trigger(e),e.isDefaultPrevented())return;var i=this,o=this.tip();this.setContent(),this.options.animation&&o.addClass("fade");var n="function"==typeof this.options.placement?this.options.placement.call(this,o[0],this.$element[0]):this.options.placement,s=/\s?auto?\s?/i,a=s.test(n);a&&(n=n.replace(s,"")||"top"),o.detach().css({top:0,left:0,display:"block"}).addClass(n),this.options.container?o.appendTo(this.options.container):o.insertAfter(this.$element);var r=this.getPosition(),l=o[0].offsetWidth,h=o[0].offsetHeight;if(a){var p=this.$element.parent(),d=n,c=document.documentElement.scrollTop||document.body.scrollTop,f="body"==this.options.container?window.innerWidth:p.outerWidth(),u="body"==this.options.container?window.innerHeight:p.outerHeight(),v="body"==this.options.container?0:p.offset().left;n="bottom"==n&&r.top+r.height+h-c>u?"top":"top"==n&&r.top-c-h<0?"bottom":"right"==n&&r.right+l>f?"left":"left"==n&&r.left-l<v?"right":n,o.removeClass(d).addClass(n)}var m=this.getCalculatedOffset(n,r,l,h);this.applyPlacement(m,n),this.hoverState=null;var g=function(){i.$element.trigger("shown.bs."+i.type)};t.support.transition&&this.$tip.hasClass("fade")?o.one(t.support.transition.end,g).emulateTransitionEnd(150):g()}},e.prototype.applyPlacement=function(e,i){var o,n=this.tip(),s=n[0].offsetWidth,a=n[0].offsetHeight,r=parseInt(n.css("margin-top"),10),l=parseInt(n.css("margin-left"),10);isNaN(r)&&(r=0),isNaN(l)&&(l=0),e.top=e.top+r,e.left=e.left+l,t.offset.setOffset(n[0],t.extend({using:function(t){n.css({top:Math.round(t.top),left:Math.round(t.left)})}},e),0),n.addClass("in");var h=n[0].offsetWidth,p=n[0].offsetHeight;if("top"==i&&p!=a&&(o=!0,e.top=e.top+a-p),/bottom|top/.test(i)){var d=0;e.left<0&&(d=e.left*-2,e.left=0,n.offset(e),h=n[0].offsetWidth,p=n[0].offsetHeight),this.replaceArrow(d-s+h,h,"left")}else this.replaceArrow(p-a,p,"top");o&&n.offset(e)},e.prototype.replaceArrow=function(t,e,i){this.arrow().css(i,t?50*(1-t/e)+"%":"")},e.prototype.setContent=function(){var t=this.tip(),e=this.getTitle();t.find(".tooltip-inner")[this.options.html?"html":"text"](e),t.removeClass("fade in top bottom left right")},e.prototype.hide=function(){function e(){"in"!=i.hoverState&&o.detach(),i.$element.trigger("hidden.bs."+i.type)}var i=this,o=this.tip(),n=t.Event("hide.bs."+this.type);if(this.$element.trigger(n),!n.isDefaultPrevented())return o.removeClass("in"),t.support.transition&&this.$tip.hasClass("fade")?o.one(t.support.transition.end,e).emulateTransitionEnd(150):e(),this.hoverState=null,this},e.prototype.fixTitle=function(){var t=this.$element;(t.attr("title")||"string"!=typeof t.attr("data-original-title"))&&t.attr("data-original-title",t.attr("title")||"").attr("title","")},e.prototype.hasContent=function(){return this.getTitle()},e.prototype.getPosition=function(){var e=this.$element[0];return t.extend({},"function"==typeof e.getBoundingClientRect?e.getBoundingClientRect():{width:e.offsetWidth,height:e.offsetHeight},this.$element.offset())},e.prototype.getCalculatedOffset=function(t,e,i,o){return"bottom"==t?{top:e.top+e.height,left:e.left+e.width/2-i/2}:"top"==t?{top:e.top-o,left:e.left+e.width/2-i/2}:"left"==t?{top:e.top+e.height/2-o/2,left:e.left-i}:{top:e.top+e.height/2-o/2,left:e.left+e.width}},e.prototype.getTitle=function(){var t,e=this.$element,i=this.options;return t=e.attr("data-original-title")||("function"==typeof i.title?i.title.call(e[0]):i.title)},e.prototype.tip=function(){return this.$tip=this.$tip||t(this.options.template)},e.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".tooltip-arrow")},e.prototype.validate=function(){this.$element[0].parentNode||(this.hide(),this.$element=null,this.options=null)},e.prototype.enable=function(){this.enabled=!0},e.prototype.disable=function(){this.enabled=!1},e.prototype.toggleEnabled=function(){this.enabled=!this.enabled},e.prototype.toggle=function(e){var i=e?t(e.currentTarget)[this.type](this.getDelegateOptions()).data("bs."+this.type):this;i.tip().hasClass("in")?i.leave(i):i.enter(i)},e.prototype.destroy=function(){clearTimeout(this.timeout),this.hide().$element.off("."+this.type).removeData("bs."+this.type)};var i=t.fn.tooltip;t.fn.tooltip=function(i){return this.each(function(){var o=t(this),n=o.data("bs.tooltip"),s="object"==typeof i&&i;(n||"destroy"!=i)&&(n||o.data("bs.tooltip",n=new e(this,s)),"string"==typeof i&&n[i]())})},t.fn.tooltip.Constructor=e,t.fn.tooltip.noConflict=function(){return t.fn.tooltip=i,this}}(jQuery),+function(t){"use strict";var e=function(t,e){this.init("popover",t,e)};if(!t.fn.tooltip)throw new Error("Popover requires tooltip.js");e.DEFAULTS=t.extend({},t.fn.tooltip.Constructor.DEFAULTS,{placement:"right",trigger:"click",content:"",template:'<div class="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'}),e.prototype=t.extend({},t.fn.tooltip.Constructor.prototype),e.prototype.constructor=e,e.prototype.getDefaults=function(){return e.DEFAULTS},e.prototype.setContent=function(){var t=this.tip(),e=this.getTitle(),i=this.getContent();t.find(".popover-title")[this.options.html?"html":"text"](e),t.find(".popover-content")[this.options.html?"string"==typeof i?"html":"append":"text"](i),t.removeClass("fade top bottom left right in"),t.find(".popover-title").html()||t.find(".popover-title").hide()},e.prototype.hasContent=function(){return this.getTitle()||this.getContent()},e.prototype.getContent=function(){var t=this.$element,e=this.options;return t.attr("data-content")||("function"==typeof e.content?e.content.call(t[0]):e.content)},e.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".arrow")},e.prototype.tip=function(){return this.$tip||(this.$tip=t(this.options.template)),this.$tip};var i=t.fn.popover;t.fn.popover=function(i){return this.each(function(){var o=t(this),n=o.data("bs.popover"),s="object"==typeof i&&i;(n||"destroy"!=i)&&(n||o.data("bs.popover",n=new e(this,s)),"string"==typeof i&&n[i]())})},t.fn.popover.Constructor=e,t.fn.popover.noConflict=function(){return t.fn.popover=i,this}}(jQuery),+function(t){"use strict";function e(i,o){var n,s=t.proxy(this.process,this);this.$element=t(t(i).is("body")?window:i),this.$body=t("body"),this.$scrollElement=this.$element.on("scroll.bs.scroll-spy.data-api",s),this.options=t.extend({},e.DEFAULTS,o),this.selector=(this.options.target||(n=t(i).attr("href"))&&n.replace(/.*(?=#[^\s]+$)/,"")||"")+" .nav li > a",this.offsets=t([]),this.targets=t([]),this.activeTarget=null,this.refresh(),this.process()}e.DEFAULTS={offset:10},e.prototype.refresh=function(){var e=this.$element[0]==window?"offset":"position";this.offsets=t([]),this.targets=t([]);var i=this;this.$body.find(this.selector).map(function(){var o=t(this),n=o.data("target")||o.attr("href"),s=/^#./.test(n)&&t(n);return s&&s.length&&s.is(":visible")&&[[s[e]().top+(!t.isWindow(i.$scrollElement.get(0))&&i.$scrollElement.scrollTop()),n]]||null}).sort(function(t,e){return t[0]-e[0]}).each(function(){i.offsets.push(this[0]),i.targets.push(this[1])})},e.prototype.process=function(){var t,e=this.$scrollElement.scrollTop()+this.options.offset,i=this.$scrollElement[0].scrollHeight||this.$body[0].scrollHeight,o=i-this.$scrollElement.height(),n=this.offsets,s=this.targets,a=this.activeTarget;if(e>=o)return a!=(t=s.last()[0])&&this.activate(t);if(a&&e<=n[0])return a!=(t=s[0])&&this.activate(t);for(t=n.length;t--;)a!=s[t]&&e>=n[t]&&(!n[t+1]||e<=n[t+1])&&this.activate(s[t])},e.prototype.activate=function(e){this.activeTarget=e,t(this.selector).parentsUntil(this.options.target,".active").removeClass("active");var i=this.selector+'[data-target="'+e+'"],'+this.selector+'[href="'+e+'"]',o=t(i).parents("li").addClass("active");o.parent(".dropdown-menu").length&&(o=o.closest("li.dropdown").addClass("active")),o.trigger("activate.bs.scrollspy")};var i=t.fn.scrollspy;t.fn.scrollspy=function(i){return this.each(function(){var o=t(this),n=o.data("bs.scrollspy"),s="object"==typeof i&&i;n||o.data("bs.scrollspy",n=new e(this,s)),"string"==typeof i&&n[i]()})},t.fn.scrollspy.Constructor=e,t.fn.scrollspy.noConflict=function(){return t.fn.scrollspy=i,this},t(window).on("load",function(){t('[data-spy="scroll"]').each(function(){var e=t(this);e.scrollspy(e.data())})})}(jQuery),+function(t){"use strict";var e=function(e){this.element=t(e)};e.prototype.show=function(){var e=this.element,i=e.closest("ul:not(.dropdown-menu)"),o=e.data("target");if(o||(o=e.attr("href"),o=o&&o.replace(/.*(?=#[^\s]*$)/,"")),!e.parent("li").hasClass("active")){var n=i.find(".active:last a")[0],s=t.Event("show.bs.tab",{relatedTarget:n});if(e.trigger(s),!s.isDefaultPrevented()){var a=t(o);this.activate(e.parent("li"),i),this.activate(a,a.parent(),function(){e.trigger({type:"shown.bs.tab",relatedTarget:n})})}}},e.prototype.activate=function(e,i,o){function n(){s.removeClass("active").find("> .dropdown-menu > .active").removeClass("active"),e.addClass("active"),a?(e[0].offsetWidth,e.addClass("in")):e.removeClass("fade"),e.parent(".dropdown-menu")&&e.closest("li.dropdown").addClass("active"),o&&o()}var s=i.find("> .active"),a=o&&t.support.transition&&s.hasClass("fade");a?s.one(t.support.transition.end,n).emulateTransitionEnd(150):n(),s.removeClass("in")};var i=t.fn.tab;t.fn.tab=function(i){return this.each(function(){var o=t(this),n=o.data("bs.tab");n||o.data("bs.tab",n=new e(this)),"string"==typeof i&&n[i]()})},t.fn.tab.Constructor=e,t.fn.tab.noConflict=function(){return t.fn.tab=i,this},t(document).on("click.bs.tab.data-api",'[data-toggle="tab"], [data-toggle="pill"]',function(e){e.preventDefault(),t(this).tab("show")})}(jQuery),+function(t){"use strict";var e=function(i,o){this.options=t.extend({},e.DEFAULTS,o),this.$window=t(window).on("scroll.bs.affix.data-api",t.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",t.proxy(this.checkPositionWithEventLoop,this)),this.$element=t(i),this.affixed=this.unpin=this.pinnedOffset=null,this.checkPosition()};e.RESET="affix affix-top affix-bottom",e.DEFAULTS={offset:0},e.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(e.RESET).addClass("affix");var t=this.$window.scrollTop(),i=this.$element.offset();return this.pinnedOffset=i.top-t},e.prototype.checkPositionWithEventLoop=function(){setTimeout(t.proxy(this.checkPosition,this),1)},e.prototype.checkPosition=function(){if(this.$element.is(":visible")){var i=t(document).height(),o=this.$window.scrollTop(),n=this.$element.offset(),s=this.options.offset,a=s.top,r=s.bottom;"top"==this.affixed&&(n.top+=o),"object"!=typeof s&&(r=a=s),"function"==typeof a&&(a=s.top(this.$element)),"function"==typeof r&&(r=s.bottom(this.$element));var l=!(null!=this.unpin&&o+this.unpin<=n.top)&&(null!=r&&n.top+this.$element.height()>=i-r?"bottom":null!=a&&o<=a&&"top");if(this.affixed!==l){this.unpin&&this.$element.css("top","");var h="affix"+(l?"-"+l:""),p=t.Event(h+".bs.affix");this.$element.trigger(p),p.isDefaultPrevented()||(this.affixed=l,this.unpin="bottom"==l?this.getPinnedOffset():null,this.$element.removeClass(e.RESET).addClass(h).trigger(t.Event(h.replace("affix","affixed"))),"bottom"==l&&this.$element.offset({top:i-r-this.$element.height()}))}}};var i=t.fn.affix;t.fn.affix=function(i){return this.each(function(){var o=t(this),n=o.data("bs.affix"),s="object"==typeof i&&i;n||o.data("bs.affix",n=new e(this,s)),"string"==typeof i&&n[i]()})},t.fn.affix.Constructor=e,t.fn.affix.noConflict=function(){return t.fn.affix=i,this},t(window).on("load",function(){t('[data-spy="affix"]').each(function(){var e=t(this),i=e.data();i.offset=i.offset||{},i.offsetBottom&&(i.offset.bottom=i.offsetBottom),i.offsetTop&&(i.offset.top=i.offsetTop),e.affix(i)})})}(jQuery);;
-;
-;
 /**
  * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
@@ -139,7 +137,6 @@ define(["durandal/system","durandal/viewLocator","durandal/binder","durandal/vie
  */
 
 define(["durandal/system"],function(t){var i=/\s+/,e=function(){},o=function(t,i){this.owner=t,this.events=i};return o.prototype.then=function(t,i){return this.callback=t||this.callback,this.context=i||this.context,this.callback?(this.owner.on(this.events,this.callback,this.context),this):this},o.prototype.on=o.prototype.then,o.prototype.off=function(){return this.owner.off(this.events,this.callback,this.context),this},e.prototype.on=function(t,e,r){var n,s,h;if(e){for(n=this.callbacks||(this.callbacks={}),t=t.split(i);s=t.shift();)h=n[s]||(n[s]=[]),h.push(e,r);return this}return new o(this,t)},e.prototype.off=function(e,o,r){var n,s,h,c;if(!(s=this.callbacks))return this;if(!(e||o||r))return delete this.callbacks,this;for(e=e?e.split(i):t.keys(s);n=e.shift();)if((h=s[n])&&(o||r))for(c=h.length-2;c>=0;c-=2)o&&h[c]!==o||r&&h[c+1]!==r||h.splice(c,2);else delete s[n];return this},e.prototype.trigger=function(t){var e,o,r,n,s,h,c,f;if(!(o=this.callbacks))return this;for(f=[],t=t.split(i),n=1,s=arguments.length;n<s;n++)f[n-1]=arguments[n];for(;e=t.shift();){if((c=o.all)&&(c=c.slice()),(r=o[e])&&(r=r.slice()),r)for(n=0,s=r.length;n<s;n+=2)r[n].apply(r[n+1]||this,f);if(c)for(h=[e].concat(f),n=0,s=c.length;n<s;n+=2)c[n].apply(c[n+1]||this,h)}return this},e.prototype.proxy=function(t){var i=this;return function(e){i.trigger(t,e)}},e.includeIn=function(t){t.on=e.prototype.on,t.off=e.prototype.off,t.trigger=e.prototype.trigger,t.proxy=e.prototype.proxy},e});;
-;
 /**
  * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
@@ -196,7 +193,6 @@ define(["durandal/system","durandal/composition","jquery","knockout"],function(n
  */
 
 define(["require","jquery"],function(o,e){function n(o){var e="[object "+o+"]";t["is"+o]=function(o){return l.call(o)==e}}var t,r=!1,i=Object.keys,c=Object.prototype.hasOwnProperty,l=Object.prototype.toString,u=!1,f=Array.isArray,s=Array.prototype.slice;if(String.prototype.trim||(String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,"")}),Function.prototype.bind&&("object"==typeof console||"function"==typeof console)&&"object"==typeof console.log)try{["log","info","warn","error","assert","dir","clear","profile","profileEnd"].forEach(function(o){console[o]=this.call(console[o],console)},Function.prototype.bind)}catch(o){u=!0}o.on&&o.on("moduleLoaded",function(o,e){t.setModuleId(o,e)}),"undefined"!=typeof requirejs&&(requirejs.onResourceLoad=function(o,e,n){t.setModuleId(o.defined[e.id],e.id)});var a=function(){},p=function(){try{if("undefined"!=typeof console&&"function"==typeof console.log)if(window.opera)for(var o=0;o<arguments.length;)console.log("Item "+(o+1)+": "+arguments[o]),o++;else 1==s.call(arguments).length&&"string"==typeof s.call(arguments)[0]?console.log(s.call(arguments).toString()):console.log.apply(console,s.call(arguments));else Function.prototype.bind&&!u||"undefined"==typeof console||"object"!=typeof console.log||Function.prototype.call.call(console.log,console,s.call(arguments))}catch(o){}},d=function(o,e){var n;throw n=o instanceof Error?o:new Error(o),n.innerError=e,n};t={version:"2.1.0",noop:a,getModuleId:function(o){return o?"function"==typeof o&&o.prototype?o.prototype.__moduleId__:"string"==typeof o?null:o.__moduleId__:null},setModuleId:function(o,e){if(o)return"function"==typeof o&&o.prototype?void(o.prototype.__moduleId__=e):void("string"!=typeof o&&(o.__moduleId__=e))},resolveObject:function(o){return t.isFunction(o)?new o:o},debug:function(o){return 1==arguments.length&&(r=o,r?(this.log=p,this.error=d,this.log("Debug:Enabled")):(this.log("Debug:Disabled"),this.log=a,this.error=a)),r},log:a,error:a,assert:function(o,e){o||t.error(new Error(e||"Assert:Failed"))},defer:function(o){return e.Deferred(o)},guid:function(){var o=(new Date).getTime();return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(e){var n=(o+16*Math.random())%16|0;return o=Math.floor(o/16),("x"==e?n:7&n|8).toString(16)})},acquire:function(){var e,n=arguments[0],r=!1;return t.isArray(n)?(e=n,r=!0):e=s.call(arguments,0),this.defer(function(n){o(e,function(){var o=arguments;setTimeout(function(){o.length>1||r?n.resolve(s.call(o,0)):n.resolve(o[0])},1)},function(o){n.reject(o)})}).promise()},extend:function(o){for(var e=s.call(arguments,1),n=0;n<e.length;n++){var t=e[n];if(t)for(var r in t)o[r]=t[r]}return o},wait:function(o){return t.defer(function(e){setTimeout(e.resolve,o)}).promise()}},t.keys=i||function(o){if(o!==Object(o))throw new TypeError("Invalid object");var e=[];for(var n in o)c.call(o,n)&&(e[e.length]=n);return e},t.isElement=function(o){return!(!o||1!==o.nodeType)},t.isArray=f||function(o){return"[object Array]"==l.call(o)},t.isObject=function(o){return o===Object(o)},t.isBoolean=function(o){return"boolean"==typeof o},t.isPromise=function(o){return o&&t.isFunction(o.then)};for(var y=["Arguments","Function","String","Number","Date","RegExp"],g=0;g<y.length;g++)n(y[g]);return t});;
-;
 /**
  * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
@@ -218,197 +214,29 @@ define(["durandal/system","jquery"],function(e,n){var t;return t=n.parseHTML?fun
  */
 
 define(["durandal/system","durandal/viewEngine"],function(e,t){function r(e,t){for(var r=0;r<e.length;r++){var i=e[r],n=i.getAttribute("data-view");if(n==t)return i}}function i(e){return(e+"").replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g,"\\$1")}return{useConvention:function(e,t,r){e=e||"viewmodels",t=t||"views",r=r||t;var n=new RegExp(i(e),"gi");this.convertModuleIdToViewId=function(e){return e.replace(n,t)},this.translateViewIdToArea=function(e,t){return t&&"partial"!=t?r+"/"+t+"/"+e:r+"/"+e}},locateViewForObject:function(t,r,i){var n;if(t.getView&&(n=t.getView()))return this.locateView(n,r,i);if(t.viewUrl)return this.locateView(t.viewUrl,r,i);var o=e.getModuleId(t);return o?this.locateView(this.convertModuleIdToViewId(o),r,i):this.locateView(this.determineFallbackViewId(t),r,i)},convertModuleIdToViewId:function(e){return e},determineFallbackViewId:function(e){var t=/function (.{1,})\(/,r=t.exec(e.constructor.toString()),i=r&&r.length>1?r[1]:"";return i=i.trim(),"views/"+i},translateViewIdToArea:function(e,t){return e},locateView:function(i,n,o){if("string"==typeof i){var a;if(a=t.isViewUrl(i)?t.convertViewUrlToViewId(i):i,n&&(a=this.translateViewIdToArea(a,n)),o){var u=r(o,a);if(u)return e.defer(function(e){e.resolve(u)}).promise()}return t.createView(a)}return e.defer(function(e){e.resolve(i)}).promise()}}});;
-;
-;
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span6" data-bind="compose: publisher"></div>
-        <div class="span6" data-bind="compose: subscriber"></div>
-    </div>
-</div>
-;
 define(["./publisher","./subscriber"],function(r,e){return{publisher:r,subscriber:e}});;
-<form class="form-inline">
-    <fieldset>
-        <legend>Publisher</legend>
-        <label>Message</label>
-        <input type="text" data-bind="value: message, valueUpdate: 'afterkeydown'"/>
-        <button type="submit" class="btn" data-bind="click: publish, enable: canPublish">Publish</button>
-    </fieldset>
-</form>;
 define(["durandal/app","knockout"],function(e,n){var u=n.observable(),r=n.computed(function(){return!!u()});return{message:u,canPublish:r,publish:function(){e.trigger("sample:event",u())}}});;
-<div>
-    <h3>
-        Subscriber
-        <button class="btn btn-success" data-bind="enable: !subscription(), click: subscribe">Subscribe</button>
-        <button class="btn btn-danger" data-bind="enable: subscription, click: unsubscribe">Unsubscribe</button>
-    </h3>
-    <ul data-bind="foreach: received">
-        <li data-bind="text: $data"></li>
-    </ul>
-</div>;
 define(["durandal/app","knockout"],function(i,n){return{received:n.observableArray([]),subscription:n.observable(),subscribe:function(){var n=i.on("sample:event").then(function(i){this.received.push(i)},this);this.subscription(n)},unsubscribe:function(){this.subscription().off(),this.subscription(null)}}});;
-;
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span6" data-bind="compose: publisher"></div>
-        <div class="span6" data-bind="compose: subscriber"></div>
-    </div>
-</div>
-;
 define(["./publisher","./subscriber"],function(r,e){return{publisher:r,subscriber:e}});;
-<form class="form-inline">
-    <fieldset>
-        <legend>Publisher</legend>
-        <label>Message</label>
-        <input type="text" data-bind="value: message, valueUpdate: 'afterkeydown'"/>
-        <button type="submit" class="btn" data-bind="click: publish, enable: canPublish">Publish</button>
-    </fieldset>
-</form>;
 define(["durandal/app","knockout"],function(e,n){var u=n.observable(),r=n.computed(function(){return!!u()});return{message:u,canPublish:r,publish:function(){e.trigger("sample:event",u())}}});;
-<div>
-    <h3>
-        Subscriber
-        <button class="btn btn-success" data-bind="enable: !subscription(), click: subscribe">Subscribe</button>
-        <button class="btn btn-danger" data-bind="enable: subscription, click: unsubscribe">Unsubscribe</button>
-    </h3>
-    <ul data-bind="foreach: received">
-        <li data-bind="text: $data"></li>
-    </ul>
-</div>;
 define(["durandal/app","knockout"],function(i,n){return{received:n.observableArray([]),subscription:n.observable(),subscribe:function(){var n=i.on("sample:event").then(function(i){this.received.push(i)},this);this.subscription(n)},unsubscribe:function(){this.subscription().off(),this.subscription(null)}}});;
 define(["plugins/router","global","knockout"],function(e,t,o){var r=e.createChildRouter().makeRelative({moduleId:"eventAggregator",route:"event-aggregator"}).map([{type:"intro",title:"PubSub",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"PubSub",route:"dFiddle",moduleId:"dFiddle/index",nav:!0}]).buildNavigationModel();return r.on("router:navigation:complete").then(t.createSampleLink),{global:t,router:r,getItemsByCategoryId:function(e){return o.utils.arrayFilter(r.navigationModel(),function(t){return t.type===e})}}});;
-;
-;
-<div>
-    <h1>Tabs sample</h1>
-    <!-- ko widget : {kind: 'tabs', items : tabs} -->
-    <!-- /ko -->
-
-    <button class="btn" data-bind="click: addNewTab">Add</button>
-</div>;
 define(["./tab","plugins/widget","knockout"],function(a,i,e){return{tabs:e.observableArray([new a("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS.",!0),new a("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new a("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]),addNewTab:function(){this.tabs.push(new a("New Tab ","A test tab."))}}});;
-<div>
-    <div data-bind="html: description"></div>
-</div>;
 define(["durandal/events","knockout"],function(n,t){return function(n,e,i){this.isActive=t.observable(i||!1),this.name=n,this.content=e}});;
 define(["plugins/router","durandal/system","global","knockout"],function(e,t,i,o){var n=e.createChildRouter().makeRelative({moduleId:"extras",route:"extras"}).map([{type:"fiddle",title:"Tabs",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"Navigation",route:"optional(/:id)",hash:"#extras/optional",moduleId:"optional/index",nav:!0},{type:"fiddle",title:"inPageNavigation",route:"welcome(/:id)",hash:"#extras/welcome",moduleId:"inPage/index",nav:!0},{type:"fiddle",title:"mixin",route:"mixin",hash:"#extras/mixin",moduleId:"mixin/index",nav:!0},{type:"fiddle",title:"mixin2",route:"mixin2(/:id)",hash:"#extras/mixin2",moduleId:"mixin2/index",nav:!0},{type:"fiddle",title:"scope before",route:"scope",hash:"#extras/scope",moduleId:"scope/index",nav:!0},{type:"fiddle",title:"scope ctor",route:"scope/ctor",hash:"#extras/scope/ctor",moduleId:"scope/ctor",nav:!0},{type:"fiddle",title:"so19551060",route:"scope/ctor",hash:"#extras/scope/ctor",moduleId:"scope/ctor",nav:!0}]).buildNavigationModel();return n.on("router:navigation:complete").then(i.createSampleLink),{global:i,router:n,getItemsByCategoryId:function(e){return o.utils.arrayFilter(n.navigationModel(),function(t){return t.type===e})},binding:function(){return t.log("Lifecycle : binding : hello/index"),{cacheViews:!1}}}});;
-;
-<section>
-    <h1>
-        Hello Durandal Pagination
-    </h1>
-    <a data-bind="click: gotoPage.bind($data, 1)" style="cursor: pointer;">Page 1</a>
-    <a data-bind="click: gotoPage.bind($data, 2)" style="cursor: pointer;">Page 2</a>
-    <a data-bind="click: gotoPage.bind($data, 3)" style="cursor: pointer;">Page 3</a>
-
-    <h2 data-bind="text: pageData"></h2>
-</section>;
 define(["plugins/router","knockout"],function(t,e){var i=function(){this.pageNo=e.observable(),this.pageData=e.observable()};return i.prototype.activate=function(t){this.init(t)},i.prototype.init=function(t){this.pageNo(t||1),this.pageData("Data for "+this.pageNo())},i.prototype.gotoPage=function(e){var i="extras/welcome/"+e;this.init(e),t.navigate(i,{replace:!1,trigger:!1})},i});;
-;
 define(["jquery","knockout"],function(e,n){"use strict";return{commonObservable:n.observable("commonObservable: Defined in common.js.  Click me..."),showElement:function(n,o){var r=o.currentTarget;1===r.nodeType&&e(r).hide().fadeIn()},fadeRemove:function(n,o){var r=o.currentTarget;1===r.nodeType&&e(r).fadeOut(500,function(){e(r).remove()})}}});;
-<div>
-    <h1>mixin sample</h1>
-
-    <ul class="unstyled ">
-        <li data-bind="text: commonObservable, click: fadeRemove"></li>
-        <li data-bind="text: sharedObservable, click: fadeRemove"></li>
-        <li data-bind="text: uniqueObservable, click: fadeRemove"></li>
-    </ul>
-</div>;
 define(["durandal/app","jquery","knockout","./common"],function(e,r,a,n){"use strict";var o=function(){this.uniqueObservable=a.observable("uniqueObservable: Page property. Click me... ")};return r.extend(!0,o.prototype,n,{sharedObservable:a.observable("sharedObservable: mixed in after common. Click me...")}),o});;
-;
 define(["jquery","knockout"],function(e,n){"use strict";return{mixedInObservable:n.observable("Click me..."),showElement:function(n,r){var t=r.currentTarget;1===t.nodeType&&e(t).hide().fadeIn()},fadeRemove:function(n,r){var t=r.currentTarget;1===t.nodeType&&e(t).fadeOut(500,function(){e(t).remove()})}}});;
 define(["durandal/app","jquery","knockout","./common"],function(e,n,t,i){"use strict";var o=function(e){e=e||{},this.init(e)};return o.prototype.init=function(e){var r=this;n.extend(!0,o.prototype,i,{uniqueObservable:t.observable("Unique to Page1")}),n.each(e,function(e,n){return r[e]?t.isObservable(r[e])?void r[e](n):void(r[e]=n):void(r[e]=t.observable(n))})},o});;
-;
-[
-    {"id": 1, "title": "one"},
-    {"id": 2, "title": "two"},
-    {"id": 3, "title": "three"}
-];
-[
-    {"id": 4, "title": "four"},
-    {"id": 5, "title": "five"},
-    {"id": 6, "title": "six"}
-];
-<div>
-    <h1>mixin sample</h1>
-
-
-    <ul data-bind="foreach: details">
-        <li>
-            <span data-bind="text: mixedInObservable, click: fadeRemove"></span>
-            <span data-bind="text: title"></span>
-        </li>
-    </ul>
-
-    <!--<h1 data-bind="text: mixedInObservable, click: $root.fadeRemove"></h1>
-
-    <h2 data-bind="text: uniqueObservable, click: $root.fadeRemove"></h2>-->
-
-</div>;
 define(["module","durandal/system","jquery","knockout","./detail"],function(e,t,n,i,u){"use strict";function o(i){var o,a=[];i=i||1,o=e.uri.split("/"),o.splice(-1,1),o=o.join("/")+"/fixtures/"+i+".json",t.log("moduleId",e,o),n.getJSON(o).then(function(e){n.each(e,function(e,t){a.push(new u(t))})}),r(a)}var r=i.observableArray();return{details:r,activate:o}});;
-;
-<div class="navbar">
-      <div class="navbar-inner">
-          <ul class="nav" data-bind="foreach: navigation">
-              <li data-bind="css: { active: isActive() }">
-                  <a data-bind="attr: { href: hash }, html: title"></a>
-              </li>
-          </ul>
-          <div class="loader pull-right" data-bind="css: { active: childRouter.isNavigating }">
-              <i class="icon-spinner icon-2x icon-spin"></i>
-          </div>
-      </div>
-      <div>
-          <h3 data-bind="text: param"></h3>
-      </div>
-  </div>;
 define(["plugins/router","knockout","./navItem"],function(a,t,e){var i=function(){this.childRouter=a,this.param=t.observable(""),this.navigation=t.observableArray([new e({title:"Title 1",param:"param1"}),new e({title:"Title 2",param:"param2"}),new e({title:"Title 3",param:"param3"}),new e({title:"Title 4",param:"param4"})])};return i.prototype.activate=function(a){this.param("Param: "+(a||"nothing selected!"))},i});;
 define(["plugins/router"],function(t){var i=function(t){this._options=t||{},this.init(this._options)};return i.prototype.init=function(t){this.title=t.title,this.param=t.param,this.hash="#extras/optional/"+this.param},i.prototype.isActive=function(){return t.activeInstruction().fragment===this.hash.replace("#","")},i});;
-;
 define(["knockout"],function(t){"use strict";function i(i){this.param=i,this.param1=t.observable(i.text),this.param2=t.computed(function(){return"Computed"+this.param.id},this),this.param3=t.computed(function(){return this.param2()+"something_else"},this),this.param1.subscribe(function(t){t&&this.param3(t+"text")})}t.observableArray([]);return i});;
-<div>
-    <h1>scope sample after</h1>
-
-    <ul data-bind="foreach: controls">
-        <li data-bind="text: ko.toJSON($data)">
-        </li>
-    </ul>
-
-</div>;
 define(["durandal/system","jquery","knockout","./control"],function(e,t,n,o){"use strict";var r=function(){this.controls=n.observableArray([new o("value1"),new o("value2"),new o("value2")])};return r.prototype.deactivate=function(){this.controls.removeAll()},r});;
-<div>
-    <h1>scope sample before</h1>
-
-    <ul data-bind="foreach: controls">
-        <li data-bind="text: ko.toJSON($data)">
-        </li>
-    </ul>
-
-</div>;
 define(["durandal/system","jquery","knockout"],function(e,r,t){"use strict";function a(e){var r=this;r.param=e,r.param1=t.observable(e.text),r.param2=t.computed(function(){}),r.param3=t.computed(function(){return r.param2()+"something_else"}),r.param1.subscribe(function(e){e&&r.param3(e+"text")})}var n=t.observableArray([new a({id:1,text:"value1"}),new a({id:2,text:"value2"}),new a({id:2,text:"value3"})]),o=t.observableArray([]),u=function(){n.removeAll(),o.removeAll()},i={deactivate:u,controls:n,stringsArray:o};return i});;
 define(["durandal/system","knockout"],function(e,d){function i(e,d,i){d&&d.config&&d.config.type&&l("fiddle"===d.config.type),a(t+e.__moduleId__+".js")}var t="https://github.com/dFiddle/dFiddle-2.0/tree/gh-pages/app/",l=d.observable(!1),a=d.observable(""),o=d.observableArray([{id:"intro",text:"Basic Examples"},{id:"detailed",text:"Detailed Examples"},{id:"fiddle",text:"Fiddles"}]);return{isDFiddle:l,dFiddleRepoUrl:a,createSampleLink:i,categories:o}});;
-;
-;
-<form class="form-inline">
-    <fieldset>
-        <legend data-bind="html: displayName"></legend>
-        <label>Name</label>
-        <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'"/>
-        <button type="submit" class="btn" data-bind="click: sayHello, enable: canSayHello">Click Me</button>
-    </fieldset>
-</form>;
 define(["durandal/app","durandal/system","knockout"],function(e,o,n){var l=n.observable(),c=n.computed(function(){return!!l()});return{displayName:"What is your name?",name:l,sayHello:function(){e.showMessage("Hello "+l()+"!","Greetings")},canSayHello:c,activate:function(){o.log("Lifecycle : activate : hello")},binding:function(){return o.log("Lifecycle : binding : hello"),{cacheViews:!1}},bindingComplete:function(){o.log("Lifecycle : bindingComplete : hello")},attached:function(e,n){o.log("Lifecycle : attached : hello")},compositionComplete:function(e){o.log("Lifecycle : compositionComplete : hello")},detached:function(e){o.log("Lifecycle : detached : hello")}}});;
-;
-<form class="form-inline">
-    <fieldset>
-        <legend data-bind="html: displayName"></legend>
-        <label>Name</label>
-        <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'"/>
-        <button type="submit" class="btn" data-bind="click: sayHello, enable: canSayHello">Click Me</button>
-    </fieldset>
-</form>;
 define(["durandal/app","durandal/system","knockout"],function(e,o,n){var l=n.observable(),c=n.computed(function(){return!!l()});return{displayName:"What is your name?",name:l,sayHello:function(){e.showMessage("Hello "+l()+"!","Greetings")},canSayHello:c,activate:function(){o.log("Lifecycle : activate : hello")},binding:function(){return o.log("Lifecycle : binding : hello"),{cacheViews:!1}},bindingComplete:function(){o.log("Lifecycle : bindingComplete : hello")},attached:function(e,n){o.log("Lifecycle : attached : hello")},compositionComplete:function(e){o.log("Lifecycle : compositionComplete : hello")},detached:function(e){o.log("Lifecycle : detached : hello")}}});;
 define(["plugins/router","durandal/system","global","knockout"],function(e,t,l,o){var n=e.createChildRouter().makeRelative({moduleId:"hello",route:"hello"}).map([{route:["","default"],moduleId:"default/index",title:"Hello World",type:"intro",nav:!0},{route:"dFiddle",moduleId:"dFiddle/index",title:"Hello World",type:"fiddle",nav:!0}]).buildNavigationModel();return n.on("router:navigation:complete").then(l.createSampleLink),{global:l,router:n,getItemsByCategoryId:function(e){return o.utils.arrayFilter(n.navigationModel(),function(t){return t.type===e})},binding:function(){return t.log("Lifecycle : binding : hello/index"),{cacheViews:!1}}}});;
 /*!
@@ -443,691 +271,42 @@ define(["plugins/router","durandal/system","global","knockout"],function(e,t,l,o
 
 !function(){!function(e){var n=this||(0,eval)("this"),t=n.document,a=n.navigator,r=n.jQuery,i=n.JSON;!function(e){"function"==typeof define&&define.amd?define(["exports","require"],e):e("object"==typeof exports&&"object"==typeof module?module.exports||exports:n.ko={})}(function(o,u){function c(e,n){return(null===e||typeof e in v)&&e===n}function s(n,t){var a;return function(){a||(a=b.a.setTimeout(function(){a=e,n()},t))}}function f(e,n){var t;return function(){clearTimeout(t),t=b.a.setTimeout(e,n)}}function l(e,n){n&&n!==g?"beforeChange"===n?this.Lb(e):this.Ha(e,n):this.Mb(e)}function d(e,n){null!==n&&n.k&&n.k()}function p(e,n){var t=this.Ic,a=t[x];a.S||(this.lb&&this.Ma[n]?(t.Qb(n,e,this.Ma[n]),this.Ma[n]=null,--this.lb):a.r[n]||t.Qb(n,e,a.s?{ia:e}:t.wc(e)))}function h(e,n,t,a){b.d[e]={init:function(e,r,i,o,u){var c,s;return b.m(function(){var i=r(),o=b.a.c(i),o=!t!=!o,f=!s;(f||n||o!==c)&&(f&&b.va.Aa()&&(s=b.a.ua(b.f.childNodes(e),!0)),o?(f||b.f.da(e,b.a.ua(s)),b.eb(a?a(u,i):u,e)):b.f.xa(e),c=o)},null,{i:e}),{controlsDescendantBindings:!0}}},b.h.ta[e]=!1,b.f.Z[e]=!0}var b="undefined"!=typeof o?o:{};b.b=function(e,n){for(var t=e.split("."),a=b,r=0;r<t.length-1;r++)a=a[t[r]];a[t[t.length-1]]=n},b.G=function(e,n,t){e[n]=t},b.version="3.4.1",b.b("version",b.version),b.options={deferUpdates:!1,useOnlyNativeEvents:!1},b.a=function(){function o(e,n){for(var t in e)e.hasOwnProperty(t)&&n(t,e[t])}function u(e,n){if(n)for(var t in n)n.hasOwnProperty(t)&&(e[t]=n[t]);return e}function c(e,n){return e.__proto__=n,e}function s(e,n,t,a){var r=e[n].match(g)||[];b.a.q(t.match(g),function(e){b.a.pa(r,e,a)}),e[n]=r.join(" ")}var f={__proto__:[]}instanceof Array,l="function"==typeof Symbol,d={},p={};d[a&&/Firefox\/2/i.test(a.userAgent)?"KeyboardEvent":"UIEvents"]=["keyup","keydown","keypress"],d.MouseEvents="click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave".split(" "),o(d,function(e,n){if(n.length)for(var t=0,a=n.length;t<a;t++)p[n[t]]=e});var h={propertychange:!0},v=t&&function(){for(var n=3,a=t.createElement("div"),r=a.getElementsByTagName("i");a.innerHTML="<!--[if gt IE "+ ++n+"]><i></i><![endif]-->",r[0];);return 4<n?n:e}(),g=/\S+/g;return{ec:["authenticity_token",/^__RequestVerificationToken(_.*)?$/],q:function(e,n){for(var t=0,a=e.length;t<a;t++)n(e[t],t)},o:function(e,n){if("function"==typeof Array.prototype.indexOf)return Array.prototype.indexOf.call(e,n);for(var t=0,a=e.length;t<a;t++)if(e[t]===n)return t;return-1},Tb:function(e,n,t){for(var a=0,r=e.length;a<r;a++)if(n.call(t,e[a],a))return e[a];return null},La:function(e,n){var t=b.a.o(e,n);0<t?e.splice(t,1):0===t&&e.shift()},Ub:function(e){e=e||[];for(var n=[],t=0,a=e.length;t<a;t++)0>b.a.o(n,e[t])&&n.push(e[t]);return n},fb:function(e,n){e=e||[];for(var t=[],a=0,r=e.length;a<r;a++)t.push(n(e[a],a));return t},Ka:function(e,n){e=e||[];for(var t=[],a=0,r=e.length;a<r;a++)n(e[a],a)&&t.push(e[a]);return t},ra:function(e,n){if(n instanceof Array)e.push.apply(e,n);else for(var t=0,a=n.length;t<a;t++)e.push(n[t]);return e},pa:function(e,n,t){var a=b.a.o(b.a.zb(e),n);0>a?t&&e.push(n):t||e.splice(a,1)},ka:f,extend:u,Xa:c,Ya:f?c:u,D:o,Ca:function(e,n){if(!e)return e;var t,a={};for(t in e)e.hasOwnProperty(t)&&(a[t]=n(e[t],t,e));return a},ob:function(e){for(;e.firstChild;)b.removeNode(e.firstChild)},lc:function(e){e=b.a.V(e);for(var n=(e[0]&&e[0].ownerDocument||t).createElement("div"),a=0,r=e.length;a<r;a++)n.appendChild(b.$(e[a]));return n},ua:function(e,n){for(var t=0,a=e.length,r=[];t<a;t++){var i=e[t].cloneNode(!0);r.push(n?b.$(i):i)}return r},da:function(e,n){if(b.a.ob(e),n)for(var t=0,a=n.length;t<a;t++)e.appendChild(n[t])},sc:function(e,n){var t=e.nodeType?[e]:e;if(0<t.length){for(var a=t[0],r=a.parentNode,i=0,o=n.length;i<o;i++)r.insertBefore(n[i],a);for(i=0,o=t.length;i<o;i++)b.removeNode(t[i])}},za:function(e,n){if(e.length){for(n=8===n.nodeType&&n.parentNode||n;e.length&&e[0].parentNode!==n;)e.splice(0,1);for(;1<e.length&&e[e.length-1].parentNode!==n;)e.length--;if(1<e.length){var t=e[0],a=e[e.length-1];for(e.length=0;t!==a;)e.push(t),t=t.nextSibling;e.push(a)}}return e},uc:function(e,n){7>v?e.setAttribute("selected",n):e.selected=n},$a:function(n){return null===n||n===e?"":n.trim?n.trim():n.toString().replace(/^[\s\xa0]+|[\s\xa0]+$/g,"")},od:function(e,n){return e=e||"",!(n.length>e.length)&&e.substring(0,n.length)===n},Nc:function(e,n){if(e===n)return!0;if(11===e.nodeType)return!1;if(n.contains)return n.contains(3===e.nodeType?e.parentNode:e);if(n.compareDocumentPosition)return 16==(16&n.compareDocumentPosition(e));for(;e&&e!=n;)e=e.parentNode;return!!e},nb:function(e){return b.a.Nc(e,e.ownerDocument.documentElement)},Rb:function(e){return!!b.a.Tb(e,b.a.nb)},A:function(e){return e&&e.tagName&&e.tagName.toLowerCase()},Xb:function(e){return b.onError?function(){try{return e.apply(this,arguments)}catch(e){throw b.onError&&b.onError(e),e}}:e},setTimeout:function(e,n){return setTimeout(b.a.Xb(e),n)},bc:function(e){setTimeout(function(){throw b.onError&&b.onError(e),e},0)},p:function(e,n,t){var a=b.a.Xb(t);if(t=v&&h[n],b.options.useOnlyNativeEvents||t||!r)if(t||"function"!=typeof e.addEventListener){if("undefined"==typeof e.attachEvent)throw Error("Browser doesn't support addEventListener or attachEvent");var i=function(n){a.call(e,n)},o="on"+n;e.attachEvent(o,i),b.a.F.oa(e,function(){e.detachEvent(o,i)})}else e.addEventListener(n,a,!1);else r(e).bind(n,a)},Da:function(e,a){if(!e||!e.nodeType)throw Error("element must be a DOM node when calling triggerEvent");var i;if("input"===b.a.A(e)&&e.type&&"click"==a.toLowerCase()?(i=e.type,i="checkbox"==i||"radio"==i):i=!1,b.options.useOnlyNativeEvents||!r||i)if("function"==typeof t.createEvent){if("function"!=typeof e.dispatchEvent)throw Error("The supplied element doesn't support dispatchEvent");i=t.createEvent(p[a]||"HTMLEvents"),i.initEvent(a,!0,!0,n,0,0,0,0,0,!1,!1,!1,!1,0,e),e.dispatchEvent(i)}else if(i&&e.click)e.click();else{if("undefined"==typeof e.fireEvent)throw Error("Browser doesn't support triggering events");e.fireEvent("on"+a)}else r(e).trigger(a)},c:function(e){return b.H(e)?e():e},zb:function(e){return b.H(e)?e.t():e},bb:function(e,n,t){var a;n&&("object"==typeof e.classList?(a=e.classList[t?"add":"remove"],b.a.q(n.match(g),function(n){a.call(e.classList,n)})):"string"==typeof e.className.baseVal?s(e.className,"baseVal",n,t):s(e,"className",n,t))},Za:function(n,t){var a=b.a.c(t);null!==a&&a!==e||(a="");var r=b.f.firstChild(n);!r||3!=r.nodeType||b.f.nextSibling(r)?b.f.da(n,[n.ownerDocument.createTextNode(a)]):r.data=a,b.a.Sc(n)},tc:function(e,n){if(e.name=n,7>=v)try{e.mergeAttributes(t.createElement("<input name='"+e.name+"'/>"),!1)}catch(e){}},Sc:function(e){9<=v&&(e=1==e.nodeType?e:e.parentNode,e.style&&(e.style.zoom=e.style.zoom))},Oc:function(e){if(v){var n=e.style.width;e.style.width=0,e.style.width=n}},jd:function(e,n){e=b.a.c(e),n=b.a.c(n);for(var t=[],a=e;a<=n;a++)t.push(a);return t},V:function(e){for(var n=[],t=0,a=e.length;t<a;t++)n.push(e[t]);return n},$b:function(e){return l?Symbol(e):e},sd:6===v,ud:7===v,C:v,gc:function(e,n){for(var t=b.a.V(e.getElementsByTagName("input")).concat(b.a.V(e.getElementsByTagName("textarea"))),a="string"==typeof n?function(e){return e.name===n}:function(e){return n.test(e.name)},r=[],i=t.length-1;0<=i;i--)a(t[i])&&r.push(t[i]);return r},fd:function(e){return"string"==typeof e&&(e=b.a.$a(e))?i&&i.parse?i.parse(e):new Function("return "+e)():null},Eb:function(e,n,t){if(!i||!i.stringify)throw Error("Cannot find JSON.stringify(). Some browsers (e.g., IE < 8) don't support it natively, but you can overcome this by adding a script reference to json2.js, downloadable from http://www.json.org/json2.js");return i.stringify(b.a.c(e),n,t)},gd:function(e,n,a){a=a||{};var r=a.params||{},i=a.includeFields||this.ec,u=e;if("object"==typeof e&&"form"===b.a.A(e))for(var u=e.action,c=i.length-1;0<=c;c--)for(var s=b.a.gc(e,i[c]),f=s.length-1;0<=f;f--)r[s[f].name]=s[f].value;n=b.a.c(n);var l=t.createElement("form");l.style.display="none",l.action=u,l.method="post";for(var d in n)e=t.createElement("input"),e.type="hidden",e.name=d,e.value=b.a.Eb(b.a.c(n[d])),l.appendChild(e);o(r,function(e,n){var a=t.createElement("input");a.type="hidden",a.name=e,a.value=n,l.appendChild(a)}),t.body.appendChild(l),a.submitter?a.submitter(l):l.submit(),setTimeout(function(){l.parentNode.removeChild(l)},0)}}}(),b.b("utils",b.a),b.b("utils.arrayForEach",b.a.q),b.b("utils.arrayFirst",b.a.Tb),b.b("utils.arrayFilter",b.a.Ka),b.b("utils.arrayGetDistinctValues",b.a.Ub),b.b("utils.arrayIndexOf",b.a.o),b.b("utils.arrayMap",b.a.fb),b.b("utils.arrayPushAll",b.a.ra),b.b("utils.arrayRemoveItem",b.a.La),b.b("utils.extend",b.a.extend),b.b("utils.fieldsIncludedWithJsonPost",b.a.ec),b.b("utils.getFormFields",b.a.gc),b.b("utils.peekObservable",b.a.zb),b.b("utils.postJson",b.a.gd),b.b("utils.parseJson",b.a.fd),b.b("utils.registerEventHandler",b.a.p),b.b("utils.stringifyJson",b.a.Eb),b.b("utils.range",b.a.jd),b.b("utils.toggleDomNodeCssClass",b.a.bb),b.b("utils.triggerEvent",b.a.Da),b.b("utils.unwrapObservable",b.a.c),b.b("utils.objectForEach",b.a.D),b.b("utils.addOrRemoveItem",b.a.pa),b.b("utils.setTextContent",b.a.Za),b.b("unwrap",b.a.c),Function.prototype.bind||(Function.prototype.bind=function(e){var n=this;if(1===arguments.length)return function(){return n.apply(e,arguments)};var t=Array.prototype.slice.call(arguments,1);return function(){var a=t.slice(0);return a.push.apply(a,arguments),n.apply(e,a)}}),b.a.e=new function(){function n(n,i){var o=n[a];if(!o||"null"===o||!r[o]){if(!i)return e;o=n[a]="ko"+t++,r[o]={}}return r[o]}var t=0,a="__ko__"+(new Date).getTime(),r={};return{get:function(t,a){var r=n(t,!1);return r===e?e:r[a]},set:function(t,a,r){r===e&&n(t,!1)===e||(n(t,!0)[a]=r)},clear:function(e){var n=e[a];return!!n&&(delete r[n],e[a]=null,!0)},I:function(){return t++ +a}}},b.b("utils.domData",b.a.e),b.b("utils.domData.clear",b.a.e.clear),b.a.F=new function(){function n(n,t){var r=b.a.e.get(n,a);return r===e&&t&&(r=[],b.a.e.set(n,a,r)),r}function t(e){var a=n(e,!1);if(a)for(var a=a.slice(0),r=0;r<a.length;r++)a[r](e);if(b.a.e.clear(e),b.a.F.cleanExternalData(e),o[e.nodeType])for(a=e.firstChild;e=a;)a=e.nextSibling,8===e.nodeType&&t(e)}var a=b.a.e.I(),i={1:!0,8:!0,9:!0},o={1:!0,9:!0};return{oa:function(e,t){if("function"!=typeof t)throw Error("Callback must be a function");n(e,!0).push(t)},rc:function(t,r){var i=n(t,!1);i&&(b.a.La(i,r),0==i.length&&b.a.e.set(t,a,e))},$:function(e){if(i[e.nodeType]&&(t(e),o[e.nodeType])){var n=[];b.a.ra(n,e.getElementsByTagName("*"));for(var a=0,r=n.length;a<r;a++)t(n[a])}return e},removeNode:function(e){b.$(e),e.parentNode&&e.parentNode.removeChild(e)},cleanExternalData:function(e){r&&"function"==typeof r.cleanData&&r.cleanData([e])}}},b.$=b.a.F.$,b.removeNode=b.a.F.removeNode,b.b("cleanNode",b.$),b.b("removeNode",b.removeNode),b.b("utils.domNodeDisposal",b.a.F),b.b("utils.domNodeDisposal.addDisposeCallback",b.a.F.oa),b.b("utils.domNodeDisposal.removeDisposeCallback",b.a.F.rc),function(){var a=[0,"",""],i=[1,"<table>","</table>"],o=[3,"<table><tbody><tr>","</tr></tbody></table>"],u=[1,"<select multiple='multiple'>","</select>"],c={thead:i,tbody:i,tfoot:i,tr:[2,"<table><tbody>","</tbody></table>"],td:o,th:o,option:u,optgroup:u},s=8>=b.a.C;b.a.ma=function(e,i){var o;if(r){if(r.parseHTML)o=r.parseHTML(e,i)||[];else if((o=r.clean([e],i))&&o[0]){for(var u=o[0];u.parentNode&&11!==u.parentNode.nodeType;)u=u.parentNode;u.parentNode&&u.parentNode.removeChild(u)}}else{(o=i)||(o=t);var f,u=o.parentWindow||o.defaultView||n,l=b.a.$a(e).toLowerCase(),d=o.createElement("div");for(f=(l=l.match(/^<([a-z]+)[ >]/))&&c[l[1]]||a,l=f[0],f="ignored<div>"+f[1]+e+f[2]+"</div>","function"==typeof u.innerShiv?d.appendChild(u.innerShiv(f)):(s&&o.appendChild(d),d.innerHTML=f,s&&d.parentNode.removeChild(d));l--;)d=d.lastChild;o=b.a.V(d.lastChild.childNodes)}return o},b.a.Cb=function(n,t){if(b.a.ob(n),t=b.a.c(t),null!==t&&t!==e)if("string"!=typeof t&&(t=t.toString()),r)r(n).html(t);else for(var a=b.a.ma(t,n.ownerDocument),i=0;i<a.length;i++)n.appendChild(a[i])}}(),b.b("utils.parseHtmlFragment",b.a.ma),b.b("utils.setHtml",b.a.Cb),b.M=function(){function n(e,t){if(e)if(8==e.nodeType){var a=b.M.nc(e.nodeValue);null!=a&&t.push({Mc:e,dd:a})}else if(1==e.nodeType)for(var a=0,r=e.childNodes,i=r.length;a<i;a++)n(r[a],t)}var t={};return{wb:function(e){if("function"!=typeof e)throw Error("You can only pass a function to ko.memoization.memoize()");var n=(4294967296*(1+Math.random())|0).toString(16).substring(1)+(4294967296*(1+Math.random())|0).toString(16).substring(1);return t[n]=e,"<!--[ko_memo:"+n+"]-->"},zc:function(n,a){var r=t[n];if(r===e)throw Error("Couldn't find any memo with ID "+n+". Perhaps it's already been unmemoized.");try{return r.apply(null,a||[]),!0}finally{delete t[n]}},Ac:function(e,t){var a=[];n(e,a);for(var r=0,i=a.length;r<i;r++){var o=a[r].Mc,u=[o];t&&b.a.ra(u,t),b.M.zc(a[r].dd,u),o.nodeValue="",o.parentNode&&o.parentNode.removeChild(o)}},nc:function(e){return(e=e.match(/^\[ko_memo\:(.*?)\]$/))?e[1]:null}}}(),b.b("memoization",b.M),b.b("memoization.memoize",b.M.wb),b.b("memoization.unmemoize",b.M.zc),b.b("memoization.parseMemoText",b.M.nc),b.b("memoization.unmemoizeDomNodeAndDescendants",b.M.Ac),b.Y=function(){function e(){if(i)for(var e,n=i,t=0;u<i;)if(e=r[u++]){if(u>n){if(5e3<=++t){u=i,b.a.bc(Error("'Too much recursion' after processing "+t+" task groups."));break}n=i}try{e()}catch(e){b.a.bc(e)}}}function a(){e(),u=i=r.length=0}var r=[],i=0,o=1,u=0;return{scheduler:n.MutationObserver?function(e){var n=t.createElement("div");return new MutationObserver(e).observe(n,{attributes:!0}),function(){n.classList.toggle("foo")}}(a):t&&"onreadystatechange"in t.createElement("script")?function(e){var n=t.createElement("script");n.onreadystatechange=function(){n.onreadystatechange=null,t.documentElement.removeChild(n),n=null,e()},t.documentElement.appendChild(n)}:function(e){setTimeout(e,0)},Wa:function(e){return i||b.Y.scheduler(a),r[i++]=e,o++},cancel:function(e){e-=o-i,e>=u&&e<i&&(r[e]=null)},resetForTesting:function(){var e=i-u;return u=i=r.length=0,e},nd:e}}(),b.b("tasks",b.Y),b.b("tasks.schedule",b.Y.Wa),b.b("tasks.runEarly",b.Y.nd),b.ya={throttle:function(e,n){e.throttleEvaluation=n;var t=null;return b.B({read:e,write:function(a){clearTimeout(t),t=b.a.setTimeout(function(){e(a)},n)}})},rateLimit:function(e,n){var t,a,r;"number"==typeof n?t=n:(t=n.timeout,a=n.method),e.cb=!1,r="notifyWhenChangesStop"==a?f:s,e.Ta(function(e){return r(e,t)})},deferred:function(n,t){if(!0!==t)throw Error("The 'deferred' extender only accepts the value 'true', because it is not supported to turn deferral off once enabled.");n.cb||(n.cb=!0,n.Ta(function(t){var a;return function(){b.Y.cancel(a),a=b.Y.Wa(t),n.notifySubscribers(e,"dirty")}}))},notify:function(e,n){e.equalityComparer="always"==n?null:c}};var v={undefined:1,boolean:1,number:1,string:1};b.b("extenders",b.ya),b.xc=function(e,n,t){this.ia=e,this.gb=n,this.Lc=t,this.S=!1,b.G(this,"dispose",this.k)},b.xc.prototype.k=function(){this.S=!0,this.Lc()},b.J=function(){b.a.Ya(this,m),m.rb(this)};var g="change",m={rb:function(e){e.K={},e.Ob=1},X:function(e,n,t){var a=this;t=t||g;var r=new b.xc(a,n?e.bind(n):e,function(){b.a.La(a.K[t],r),a.Ia&&a.Ia(t)});return a.sa&&a.sa(t),a.K[t]||(a.K[t]=[]),a.K[t].push(r),r},notifySubscribers:function(e,n){if(n=n||g,n===g&&this.Ib(),this.Pa(n))try{b.l.Vb();for(var t,a=this.K[n].slice(0),r=0;t=a[r];++r)t.S||t.gb(e)}finally{b.l.end()}},Na:function(){return this.Ob},Vc:function(e){return this.Na()!==e},Ib:function(){++this.Ob},Ta:function(e){var n,t,a,r=this,i=b.H(r);r.Ha||(r.Ha=r.notifySubscribers,r.notifySubscribers=l);var o=e(function(){r.Nb=!1,i&&a===r&&(a=r()),n=!1,r.tb(t,a)&&r.Ha(t=a)});r.Mb=function(e){r.Nb=n=!0,a=e,o()},r.Lb=function(e){n||(t=e,r.Ha(e,"beforeChange"))}},Pa:function(e){return this.K[e]&&this.K[e].length},Tc:function(e){if(e)return this.K[e]&&this.K[e].length||0;var n=0;return b.a.D(this.K,function(e,t){"dirty"!==e&&(n+=t.length)}),n},tb:function(e,n){return!this.equalityComparer||!this.equalityComparer(e,n)},extend:function(e){var n=this;return e&&b.a.D(e,function(e,t){var a=b.ya[e];"function"==typeof a&&(n=a(n,t)||n)}),n}};b.G(m,"subscribe",m.X),b.G(m,"extend",m.extend),b.G(m,"getSubscriptionsCount",m.Tc),b.a.ka&&b.a.Xa(m,Function.prototype),b.J.fn=m,b.jc=function(e){return null!=e&&"function"==typeof e.X&&"function"==typeof e.notifySubscribers},b.b("subscribable",b.J),b.b("isSubscribable",b.jc),b.va=b.l=function(){function e(e){a.push(t),t=e}function n(){t=a.pop()}var t,a=[],r=0;return{Vb:e,end:n,qc:function(e){if(t){if(!b.jc(e))throw Error("Only subscribable things can act as dependencies");t.gb.call(t.Hc,e,e.Dc||(e.Dc=++r))}},w:function(t,a,r){try{return e(),t.apply(a,r||[])}finally{n()}},Aa:function(){if(t)return t.m.Aa()},Sa:function(){if(t)return t.Sa}}}(),b.b("computedContext",b.va),b.b("computedContext.getDependenciesCount",b.va.Aa),b.b("computedContext.isInitial",b.va.Sa),b.b("ignoreDependencies",b.rd=b.l.w);var y=b.a.$b("_latestValue");b.N=function(e){function n(){return 0<arguments.length?(n.tb(n[y],arguments[0])&&(n.ga(),n[y]=arguments[0],n.fa()),this):(b.l.qc(n),n[y])}return n[y]=e,b.a.ka||b.a.extend(n,b.J.fn),b.J.fn.rb(n),b.a.Ya(n,w),b.options.deferUpdates&&b.ya.deferred(n,!0),n};var w={equalityComparer:c,t:function(){return this[y]},fa:function(){this.notifySubscribers(this[y])},ga:function(){this.notifySubscribers(this[y],"beforeChange")}};b.a.ka&&b.a.Xa(w,b.J.fn);var k=b.N.hd="__ko_proto__";w[k]=b.N,b.Oa=function(n,t){return null!==n&&n!==e&&n[k]!==e&&(n[k]===t||b.Oa(n[k],t))},b.H=function(e){return b.Oa(e,b.N)},b.Ba=function(e){return!!("function"==typeof e&&e[k]===b.N||"function"==typeof e&&e[k]===b.B&&e.Wc)},b.b("observable",b.N),b.b("isObservable",b.H),b.b("isWriteableObservable",b.Ba),b.b("isWritableObservable",b.Ba),b.b("observable.fn",w),b.G(w,"peek",w.t),b.G(w,"valueHasMutated",w.fa),b.G(w,"valueWillMutate",w.ga),b.la=function(e){if(e=e||[],"object"!=typeof e||!("length"in e))throw Error("The argument passed when initializing an observable array must be an array, or null, or undefined.");return e=b.N(e),b.a.Ya(e,b.la.fn),e.extend({trackArrayChanges:!0})},b.la.fn={remove:function(e){for(var n=this.t(),t=[],a="function"!=typeof e||b.H(e)?function(n){return n===e}:e,r=0;r<n.length;r++){var i=n[r];a(i)&&(0===t.length&&this.ga(),t.push(i),n.splice(r,1),r--)}return t.length&&this.fa(),t},removeAll:function(n){if(n===e){var t=this.t(),a=t.slice(0);return this.ga(),t.splice(0,t.length),this.fa(),a}return n?this.remove(function(e){return 0<=b.a.o(n,e)}):[]},destroy:function(e){var n=this.t(),t="function"!=typeof e||b.H(e)?function(n){return n===e}:e;this.ga();for(var a=n.length-1;0<=a;a--)t(n[a])&&(n[a]._destroy=!0);this.fa()},destroyAll:function(n){return n===e?this.destroy(function(){return!0}):n?this.destroy(function(e){return 0<=b.a.o(n,e)}):[]},indexOf:function(e){var n=this();return b.a.o(n,e)},replace:function(e,n){var t=this.indexOf(e);0<=t&&(this.ga(),this.t()[t]=n,this.fa())}},b.a.ka&&b.a.Xa(b.la.fn,b.N.fn),b.a.q("pop push reverse shift sort splice unshift".split(" "),function(e){b.la.fn[e]=function(){var n=this.t();this.ga(),this.Wb(n,e,arguments);var t=n[e].apply(n,arguments);return this.fa(),t===n?this:t}}),b.a.q(["slice"],function(e){b.la.fn[e]=function(){var n=this();return n[e].apply(n,arguments)}}),b.b("observableArray",b.la),b.ya.trackArrayChanges=function(n,t){function a(){if(!o){o=!0,i=n.notifySubscribers,n.notifySubscribers=function(e,n){return n&&n!==g||++c,i.apply(this,arguments)};var e=[].concat(n.t()||[]);u=null,r=n.X(function(t){if(t=[].concat(t||[]),n.Pa("arrayChange")){var a;(!u||1<c)&&(u=b.a.ib(e,t,n.hb)),a=u}e=t,u=null,c=0,a&&a.length&&n.notifySubscribers(a,"arrayChange")})}}if(n.hb={},t&&"object"==typeof t&&b.a.extend(n.hb,t),n.hb.sparse=!0,!n.Wb){var r,i,o=!1,u=null,c=0,s=n.sa,f=n.Ia;n.sa=function(e){s&&s.call(n,e),"arrayChange"===e&&a()},n.Ia=function(t){f&&f.call(n,t),"arrayChange"!==t||n.Pa("arrayChange")||(i&&(n.notifySubscribers=i,i=e),r.k(),o=!1)},n.Wb=function(e,n,t){function a(e,n,t){return r[r.length]={status:e,value:n,index:t}}if(o&&!c){var r=[],i=e.length,s=t.length,f=0;switch(n){case"push":f=i;case"unshift":for(n=0;n<s;n++)a("added",t[n],f+n);break;case"pop":f=i-1;case"shift":i&&a("deleted",e[f],f);break;case"splice":n=Math.min(Math.max(0,0>t[0]?i+t[0]:t[0]),i);for(var i=1===s?i:Math.min(n+(t[1]||0),i),s=n+s-2,f=Math.max(i,s),l=[],d=[],p=2;n<f;++n,++p)n<i&&d.push(a("deleted",e[n],n)),n<s&&l.push(a("added",t[p],n));b.a.fc(d,l);break;default:return}u=r}}}};var x=b.a.$b("_state");b.m=b.B=function(n,t,a){function r(){if(0<arguments.length){if("function"!=typeof i)throw Error("Cannot write a value to a ko.computed unless you specify a 'write' option. If you wish to read the current value, don't pass any parameters.");return i.apply(o.pb,arguments),this}return b.l.qc(r),(o.T||o.s&&r.Qa())&&r.aa(),o.U}if("object"==typeof n?a=n:(a=a||{},n&&(a.read=n)),"function"!=typeof a.read)throw Error("Pass a function that returns the value of the ko.computed");var i=a.write,o={U:e,T:!0,Ra:!1,Fb:!1,S:!1,Va:!1,s:!1,kd:a.read,pb:t||a.owner,i:a.disposeWhenNodeIsRemoved||a.i||null,wa:a.disposeWhen||a.wa,mb:null,r:{},L:0,dc:null};return r[x]=o,r.Wc="function"==typeof i,b.a.ka||b.a.extend(r,b.J.fn),b.J.fn.rb(r),b.a.Ya(r,E),a.pure?(o.Va=!0,o.s=!0,b.a.extend(r,T)):a.deferEvaluation&&b.a.extend(r,C),b.options.deferUpdates&&b.ya.deferred(r,!0),o.i&&(o.Fb=!0,o.i.nodeType||(o.i=null)),o.s||a.deferEvaluation||r.aa(),o.i&&r.ba()&&b.a.F.oa(o.i,o.mb=function(){r.k()}),r};var E={equalityComparer:c,Aa:function(){return this[x].L},Qb:function(e,n,t){if(this[x].Va&&n===this)throw Error("A 'pure' computed must not be called recursively");this[x].r[e]=t,t.Ga=this[x].L++,t.na=n.Na()},Qa:function(){var e,n,t=this[x].r;for(e in t)if(t.hasOwnProperty(e)&&(n=t[e],n.ia.Vc(n.na)))return!0},cd:function(){this.Fa&&!this[x].Ra&&this.Fa()},ba:function(){return this[x].T||0<this[x].L},md:function(){this.Nb||this.cc()},wc:function(e){if(e.cb&&!this[x].i){var n=e.X(this.cd,this,"dirty"),t=e.X(this.md,this);return{ia:e,k:function(){n.k(),t.k()}}}return e.X(this.cc,this)},cc:function(){var e=this,n=e.throttleEvaluation;n&&0<=n?(clearTimeout(this[x].dc),this[x].dc=b.a.setTimeout(function(){e.aa(!0)},n)):e.Fa?e.Fa():e.aa(!0)},aa:function(e){var n=this[x],t=n.wa,a=!1;if(!n.Ra&&!n.S){if(n.i&&!b.a.nb(n.i)||t&&t()){if(!n.Fb)return void this.k()}else n.Fb=!1;n.Ra=!0;try{a=this.Rc(e)}finally{n.Ra=!1}return n.L||this.k(),a}},Rc:function(n){var t=this[x],a=!1,r=t.Va?e:!t.L,i={Ic:this,Ma:t.r,lb:t.L};return b.l.Vb({Hc:i,gb:p,m:this,Sa:r}),t.r={},t.L=0,i=this.Qc(t,i),this.tb(t.U,i)&&(t.s||this.notifySubscribers(t.U,"beforeChange"),t.U=i,t.s?this.Ib():n&&this.notifySubscribers(t.U),a=!0),r&&this.notifySubscribers(t.U,"awake"),a},Qc:function(e,n){try{var t=e.kd;return e.pb?t.call(e.pb):t()}finally{b.l.end(),n.lb&&!e.s&&b.a.D(n.Ma,d),e.T=!1}},t:function(){var e=this[x];return(e.T&&!e.L||e.s&&this.Qa())&&this.aa(),e.U},Ta:function(e){b.J.fn.Ta.call(this,e),this.Fa=function(){this.Lb(this[x].U),this[x].T=!0,this.Mb(this)}},k:function(){var e=this[x];!e.s&&e.r&&b.a.D(e.r,function(e,n){n.k&&n.k()}),e.i&&e.mb&&b.a.F.rc(e.i,e.mb),e.r=null,e.L=0,e.S=!0,e.T=!1,e.s=!1,e.i=null}},T={sa:function(e){var n=this,t=n[x];if(!t.S&&t.s&&"change"==e){if(t.s=!1,t.T||n.Qa())t.r=null,t.L=0,t.T=!0,n.aa()&&n.Ib();else{var a=[];b.a.D(t.r,function(e,n){a[n.Ga]=e}),b.a.q(a,function(e,a){var r=t.r[e],i=n.wc(r.ia);i.Ga=a,i.na=r.na,t.r[e]=i})}t.S||n.notifySubscribers(t.U,"awake")}},Ia:function(n){var t=this[x];t.S||"change"!=n||this.Pa("change")||(b.a.D(t.r,function(e,n){n.k&&(t.r[e]={ia:n.ia,Ga:n.Ga,na:n.na},n.k())}),t.s=!0,this.notifySubscribers(e,"asleep"))},Na:function(){var e=this[x];return e.s&&(e.T||this.Qa())&&this.aa(),b.J.fn.Na.call(this)}},C={sa:function(e){"change"!=e&&"beforeChange"!=e||this.t()}};b.a.ka&&b.a.Xa(E,b.J.fn);var N=b.N.hd;b.m[N]=b.N,E[N]=b.m,b.Yc=function(e){return b.Oa(e,b.m)},b.Zc=function(e){return b.Oa(e,b.m)&&e[x]&&e[x].Va},b.b("computed",b.m),b.b("dependentObservable",b.m),b.b("isComputed",b.Yc),b.b("isPureComputed",b.Zc),b.b("computed.fn",E),b.G(E,"peek",E.t),b.G(E,"dispose",E.k),b.G(E,"isActive",E.ba),b.G(E,"getDependenciesCount",E.Aa),b.pc=function(e,n){return"function"==typeof e?b.m(e,n,{pure:!0}):(e=b.a.extend({},e),e.pure=!0,b.m(e,n))},b.b("pureComputed",b.pc),function(){function n(r,i,o){if(o=o||new a,r=i(r),"object"!=typeof r||null===r||r===e||r instanceof RegExp||r instanceof Date||r instanceof String||r instanceof Number||r instanceof Boolean)return r;var u=r instanceof Array?[]:{};return o.save(r,u),t(r,function(t){var a=i(r[t]);switch(typeof a){case"boolean":case"number":case"string":case"function":u[t]=a;break;case"object":case"undefined":var c=o.get(a);u[t]=c!==e?c:n(a,i,o)}}),u}function t(e,n){if(e instanceof Array){for(var t=0;t<e.length;t++)n(t);"function"==typeof e.toJSON&&n("toJSON")}else for(t in e)n(t)}function a(){this.keys=[],this.Jb=[]}b.yc=function(e){if(0==arguments.length)throw Error("When calling ko.toJS, pass the object you want to convert.");return n(e,function(e){for(var n=0;b.H(e)&&10>n;n++)e=e();return e})},b.toJSON=function(e,n,t){return e=b.yc(e),b.a.Eb(e,n,t)},a.prototype={save:function(e,n){var t=b.a.o(this.keys,e);0<=t?this.Jb[t]=n:(this.keys.push(e),this.Jb.push(n))},get:function(n){return n=b.a.o(this.keys,n),0<=n?this.Jb[n]:e}}}(),b.b("toJS",b.yc),b.b("toJSON",b.toJSON),function(){b.j={u:function(n){switch(b.a.A(n)){case"option":return!0===n.__ko__hasDomDataOptionValue__?b.a.e.get(n,b.d.options.xb):7>=b.a.C?n.getAttributeNode("value")&&n.getAttributeNode("value").specified?n.value:n.text:n.value;case"select":return 0<=n.selectedIndex?b.j.u(n.options[n.selectedIndex]):e;default:return n.value}},ha:function(n,t,a){switch(b.a.A(n)){case"option":switch(typeof t){case"string":b.a.e.set(n,b.d.options.xb,e),"__ko__hasDomDataOptionValue__"in n&&delete n.__ko__hasDomDataOptionValue__,n.value=t;break;default:b.a.e.set(n,b.d.options.xb,t),n.__ko__hasDomDataOptionValue__=!0,n.value="number"==typeof t?t:""}break;case"select":""!==t&&null!==t||(t=e);for(var r,i=-1,o=0,u=n.options.length;o<u;++o)if(r=b.j.u(n.options[o]),r==t||""==r&&t===e){i=o;break}(a||0<=i||t===e&&1<n.size)&&(n.selectedIndex=i);break;default:null!==t&&t!==e||(t=""),n.value=t}}}}(),b.b("selectExtensions",b.j),b.b("selectExtensions.readValue",b.j.u),b.b("selectExtensions.writeValue",b.j.ha),b.h=function(){function e(e){e=b.a.$a(e),123===e.charCodeAt(0)&&(e=e.slice(1,-1));var n,t=[],o=e.match(a),u=[],c=0;if(o){o.push(",");for(var s,f=0;s=o[f];++f){var l=s.charCodeAt(0);if(44===l){if(0>=c){t.push(n&&u.length?{key:n,value:u.join("")}:{unknown:n||u.join("")}),n=c=0,u=[];continue}}else if(58===l){if(!c&&!n&&1===u.length){n=u.pop();continue}}else 47===l&&f&&1<s.length?(l=o[f-1].match(r))&&!i[l[0]]&&(e=e.substr(e.indexOf(s)+1),o=e.match(a),o.push(","),f=-1,s="/"):40===l||123===l||91===l?++c:41===l||125===l||93===l?--c:n||u.length||34!==l&&39!==l||(s=s.slice(1,-1));u.push(s)}}return t}var n=["true","false","null","undefined"],t=/^(?:[$_a-z][$\w]*|(.+)(\.\s*[$_a-z][$\w]*|\[.+\]))$/i,a=RegExp("\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*'|/(?:[^/\\\\]|\\\\.)*/w*|[^\\s:,/][^,\"'{}()/:[\\]]*[^\\s,\"'{}()/:[\\]]|[^\\s]","g"),r=/[\])"'A-Za-z0-9_$]+$/,i={in:1,return:1,typeof:1},o={};return{ta:[],ea:o,yb:e,Ua:function(a,r){function i(e,a){var r;if(!f){var l=b.getBindingHandler(e);if(l&&l.preprocess&&!(a=l.preprocess(a,e,i)))return;(l=o[e])&&(r=a,0<=b.a.o(n,r)?r=!1:(l=r.match(t),r=null!==l&&(l[1]?"Object("+l[1]+")"+l[2]:r)),l=r),l&&c.push("'"+e+"':function(_z){"+r+"=_z}")}s&&(a="function(){return "+a+" }"),u.push("'"+e+"':"+a)}r=r||{};var u=[],c=[],s=r.valueAccessors,f=r.bindingParams,l="string"==typeof a?e(a):a;return b.a.q(l,function(e){i(e.key||e.unknown,e.value)}),c.length&&i("_ko_property_writers","{"+c.join(",")+" }"),u.join(",")},bd:function(e,n){for(var t=0;t<e.length;t++)if(e[t].key==n)return!0;return!1},Ea:function(e,n,t,a,r){e&&b.H(e)?!b.Ba(e)||r&&e.t()===a||e(a):(e=n.get("_ko_property_writers"))&&e[t]&&e[t](a)}}}(),b.b("expressionRewriting",b.h),b.b("expressionRewriting.bindingRewriteValidators",b.h.ta),b.b("expressionRewriting.parseObjectLiteral",b.h.yb),b.b("expressionRewriting.preProcessBindings",b.h.Ua),b.b("expressionRewriting._twoWayBindings",b.h.ea),b.b("jsonExpressionRewriting",b.h),b.b("jsonExpressionRewriting.insertPropertyAccessorsIntoJson",b.h.Ua),function(){function e(e){return 8==e.nodeType&&o.test(i?e.text:e.nodeValue)}function n(e){return 8==e.nodeType&&u.test(i?e.text:e.nodeValue)}function a(t,a){for(var r=t,i=1,o=[];r=r.nextSibling;){if(n(r)&&(i--,0===i))return o;o.push(r),e(r)&&i++}if(!a)throw Error("Cannot find closing comment tag to match: "+t.nodeValue);return null}function r(e,n){var t=a(e,n);return t?0<t.length?t[t.length-1].nextSibling:e.nextSibling:null}var i=t&&"<!--test-->"===t.createComment("test").text,o=i?/^\x3c!--\s*ko(?:\s+([\s\S]+))?\s*--\x3e$/:/^\s*ko(?:\s+([\s\S]+))?\s*$/,u=i?/^\x3c!--\s*\/ko\s*--\x3e$/:/^\s*\/ko\s*$/,c={ul:!0,ol:!0};b.f={Z:{},childNodes:function(n){return e(n)?a(n):n.childNodes},xa:function(n){if(e(n)){n=b.f.childNodes(n);for(var t=0,a=n.length;t<a;t++)b.removeNode(n[t])}else b.a.ob(n)},da:function(n,t){if(e(n)){b.f.xa(n);for(var a=n.nextSibling,r=0,i=t.length;r<i;r++)a.parentNode.insertBefore(t[r],a)}else b.a.da(n,t)},oc:function(n,t){e(n)?n.parentNode.insertBefore(t,n.nextSibling):n.firstChild?n.insertBefore(t,n.firstChild):n.appendChild(t)},ic:function(n,t,a){a?e(n)?n.parentNode.insertBefore(t,a.nextSibling):a.nextSibling?n.insertBefore(t,a.nextSibling):n.appendChild(t):b.f.oc(n,t)},firstChild:function(t){return e(t)?!t.nextSibling||n(t.nextSibling)?null:t.nextSibling:t.firstChild},nextSibling:function(t){return e(t)&&(t=r(t)),t.nextSibling&&n(t.nextSibling)?null:t.nextSibling},Uc:e,qd:function(e){return(e=(i?e.text:e.nodeValue).match(o))?e[1]:null},mc:function(t){if(c[b.a.A(t)]){var a=t.firstChild;if(a)do if(1===a.nodeType){var i;i=a.firstChild;var o=null;if(i)do if(o)o.push(i);else if(e(i)){var u=r(i,!0);u?i=u:o=[i]}else n(i)&&(o=[i]);while(i=i.nextSibling);if(i=o)for(o=a.nextSibling,u=0;u<i.length;u++)o?t.insertBefore(i[u],o):t.appendChild(i[u])}while(a=a.nextSibling)}}}}(),b.b("virtualElements",b.f),b.b("virtualElements.allowedBindings",b.f.Z),b.b("virtualElements.emptyNode",b.f.xa),b.b("virtualElements.insertAfter",b.f.ic),b.b("virtualElements.prepend",b.f.oc),b.b("virtualElements.setDomNodeChildren",b.f.da),function(){b.R=function(){this.Gc={}},b.a.extend(b.R.prototype,{nodeHasBindings:function(e){switch(e.nodeType){case 1:return null!=e.getAttribute("data-bind")||b.g.getComponentNameForNode(e);case 8:return b.f.Uc(e);default:return!1}},getBindings:function(e,n){var t=this.getBindingsString(e,n),t=t?this.parseBindingsString(t,n,e):null;return b.g.Pb(t,e,n,!1)},getBindingAccessors:function(e,n){var t=this.getBindingsString(e,n),t=t?this.parseBindingsString(t,n,e,{valueAccessors:!0}):null;return b.g.Pb(t,e,n,!0)},getBindingsString:function(e){switch(e.nodeType){case 1:return e.getAttribute("data-bind");case 8:return b.f.qd(e);default:return null}},parseBindingsString:function(e,n,t,a){try{var r,i=this.Gc,o=e+(a&&a.valueAccessors||"");if(!(r=i[o])){var u,c="with($context){with($data||{}){return{"+b.h.Ua(e,a)+"}}}";u=new Function("$context","$element",c),r=i[o]=u}return r(n,t)}catch(n){throw n.message="Unable to parse bindings.\nBindings value: "+e+"\nMessage: "+n.message,n}}}),b.R.instance=new b.R}(),b.b("bindingProvider",b.R),function(){function t(e){return function(){return e}}function a(e){return e()}function i(e){return b.a.Ca(b.l.w(e),function(n,t){return function(){return e()[t]}})}function o(e,n,a){return"function"==typeof e?i(e.bind(null,n,a)):b.a.Ca(e,t)}function u(e,n){return i(this.getBindings.bind(this,e,n))}function c(e,n,t){var a,r=b.f.firstChild(n),i=b.R.instance,o=i.preprocessNode;if(o){for(;a=r;)r=b.f.nextSibling(a),
 o.call(i,a);r=b.f.firstChild(n)}for(;a=r;)r=b.f.nextSibling(a),s(e,a,t)}function s(e,n,t){var a=!0,r=1===n.nodeType;r&&b.f.mc(n),(r&&t||b.R.instance.nodeHasBindings(n))&&(a=l(n,null,e,t).shouldBindDescendants),a&&!p[b.a.A(n)]&&c(e,n,!r)}function f(e){var n=[],t={},a=[];return b.a.D(e,function r(i){if(!t[i]){var o=b.getBindingHandler(i);o&&(o.after&&(a.push(i),b.a.q(o.after,function(n){if(e[n]){if(-1!==b.a.o(a,n))throw Error("Cannot combine the following bindings, because they have a cyclic dependency: "+a.join(", "));r(n)}}),a.length--),n.push({key:i,hc:o})),t[i]=!0}}),n}function l(n,t,r,i){var o=b.a.e.get(n,h);if(!t){if(o)throw Error("You cannot apply bindings multiple times to the same element.");b.a.e.set(n,h,!0)}!o&&i&&b.vc(n,r);var c;if(t&&"function"!=typeof t)c=t;else{var s=b.R.instance,l=s.getBindingAccessors||u,d=b.B(function(){return(c=t?t(r,n):l.call(s,n,r))&&r.P&&r.P(),c},null,{i:n});c&&d.ba()||(d=null)}var p;if(c){var v=d?function(e){return function(){return a(d()[e])}}:function(e){return c[e]},g=function(){return b.a.Ca(d?d():c,a)};g.get=function(e){return c[e]&&a(v(e))},g.has=function(e){return e in c},i=f(c),b.a.q(i,function(t){var a=t.hc.init,i=t.hc.update,o=t.key;if(8===n.nodeType&&!b.f.Z[o])throw Error("The binding '"+o+"' cannot be used with virtual elements");try{"function"==typeof a&&b.l.w(function(){var t=a(n,v(o),g,r.$data,r);if(t&&t.controlsDescendantBindings){if(p!==e)throw Error("Multiple bindings ("+p+" and "+o+") are trying to control descendant bindings of the same element. You cannot use these bindings together on the same element.");p=o}}),"function"==typeof i&&b.B(function(){i(n,v(o),g,r.$data,r)},null,{i:n})}catch(e){throw e.message='Unable to process binding "'+o+": "+c[o]+'"\nMessage: '+e.message,e}})}return{shouldBindDescendants:p===e}}function d(e){return e&&e instanceof b.Q?e:new b.Q(e)}b.d={};var p={script:!0,textarea:!0,template:!0};b.getBindingHandler=function(e){return b.d[e]},b.Q=function(n,t,a,r,i){function o(){var e=l?n():n,i=b.a.c(e);return t?(t.P&&t.P(),b.a.extend(f,t),f.P=s):(f.$parents=[],f.$root=i,f.ko=b),f.$rawData=e,f.$data=i,a&&(f[a]=i),r&&r(f,t,i),f.$data}function u(){return c&&!b.a.Rb(c)}var c,s,f=this,l="function"==typeof n&&!b.H(n);i&&i.exportDependencies?o():(s=b.B(o,null,{wa:u,i:!0}),s.ba()&&(f.P=s,s.equalityComparer=null,c=[],s.Bc=function(n){c.push(n),b.a.F.oa(n,function(n){b.a.La(c,n),c.length||(s.k(),f.P=s=e)})}))},b.Q.prototype.createChildContext=function(e,n,t,a){return new b.Q(e,this,n,function(e,n){e.$parentContext=n,e.$parent=n.$data,e.$parents=(n.$parents||[]).slice(0),e.$parents.unshift(e.$parent),t&&t(e)},a)},b.Q.prototype.extend=function(e){return new b.Q(this.P||this.$data,this,null,function(n,t){n.$rawData=t.$rawData,b.a.extend(n,"function"==typeof e?e():e)})},b.Q.prototype.Zb=function(e,n){return this.createChildContext(e,n,null,{exportDependencies:!0})};var h=b.a.e.I(),v=b.a.e.I();b.vc=function(e,n){return 2!=arguments.length?b.a.e.get(e,v):(b.a.e.set(e,v,n),void(n.P&&n.P.Bc(e)))},b.Ja=function(e,n,t){return 1===e.nodeType&&b.f.mc(e),l(e,n,d(t),!0)},b.Ec=function(e,n,t){return t=d(t),b.Ja(e,o(n,t,e),t)},b.eb=function(e,n){1!==n.nodeType&&8!==n.nodeType||c(d(e),n,!0)},b.Sb=function(e,t){if(!r&&n.jQuery&&(r=n.jQuery),t&&1!==t.nodeType&&8!==t.nodeType)throw Error("ko.applyBindings: first parameter should be your view model; second parameter should be a DOM node");t=t||n.document.body,s(d(e),t,!0)},b.kb=function(n){switch(n.nodeType){case 1:case 8:var t=b.vc(n);if(t)return t;if(n.parentNode)return b.kb(n.parentNode)}return e},b.Kc=function(n){return(n=b.kb(n))?n.$data:e},b.b("bindingHandlers",b.d),b.b("applyBindings",b.Sb),b.b("applyBindingsToDescendants",b.eb),b.b("applyBindingAccessorsToNode",b.Ja),b.b("applyBindingsToNode",b.Ec),b.b("contextFor",b.kb),b.b("dataFor",b.Kc)}(),function(e){function n(n,a){var o,u=r.hasOwnProperty(n)?r[n]:e;u?u.X(a):(u=r[n]=new b.J,u.X(a),t(n,function(e,t){var a=!(!t||!t.synchronous);i[n]={definition:e,$c:a},delete r[n],o||a?u.notifySubscribers(e):b.Y.Wa(function(){u.notifySubscribers(e)})}),o=!0)}function t(e,n){a("getConfig",[e],function(t){t?a("loadComponent",[e,t],function(e){n(e,t)}):n(null,null)})}function a(n,t,r,i){i||(i=b.g.loaders.slice(0));var o=i.shift();if(o){var u=o[n];if(u){var c=!1;if(u.apply(o,t.concat(function(e){c?r(null):null!==e?r(e):a(n,t,r,i)}))!==e&&(c=!0,!o.suppressLoaderExceptions))throw Error("Component loaders must supply values by invoking the callback, not by returning values synchronously.")}else a(n,t,r,i)}else r(null)}var r={},i={};b.g={get:function(t,a){var r=i.hasOwnProperty(t)?i[t]:e;r?r.$c?b.l.w(function(){a(r.definition)}):b.Y.Wa(function(){a(r.definition)}):n(t,a)},Yb:function(e){delete i[e]},Kb:a},b.g.loaders=[],b.b("components",b.g),b.b("components.get",b.g.get),b.b("components.clearCachedDefinition",b.g.Yb)}(),function(){function e(e,n,t,a){function r(){0===--u&&a(i)}var i={},u=2,c=t.template;t=t.viewModel,c?o(n,c,function(n){b.g.Kb("loadTemplate",[e,n],function(e){i.template=e,r()})}):r(),t?o(n,t,function(n){b.g.Kb("loadViewModel",[e,n],function(e){i[f]=e,r()})}):r()}function a(e,n,t){if("function"==typeof n)t(function(e){return new n(e)});else if("function"==typeof n[f])t(n[f]);else if("instance"in n){var r=n.instance;t(function(){return r})}else"viewModel"in n?a(e,n.viewModel,t):e("Unknown viewModel value: "+n)}function r(e){switch(b.a.A(e)){case"script":return b.a.ma(e.text);case"textarea":return b.a.ma(e.value);case"template":if(i(e.content))return b.a.ua(e.content.childNodes)}return b.a.ua(e.childNodes)}function i(e){return n.DocumentFragment?e instanceof DocumentFragment:e&&11===e.nodeType}function o(e,t,a){"string"==typeof t.require?u||n.require?(u||n.require)([t.require],a):e("Uses require, but no AMD loader is present"):a(t)}function c(e){return function(n){throw Error("Component '"+e+"': "+n)}}var s={};b.g.register=function(e,n){if(!n)throw Error("Invalid configuration for "+e);if(b.g.ub(e))throw Error("Component "+e+" is already registered");s[e]=n},b.g.ub=function(e){return s.hasOwnProperty(e)},b.g.pd=function(e){delete s[e],b.g.Yb(e)},b.g.ac={getConfig:function(e,n){n(s.hasOwnProperty(e)?s[e]:null)},loadComponent:function(n,t,a){var r=c(n);o(r,t,function(t){e(n,r,t,a)})},loadTemplate:function(e,a,o){if(e=c(e),"string"==typeof a)o(b.a.ma(a));else if(a instanceof Array)o(a);else if(i(a))o(b.a.V(a.childNodes));else if(a.element)if(a=a.element,n.HTMLElement?a instanceof HTMLElement:a&&a.tagName&&1===a.nodeType)o(r(a));else if("string"==typeof a){var u=t.getElementById(a);u?o(r(u)):e("Cannot find element with ID "+a)}else e("Unknown element type: "+a);else e("Unknown template value: "+a)},loadViewModel:function(e,n,t){a(c(e),n,t)}};var f="createViewModel";b.b("components.register",b.g.register),b.b("components.isRegistered",b.g.ub),b.b("components.unregister",b.g.pd),b.b("components.defaultLoader",b.g.ac),b.g.loaders.push(b.g.ac),b.g.Cc=s}(),function(){function e(e,t){var a=e.getAttribute("params");if(a){var a=n.parseBindingsString(a,t,e,{valueAccessors:!0,bindingParams:!0}),a=b.a.Ca(a,function(n){return b.m(n,null,{i:e})}),r=b.a.Ca(a,function(n){var t=n.t();return n.ba()?b.m({read:function(){return b.a.c(n())},write:b.Ba(t)&&function(e){n()(e)},i:e}):t});return r.hasOwnProperty("$raw")||(r.$raw=a),r}return{$raw:{}}}b.g.getComponentNameForNode=function(e){var n=b.a.A(e);if(b.g.ub(n)&&(-1!=n.indexOf("-")||"[object HTMLUnknownElement]"==""+e||8>=b.a.C&&e.tagName===n))return n},b.g.Pb=function(n,t,a,r){if(1===t.nodeType){var i=b.g.getComponentNameForNode(t);if(i){if(n=n||{},n.component)throw Error('Cannot use the "component" binding on a custom element matching a component');var o={name:i,params:e(t,a)};n.component=r?function(){return o}:o}}return n};var n=new b.R;9>b.a.C&&(b.g.register=function(e){return function(n){return t.createElement(n),e.apply(this,arguments)}}(b.g.register),t.createDocumentFragment=function(e){return function(){var n,t=e(),a=b.g.Cc;for(n in a)a.hasOwnProperty(n)&&t.createElement(n);return t}}(t.createDocumentFragment))}(),function(e){function n(e,n,t){if(n=n.template,!n)throw Error("Component '"+e+"' has no template");e=b.a.ua(n),b.f.da(t,e)}function t(e,n,t,a){var r=e.createViewModel;return r?r.call(e,a,{element:n,templateNodes:t}):a}var a=0;b.d.component={init:function(r,i,o,u,c){function s(){var e=f&&f.dispose;"function"==typeof e&&e.call(f),l=f=null}var f,l,d=b.a.V(b.f.childNodes(r));return b.a.F.oa(r,s),b.m(function(){var o,u,p=b.a.c(i());if("string"==typeof p?o=p:(o=b.a.c(p.name),u=b.a.c(p.params)),!o)throw Error("No component name specified");var h=l=++a;b.g.get(o,function(a){if(l===h){if(s(),!a)throw Error("Unknown component '"+o+"'");n(o,a,r);var i=t(a,r,d,u);a=c.createChildContext(i,e,function(e){e.$component=i,e.$componentTemplateNodes=d}),f=i,b.eb(a,r)}})},null,{i:r}),{controlsDescendantBindings:!0}}},b.f.Z.component=!0}();var S={class:"className",for:"htmlFor"};b.d.attr={update:function(n,t){var a=b.a.c(t())||{};b.a.D(a,function(t,a){a=b.a.c(a);var r=!1===a||null===a||a===e;r&&n.removeAttribute(t),8>=b.a.C&&t in S?(t=S[t],r?n.removeAttribute(t):n[t]=a):r||n.setAttribute(t,a.toString()),"name"===t&&b.a.tc(n,r?"":a.toString())})}},function(){b.d.checked={after:["value","attr"],init:function(n,t,a){function r(){var e=n.checked,r=p?o():e;if(!b.va.Sa()&&(!c||e)){var i=b.l.w(t);if(f){var u=l?i.t():i;d!==r?(e&&(b.a.pa(u,r,!0),b.a.pa(u,d,!1)),d=r):b.a.pa(u,r,e),l&&b.Ba(i)&&i(u)}else b.h.Ea(i,a,"checked",r,!0)}}function i(){var e=b.a.c(t());n.checked=f?0<=b.a.o(e,o()):u?e:o()===e}var o=b.pc(function(){return a.has("checkedValue")?b.a.c(a.get("checkedValue")):a.has("value")?b.a.c(a.get("value")):n.value}),u="checkbox"==n.type,c="radio"==n.type;if(u||c){var s=t(),f=u&&b.a.c(s)instanceof Array,l=!(f&&s.push&&s.splice),d=f?o():e,p=c||f;c&&!n.name&&b.d.uniqueName.init(n,function(){return!0}),b.m(r,null,{i:n}),b.a.p(n,"click",r),b.m(i,null,{i:n}),s=e}}},b.h.ea.checked=!0,b.d.checkedValue={update:function(e,n){e.value=b.a.c(n())}}}(),b.d.css={update:function(e,n){var t=b.a.c(n());null!==t&&"object"==typeof t?b.a.D(t,function(n,t){t=b.a.c(t),b.a.bb(e,n,t)}):(t=b.a.$a(String(t||"")),b.a.bb(e,e.__ko__cssValue,!1),e.__ko__cssValue=t,b.a.bb(e,t,!0))}},b.d.enable={update:function(e,n){var t=b.a.c(n());t&&e.disabled?e.removeAttribute("disabled"):t||e.disabled||(e.disabled=!0)}},b.d.disable={update:function(e,n){b.d.enable.update(e,function(){return!b.a.c(n())})}},b.d.event={init:function(e,n,t,a,r){var i=n()||{};b.a.D(i,function(i){"string"==typeof i&&b.a.p(e,i,function(e){var o,u=n()[i];if(u){try{var c=b.a.V(arguments);a=r.$data,c.unshift(a),o=u.apply(a,c)}finally{!0!==o&&(e.preventDefault?e.preventDefault():e.returnValue=!1)}!1===t.get(i+"Bubble")&&(e.cancelBubble=!0,e.stopPropagation&&e.stopPropagation())}})})}},b.d.foreach={kc:function(e){return function(){var n=e(),t=b.a.zb(n);return t&&"number"!=typeof t.length?(b.a.c(n),{foreach:t.data,as:t.as,includeDestroyed:t.includeDestroyed,afterAdd:t.afterAdd,beforeRemove:t.beforeRemove,afterRender:t.afterRender,beforeMove:t.beforeMove,afterMove:t.afterMove,templateEngine:b.W.sb}):{foreach:n,templateEngine:b.W.sb}}},init:function(e,n){return b.d.template.init(e,b.d.foreach.kc(n))},update:function(e,n,t,a,r){return b.d.template.update(e,b.d.foreach.kc(n),t,a,r)}},b.h.ta.foreach=!1,b.f.Z.foreach=!0,b.d.hasfocus={init:function(e,n,t){function a(a){e.__ko_hasfocusUpdating=!0;var r=e.ownerDocument;if("activeElement"in r){var i;try{i=r.activeElement}catch(e){i=r.body}a=i===e}r=n(),b.h.Ea(r,t,"hasfocus",a,!0),e.__ko_hasfocusLastValue=a,e.__ko_hasfocusUpdating=!1}var r=a.bind(null,!0),i=a.bind(null,!1);b.a.p(e,"focus",r),b.a.p(e,"focusin",r),b.a.p(e,"blur",i),b.a.p(e,"focusout",i)},update:function(e,n){var t=!!b.a.c(n());e.__ko_hasfocusUpdating||e.__ko_hasfocusLastValue===t||(t?e.focus():e.blur(),!t&&e.__ko_hasfocusLastValue&&e.ownerDocument.body.focus(),b.l.w(b.a.Da,null,[e,t?"focusin":"focusout"]))}},b.h.ea.hasfocus=!0,b.d.hasFocus=b.d.hasfocus,b.h.ea.hasFocus=!0,b.d.html={init:function(){return{controlsDescendantBindings:!0}},update:function(e,n){b.a.Cb(e,n())}},h("if"),h("ifnot",!1,!0),h("with",!0,!1,function(e,n){return e.Zb(n)});var _={};b.d.options={init:function(e){if("select"!==b.a.A(e))throw Error("options binding applies only to SELECT elements");for(;0<e.length;)e.remove(0);return{controlsDescendantBindings:!0}},update:function(n,t,a){function r(){return b.a.Ka(n.options,function(e){return e.selected})}function i(e,n,t){var a=typeof n;return"function"==a?n(e):"string"==a?e[n]:t}function o(e,t){if(h&&f)b.j.ha(n,b.a.c(a.get("value")),!0);else if(p.length){var r=0<=b.a.o(p,b.j.u(t[0]));b.a.uc(t[0],r),h&&!r&&b.l.w(b.a.Da,null,[n,"change"])}}var u=n.multiple,c=0!=n.length&&u?n.scrollTop:null,s=b.a.c(t()),f=a.get("valueAllowUnset")&&a.has("value"),l=a.get("optionsIncludeDestroyed");t={};var d,p=[];f||(u?p=b.a.fb(r(),b.j.u):0<=n.selectedIndex&&p.push(b.j.u(n.options[n.selectedIndex]))),s&&("undefined"==typeof s.length&&(s=[s]),d=b.a.Ka(s,function(n){return l||n===e||null===n||!b.a.c(n._destroy)}),a.has("optionsCaption")&&(s=b.a.c(a.get("optionsCaption")),null!==s&&s!==e&&d.unshift(_)));var h=!1;t.beforeRemove=function(e){n.removeChild(e)},s=o,a.has("optionsAfterRender")&&"function"==typeof a.get("optionsAfterRender")&&(s=function(n,t){o(0,t),b.l.w(a.get("optionsAfterRender"),null,[t[0],n!==_?n:e])}),b.a.Bb(n,d,function(t,r,o){return o.length&&(p=!f&&o[0].selected?[b.j.u(o[0])]:[],h=!0),r=n.ownerDocument.createElement("option"),t===_?(b.a.Za(r,a.get("optionsCaption")),b.j.ha(r,e)):(o=i(t,a.get("optionsValue"),t),b.j.ha(r,b.a.c(o)),t=i(t,a.get("optionsText"),o),b.a.Za(r,t)),[r]},t,s),b.l.w(function(){f?b.j.ha(n,b.a.c(a.get("value")),!0):(u?p.length&&r().length<p.length:p.length&&0<=n.selectedIndex?b.j.u(n.options[n.selectedIndex])!==p[0]:p.length||0<=n.selectedIndex)&&b.a.Da(n,"change")}),b.a.Oc(n),c&&20<Math.abs(c-n.scrollTop)&&(n.scrollTop=c)}},b.d.options.xb=b.a.e.I(),b.d.selectedOptions={after:["options","foreach"],init:function(e,n,t){b.a.p(e,"change",function(){var a=n(),r=[];b.a.q(e.getElementsByTagName("option"),function(e){e.selected&&r.push(b.j.u(e))}),b.h.Ea(a,t,"selectedOptions",r)})},update:function(e,n){if("select"!=b.a.A(e))throw Error("values binding applies only to SELECT elements");var t=b.a.c(n()),a=e.scrollTop;t&&"number"==typeof t.length&&b.a.q(e.getElementsByTagName("option"),function(e){var n=0<=b.a.o(t,b.j.u(e));e.selected!=n&&b.a.uc(e,n)}),e.scrollTop=a}},b.h.ea.selectedOptions=!0,b.d.style={update:function(n,t){var a=b.a.c(t()||{});b.a.D(a,function(t,a){a=b.a.c(a),null!==a&&a!==e&&!1!==a||(a=""),n.style[t]=a})}},b.d.submit={init:function(e,n,t,a,r){if("function"!=typeof n())throw Error("The value for a submit binding must be a function");b.a.p(e,"submit",function(t){var a,i=n();try{a=i.call(r.$data,e)}finally{!0!==a&&(t.preventDefault?t.preventDefault():t.returnValue=!1)}})}},b.d.text={init:function(){return{controlsDescendantBindings:!0}},update:function(e,n){b.a.Za(e,n())}},b.f.Z.text=!0,function(){if(n&&n.navigator)var t=function(e){if(e)return parseFloat(e[1])},a=n.opera&&n.opera.version&&parseInt(n.opera.version()),r=n.navigator.userAgent,i=t(r.match(/^(?:(?!chrome).)*version\/([^ ]*) safari/i)),o=t(r.match(/Firefox\/([^ ]*)/));if(10>b.a.C)var u=b.a.e.I(),c=b.a.e.I(),s=function(e){var n=this.activeElement;(n=n&&b.a.e.get(n,c))&&n(e)},f=function(e,n){var t=e.ownerDocument;b.a.e.get(t,u)||(b.a.e.set(t,u,!0),b.a.p(t,"selectionchange",s)),b.a.e.set(e,c,n)};b.d.textInput={init:function(n,t,r){function u(e,t){b.a.p(n,e,t)}function c(){var a=b.a.c(t());null!==a&&a!==e||(a=""),p!==e&&a===p?b.a.setTimeout(c,4):n.value!==a&&(h=a,n.value=a)}function s(){d||(p=n.value,d=b.a.setTimeout(l,4))}function l(){clearTimeout(d),p=d=e;var a=n.value;h!==a&&(h=a,b.h.Ea(t(),r,"textInput",a))}var d,p,h=n.value,v=9==b.a.C?s:l;10>b.a.C?(u("propertychange",function(e){"value"===e.propertyName&&v(e)}),8==b.a.C&&(u("keyup",l),u("keydown",l)),8<=b.a.C&&(f(n,v),u("dragend",s))):(u("input",l),5>i&&"textarea"===b.a.A(n)?(u("keydown",s),u("paste",s),u("cut",s)):11>a?u("keydown",s):4>o&&(u("DOMAutoComplete",l),u("dragdrop",l),u("drop",l))),u("change",l),b.m(c,null,{i:n})}},b.h.ea.textInput=!0,b.d.textinput={preprocess:function(e,n,t){t("textInput",e)}}}(),b.d.uniqueName={init:function(e,n){if(n()){var t="ko_unique_"+ ++b.d.uniqueName.Jc;b.a.tc(e,t)}}},b.d.uniqueName.Jc=0,b.d.value={after:["options","foreach"],init:function(e,n,t){if("input"!=e.tagName.toLowerCase()||"checkbox"!=e.type&&"radio"!=e.type){var a=["change"],r=t.get("valueUpdate"),i=!1,o=null;r&&("string"==typeof r&&(r=[r]),b.a.ra(a,r),a=b.a.Ub(a));var u=function(){o=null,i=!1;var a=n(),r=b.j.u(e);b.h.Ea(a,t,"value",r)};!b.a.C||"input"!=e.tagName.toLowerCase()||"text"!=e.type||"off"==e.autocomplete||e.form&&"off"==e.form.autocomplete||-1!=b.a.o(a,"propertychange")||(b.a.p(e,"propertychange",function(){i=!0}),b.a.p(e,"focus",function(){i=!1}),b.a.p(e,"blur",function(){i&&u()})),b.a.q(a,function(n){var t=u;b.a.od(n,"after")&&(t=function(){o=b.j.u(e),b.a.setTimeout(u,0)},n=n.substring(5)),b.a.p(e,n,t)});var c=function(){var a=b.a.c(n()),r=b.j.u(e);if(null!==o&&a===o)b.a.setTimeout(c,0);else if(a!==r)if("select"===b.a.A(e)){var i=t.get("valueAllowUnset"),r=function(){b.j.ha(e,a,i)};r(),i||a===b.j.u(e)?b.a.setTimeout(r,0):b.l.w(b.a.Da,null,[e,"change"])}else b.j.ha(e,a)};b.m(c,null,{i:e})}else b.Ja(e,{checkedValue:n})},update:function(){}},b.h.ea.value=!0,b.d.visible={update:function(e,n){var t=b.a.c(n()),a="none"!=e.style.display;t&&!a?e.style.display="":!t&&a&&(e.style.display="none")}},function(e){b.d[e]={init:function(n,t,a,r,i){return b.d.event.init.call(this,n,function(){var n={};return n[e]=t(),n},a,r,i)}}}("click"),b.O=function(){},b.O.prototype.renderTemplateSource=function(){throw Error("Override renderTemplateSource")},b.O.prototype.createJavaScriptEvaluatorBlock=function(){throw Error("Override createJavaScriptEvaluatorBlock")},b.O.prototype.makeTemplateSource=function(e,n){if("string"==typeof e){n=n||t;var a=n.getElementById(e);if(!a)throw Error("Cannot find template with ID "+e);return new b.v.n(a)}if(1==e.nodeType||8==e.nodeType)return new b.v.qa(e);throw Error("Unknown template type: "+e)},b.O.prototype.renderTemplate=function(e,n,t,a){return e=this.makeTemplateSource(e,a),this.renderTemplateSource(e,n,t,a)},b.O.prototype.isTemplateRewritten=function(e,n){return!1===this.allowTemplateRewriting||this.makeTemplateSource(e,n).data("isRewritten")},b.O.prototype.rewriteTemplate=function(e,n,t){e=this.makeTemplateSource(e,t),n=n(e.text()),e.text(n),e.data("isRewritten",!0)},b.b("templateEngine",b.O),b.Gb=function(){function e(e,n,t,a){e=b.h.yb(e);for(var r=b.h.ta,i=0;i<e.length;i++){var o=e[i].key;if(r.hasOwnProperty(o)){var u=r[o];if("function"==typeof u){if(o=u(e[i].value))throw Error(o)}else if(!u)throw Error("This template engine does not support the '"+o+"' binding within its templates")}}return t="ko.__tr_ambtns(function($context,$element){return(function(){return{ "+b.h.Ua(e,{valueAccessors:!0})+" } })()},'"+t.toLowerCase()+"')",a.createJavaScriptEvaluatorBlock(t)+n}var n=/(<([a-z]+\d*)(?:\s+(?!data-bind\s*=\s*)[a-z0-9\-]+(?:=(?:\"[^\"]*\"|\'[^\']*\'|[^>]*))?)*\s+)data-bind\s*=\s*(["'])([\s\S]*?)\3/gi,t=/\x3c!--\s*ko\b\s*([\s\S]*?)\s*--\x3e/g;return{Pc:function(e,n,t){n.isTemplateRewritten(e,t)||n.rewriteTemplate(e,function(e){return b.Gb.ed(e,n)},t)},ed:function(a,r){return a.replace(n,function(n,t,a,i,o){return e(o,t,a,r)}).replace(t,function(n,t){return e(t,"<!-- ko -->","#comment",r)})},Fc:function(e,n){return b.M.wb(function(t,a){var r=t.nextSibling;r&&r.nodeName.toLowerCase()===n&&b.Ja(r,e,a)})}}}(),b.b("__tr_ambtns",b.Gb.Fc),function(){b.v={},b.v.n=function(e){if(this.n=e){var n=b.a.A(e);this.ab="script"===n?1:"textarea"===n?2:"template"==n&&e.content&&11===e.content.nodeType?3:4}},b.v.n.prototype.text=function(){var e=1===this.ab?"text":2===this.ab?"value":"innerHTML";if(0==arguments.length)return this.n[e];var n=arguments[0];"innerHTML"===e?b.a.Cb(this.n,n):this.n[e]=n};var n=b.a.e.I()+"_";b.v.n.prototype.data=function(e){return 1===arguments.length?b.a.e.get(this.n,n+e):void b.a.e.set(this.n,n+e,arguments[1])};var t=b.a.e.I();b.v.n.prototype.nodes=function(){var n=this.n;return 0==arguments.length?(b.a.e.get(n,t)||{}).jb||(3===this.ab?n.content:4===this.ab?n:e):void b.a.e.set(n,t,{jb:arguments[0]})},b.v.qa=function(e){this.n=e},b.v.qa.prototype=new b.v.n,b.v.qa.prototype.text=function(){if(0==arguments.length){var n=b.a.e.get(this.n,t)||{};return n.Hb===e&&n.jb&&(n.Hb=n.jb.innerHTML),n.Hb}b.a.e.set(this.n,t,{Hb:arguments[0]})},b.b("templateSources",b.v),b.b("templateSources.domElement",b.v.n),b.b("templateSources.anonymousTemplate",b.v.qa)}(),function(){function n(e,n,t){var a;for(n=b.f.nextSibling(n);e&&(a=e)!==n;)e=b.f.nextSibling(a),t(a,e)}function t(e,t){if(e.length){var a=e[0],r=e[e.length-1],i=a.parentNode,o=b.R.instance,u=o.preprocessNode;if(u){if(n(a,r,function(e,n){var t=e.previousSibling,i=u.call(o,e);i&&(e===a&&(a=i[0]||n),e===r&&(r=i[i.length-1]||t))}),e.length=0,!a)return;a===r?e.push(a):(e.push(a,r),b.a.za(e,i))}n(a,r,function(e){1!==e.nodeType&&8!==e.nodeType||b.Sb(t,e)}),n(a,r,function(e){1!==e.nodeType&&8!==e.nodeType||b.M.Ac(e,[t])}),b.a.za(e,i)}}function a(e){return e.nodeType?e:0<e.length?e[0]:null}function r(e,n,r,i,u){u=u||{};var c=(e&&a(e)||r||{}).ownerDocument,s=u.templateEngine||o;if(b.Gb.Pc(r,s,c),r=s.renderTemplate(r,i,u,c),"number"!=typeof r.length||0<r.length&&"number"!=typeof r[0].nodeType)throw Error("Template engine must return an array of DOM nodes");switch(c=!1,n){case"replaceChildren":b.f.da(e,r),c=!0;break;case"replaceNode":b.a.sc(e,r),c=!0;break;case"ignoreTargetNode":break;default:throw Error("Unknown renderMode: "+n)}return c&&(t(r,i),u.afterRender&&b.l.w(u.afterRender,null,[r,i.$data])),r}function i(e,n,t){return b.H(e)?e():"function"==typeof e?e(n,t):e}var o;b.Db=function(n){if(n!=e&&!(n instanceof b.O))throw Error("templateEngine must inherit from ko.templateEngine");o=n},b.Ab=function(n,t,u,c,s){if(u=u||{},(u.templateEngine||o)==e)throw Error("Set a template engine before calling renderTemplate");if(s=s||"replaceChildren",c){var f=a(c);return b.B(function(){var e=t&&t instanceof b.Q?t:new b.Q(t,null,null,null,{exportDependencies:!0}),o=i(n,e.$data,e),e=r(c,s,o,e,u);"replaceNode"==s&&(c=e,f=a(c))},null,{wa:function(){return!f||!b.a.nb(f)},i:f&&"replaceNode"==s?f.parentNode:f})}return b.M.wb(function(e){b.Ab(n,t,u,e,"replaceNode")})},b.ld=function(n,a,o,u,c){function s(e,n){t(n,l),o.afterRender&&o.afterRender(n,e),l=null}function f(e,t){l=c.createChildContext(e,o.as,function(e){e.$index=t});var a=i(n,e,l);return r(null,"ignoreTargetNode",a,l,o)}var l;return b.B(function(){var n=b.a.c(a)||[];"undefined"==typeof n.length&&(n=[n]),n=b.a.Ka(n,function(n){return o.includeDestroyed||n===e||null===n||!b.a.c(n._destroy)}),b.l.w(b.a.Bb,null,[u,n,f,o,s])},null,{i:u})};var u=b.a.e.I();b.d.template={init:function(e,n){var t=b.a.c(n());if("string"==typeof t||t.name)b.f.xa(e);else{if("nodes"in t){if(t=t.nodes||[],b.H(t))throw Error('The "nodes" option must be a plain, non-observable array.')}else t=b.f.childNodes(e);t=b.a.lc(t),new b.v.qa(e).nodes(t)}return{controlsDescendantBindings:!0}},update:function(n,t,a,r,i){var o=t();t=b.a.c(o),a=!0,r=null,"string"==typeof t?t={}:(o=t.name,"if"in t&&(a=b.a.c(t.if)),a&&"ifnot"in t&&(a=!b.a.c(t.ifnot))),"foreach"in t?r=b.ld(o||n,a&&t.foreach||[],t,n,i):a?(i="data"in t?i.Zb(t.data,t.as):i,r=b.Ab(o||n,i,t,n)):b.f.xa(n),i=r,(t=b.a.e.get(n,u))&&"function"==typeof t.k&&t.k(),b.a.e.set(n,u,i&&i.ba()?i:e)}},b.h.ta.template=function(e){return e=b.h.yb(e),1==e.length&&e[0].unknown||b.h.bd(e,"name")?null:"This template engine does not support anonymous templates nested within its templates"},b.f.Z.template=!0}(),b.b("setTemplateEngine",b.Db),b.b("renderTemplate",b.Ab),b.a.fc=function(e,n,t){if(e.length&&n.length){var a,r,i,o,u;for(a=r=0;(!t||a<t)&&(o=e[r]);++r){for(i=0;u=n[i];++i)if(o.value===u.value){o.moved=u.index,u.moved=o.index,n.splice(i,1),a=i=0;break}a+=i}}},b.a.ib=function(){function e(e,n,t,a,r){var i,o,u,c,s,f=Math.min,l=Math.max,d=[],p=e.length,h=n.length,v=h-p||1,g=p+h+1;for(i=0;i<=p;i++)for(c=u,d.push(u=[]),s=f(h,i+v),o=l(0,i-1);o<=s;o++)u[o]=o?i?e[i-1]===n[o-1]?c[o-1]:f(c[o]||g,u[o-1]||g)+1:o+1:i+1;for(f=[],l=[],v=[],i=p,o=h;i||o;)h=d[i][o]-1,o&&h===d[i][o-1]?l.push(f[f.length]={status:t,value:n[--o],index:o}):i&&h===d[i-1][o]?v.push(f[f.length]={status:a,value:e[--i],index:i}):(--o,--i,r.sparse||f.push({status:"retained",value:n[o]}));return b.a.fc(v,l,!r.dontLimitMoves&&10*p),f.reverse()}return function(n,t,a){return a="boolean"==typeof a?{dontLimitMoves:a}:a||{},n=n||[],t=t||[],n.length<t.length?e(n,t,"added","deleted",a):e(t,n,"deleted","added",a)}}(),b.b("utils.compareArrays",b.a.ib),function(){function n(n,t,a,r,i){var o=[],u=b.B(function(){var e=t(a,i,b.a.za(o,n))||[];0<o.length&&(b.a.sc(o,e),r&&b.l.w(r,null,[a,e,i])),o.length=0,b.a.ra(o,e)},null,{i:n,wa:function(){return!b.a.Rb(o)}});return{ca:o,B:u.ba()?u:e}}var t=b.a.e.I(),a=b.a.e.I();b.a.Bb=function(r,i,o,u,c){function s(e,n){k=d[n],m!==n&&(T[e]=k),k.qb(m++),b.a.za(k.ca,r),v.push(k),w.push(k)}function f(e,n){if(e)for(var t=0,a=n.length;t<a;t++)n[t]&&b.a.q(n[t].ca,function(a){e(a,t,n[t].ja)})}i=i||[],u=u||{};var l=b.a.e.get(r,t)===e,d=b.a.e.get(r,t)||[],p=b.a.fb(d,function(e){return e.ja}),h=b.a.ib(p,i,u.dontLimitMoves),v=[],g=0,m=0,y=[],w=[];i=[];for(var k,x,E,T=[],p=[],C=0;x=h[C];C++)switch(E=x.moved,x.status){case"deleted":E===e&&(k=d[g],k.B&&(k.B.k(),k.B=e),b.a.za(k.ca,r).length&&(u.beforeRemove&&(v.push(k),w.push(k),k.ja===a?k=null:i[C]=k),k&&y.push.apply(y,k.ca))),g++;break;case"retained":s(C,g++);break;case"added":E!==e?s(C,E):(k={ja:x.value,qb:b.N(m++)},v.push(k),w.push(k),l||(p[C]=k))}b.a.e.set(r,t,v),f(u.beforeMove,T),b.a.q(y,u.beforeRemove?b.$:b.removeNode);for(var N,C=0,l=b.f.firstChild(r);k=w[C];C++){for(k.ca||b.a.extend(k,n(r,o,k.ja,c,k.qb)),g=0;h=k.ca[g];l=h.nextSibling,N=h,g++)h!==l&&b.f.ic(r,h,N);!k.Xc&&c&&(c(k.ja,k.ca,k.qb),k.Xc=!0)}for(f(u.beforeRemove,i),C=0;C<i.length;++C)i[C]&&(i[C].ja=a);f(u.afterMove,T),f(u.afterAdd,p)}}(),b.b("utils.setDomNodeChildrenFromArrayMapping",b.a.Bb),b.W=function(){this.allowTemplateRewriting=!1},b.W.prototype=new b.O,b.W.prototype.renderTemplateSource=function(e,n,t,a){return(n=(9>b.a.C?0:e.nodes)?e.nodes():null)?b.a.V(n.cloneNode(!0).childNodes):(e=e.text(),b.a.ma(e,a))},b.W.sb=new b.W,b.Db(b.W.sb),b.b("nativeTemplateEngine",b.W),function(){b.vb=function(){var e=this.ad=function(){if(!r||!r.tmpl)return 0;try{if(0<=r.tmpl.tag.tmpl.open.toString().indexOf("__"))return 2}catch(e){}return 1}();this.renderTemplateSource=function(n,a,i,o){if(o=o||t,i=i||{},2>e)throw Error("Your version of jQuery.tmpl is too old. Please upgrade to jQuery.tmpl 1.0.0pre or later.");var u=n.data("precompiled");return u||(u=n.text()||"",u=r.template(null,"{{ko_with $item.koBindingContext}}"+u+"{{/ko_with}}"),n.data("precompiled",u)),n=[a.$data],a=r.extend({koBindingContext:a},i.templateOptions),a=r.tmpl(u,n,a),a.appendTo(o.createElement("div")),r.fragments={},a},this.createJavaScriptEvaluatorBlock=function(e){return"{{ko_code ((function() { return "+e+" })()) }}"},this.addTemplate=function(e,n){t.write("<script type='text/html' id='"+e+"'>"+n+"</script>")},0<e&&(r.tmpl.tag.ko_code={open:"__.push($1 || '');"},r.tmpl.tag.ko_with={open:"with($1) {",close:"} "})},b.vb.prototype=new b.O;var e=new b.vb;0<e.ad&&b.Db(e),b.b("jqueryTmplTemplateEngine",b.vb)}()})}()}();;
-;
-;
-<style type='text/css'>
-    .planet { background-color: #AAEECC; padding: 0.35em; border: 1px solid silver; margin-bottom: 0.5em; font-size: 0.95em; }
-    .planet.rock { background-color: #EECCAA; }
-</style>
-<div>
-    <h2>Planets</h2>
-    <div class="well liveExample">
-      <div class="row-fluid">
-        <div class="span6">
-          <!--Sidebar content-->
-            <div> 
-                <label>
-                    <input type='checkbox' data-bind='checked: displayAdvancedOptions' />
-                    Display advanced options
-                </label>
-            </div>
-            <br />
-            <div data-bind='fadeVisible: displayAdvancedOptions'>
-                <label>Add a Planet:</label>
-                <button class="btn" data-bind='click: addPlanet.bind($data, "rock")'>rocky planet</button>
-                <button class="btn" data-bind='click: addPlanet.bind($data, "gasgiant")'>gas giant</button>
-            </div>
-            <br />
-            <div data-bind='fadeVisible: displayAdvancedOptions'>
-                <label>Show:</label>
-                <label class="radio"><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All</label>
-                <label class="radio"><input type='radio' name="type" value='rock' data-bind='checked: typeToShow' />Rocky planets</label>
-                <label class="radio"><input type='radio' name="type" value='gasgiant' data-bind='checked: typeToShow' />Gas giants</label>
-            </div>
-        </div>
-        <div class="span6">
-          <!--Body content-->
-            <div data-bind='template: {
-                    foreach: planetsToShow,
-                    beforeRemove: hidePlanetElement,
-                    afterAdd: showPlanetElement   }'>
-                <div data-bind='attr: { "class": "planet " + type }, text: name'> </div>
-            </div>
-        </div>
-      </div>
-    </div>
-</div>;
 define(["jquery","knockout"],function(e,n){n.bindingHandlers.fadeVisible={init:function(a,t){var r=t();e(a).toggle(n.utils.unwrapObservable(r))},update:function(a,t){var r=t();n.utils.unwrapObservable(r)?e(a).fadeIn():e(a).fadeOut()}};var a=n.observableArray([{name:"Mercury",type:"rock"},{name:"Venus",type:"rock"},{name:"Earth",type:"rock"},{name:"Mars",type:"rock"},{name:"Jupiter",type:"gasgiant"},{name:"Saturn",type:"gasgiant"},{name:"Uranus",type:"gasgiant"},{name:"Neptune",type:"gasgiant"},{name:"Pluto",type:"rock"}]),t=n.observable("all"),r=n.observable(!1),o=function(e){a.push({name:"New planet",type:e})},i=n.computed(function(){var e=t();return"all"==e?a():n.utils.arrayFilter(a(),function(n){return n.type==e})}),u=function(n){1===n.nodeType&&e(n).hide().slideDown()},l=function(n){1===n.nodeType&&e(n).slideUp(function(){e(n).remove()})};return{planets:a,typeToShow:t,displayAdvancedOptions:r,addPlanet:o,planetsToShow:i,showPlanetElement:u,hidePlanetElement:l}});;
-;
-<div>
-    <h2>Better List</h2>
-    <div class="well liveExample">
-        <form data-bind="submit: addItem">
-            <label>Add item:</label>
-            <div class="input-append">
-                <input class="span3" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
-                <button class="btn"  type="submit" data-bind="enable: itemToAdd().length > 0">Add</button>
-            </div>
-            <br />
-            <div>
-                <p>Your values:</p>
-                <select class="span3" multiple="multiple" size="6" data-bind="options: allItems, selectedOptions: selectedItems"></select>
-            </div> 
-            <div class="span2">
-                <div class="pull-right">
-                    <button class="btn"  data-bind="click: removeSelected, enable: selectedItems().length > 0">Remove</button>
-                    <button class="btn"  data-bind="click: sortItems, enable: allItems().length > 1">Sort</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>;
 define(["knockout"],function(e){var t=e.observable(""),r=e.observableArray(["Fries","Eggs Benedict","Ham","Cheese"]),o=e.observableArray(["Ham"]),n=function(){""!=t()&&r.indexOf(t())<0&&r.push(t()),t("")},s=function(){r.removeAll(o()),o([])},a=function(){r.sort()};return{itemToAdd:t,allItems:r,selectedItems:o,addItem:n,removeSelected:s,sortItems:a}});;
-;
-<div>
-    <h2>Click Counter</h2>
-    <div class="well liveExample">
-        <div>You've clicked <span data-bind='text: numberOfClicks'>&nbsp;</span> times</div>
-        <br />
-        <button data-bind='click: registerClick, disable: hasClickedTooManyTimes'>Click me</button>
-        <br /><br />
-        <div data-bind='visible: hasClickedTooManyTimes'>
-            That's too many clicks! Please stop before you wear out your fingers.
-            <button data-bind='click: resetClicks'>Reset clicks</button>
-        </div>
-    </div>
-</div>;
 define(["knockout"],function(e){var n=e.observable(0),i=e.computed(function(){return n()>=3}),c={numberOfClicks:n,hasClickedTooManyTimes:i,registerClick:function(){n(n()+1)},resetClicks:function(){n(0)}};return c});;
-;
-<style type='text/css'>
-    .liveExample { font-size: 16px; }
-    .liveExample li { line-height: 26px; }
-    .liveExample h3 { line-height: 30px; }
-    .renderTime { color: #777; font-style: italic; font-size: 0.8em; }
-</style>
-<div>
-    <h2>Working with Collections</h2>
-    <div class="well liveExample">
-        <h3>People</h3>
-        <ul data-bind="foreach: people">
-            <li>
-                <div>
-                    <span data-bind="text: name"> </span> has <span data-bind='text: children().length'>&nbsp;</span> children:
-                    <a href='#' data-bind='click: addChild'>Add child</a>
-                    <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
-                        (person rendered at <span data-bind='text: new Date().getSeconds()'> </span>)
-                    </span>
-                </div>
-                <ul data-bind="foreach: children">
-                    <li>
-                        <span data-bind="text: $data"> </span>
-                        <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
-                            (child rendered at <span data-bind='text: new Date().getSeconds()'> </span>)
-                        </span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <label><input data-bind='checked: showRenderTimes' type='checkbox' /> Show render times</label> 
-    </div>
-</div>;
 define(["durandal/system","knockout"],function(e,n){var r=function(e,r){this.name=e,this.children=n.observableArray(r),this.addChild=function(){this.children.push("New child")}.bind(this)};return{people:[new r("Annabelle",["Arnie","Anders","Apple"]),new r("Bertie",["Boutros-Boutros","Brianna","Barbie","Bee-bop"]),new r("Charles",["Cayenne","Cleopatra"])],showRenderTimes:n.observable(!1)}});;
-;
-<style>
-    .liveExample td { vertical-align: text-top; }
-    .liveExample textarea { width: initial;  }
-</style>
-<div>
-    <h2>Grid Editor</h2>
-    <div class="well liveExample">
-        <div id='contactsList'>
-            <table class='contactsEditor'>
-                <tr>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone numbers</th>
-                </tr>
-                <tbody data-bind="foreach: ContactsModel.contacts">
-                    <tr>
-                        <td>
-                            <input data-bind='value: firstName' />
-                            <div><a href='#' data-bind='click: $root.ContactsModel.removeContact'>Delete</a></div>
-                        </td>
-                        <td><input data-bind='value: lastName' /></td>
-                        <td>
-                            <table>
-                                <tbody data-bind="foreach: phones">
-                                    <tr>
-                                        <td><input data-bind='value: type' /></td>
-                                        <td><input data-bind='value: number' /></td>
-                                        <td><a href='#' data-bind='click: $root.ContactsModel.removePhone'>Delete</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a href='#' data-bind='click: $root.ContactsModel.addPhone'>Add number</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <p>
-            <button data-bind='click: ContactsModel.addContact'>Add a contact</button>
-            <button data-bind='click: ContactsModel.save, enable: ContactsModel.contacts().length > 0'>Save to JSON</button>
-        </p>
-        <textarea data-bind='value: ContactsModel.lastSavedJson' rows='5' cols='60'> </textarea>
-    </div>
-</div>;
 define(["durandal/system","jquery","knockout"],function(e,n,t){var a=[{firstName:"Danny",lastName:"LaRusso",phones:[{type:"Mobile",number:"(555) 121-2121"},{type:"Home",number:"(555) 123-4567"}]},{firstName:"Sensei",lastName:"Miyagi",phones:[{type:"Mobile",number:"(555) 444-2222"},{type:"Home",number:"(555) 999-1212"}]}],o=function(e){var a=this;a.contacts=t.observableArray(t.utils.arrayMap(e,function(e){return{firstName:e.firstName,lastName:e.lastName,phones:t.observableArray(e.phones)}})),a.addContact=function(){a.contacts.push({firstName:"",lastName:"",phones:t.observableArray()})},a.removeContact=function(e){a.contacts.remove(e)},a.addPhone=function(e){e.phones.push({type:"",number:""})},a.removePhone=function(e){n.each(a.contacts(),function(){this.phones.remove(e)})},a.save=function(){a.lastSavedJson(JSON.stringify(t.toJS(a.contacts),null,2))},a.lastSavedJson=t.observable("")};return{ContactsModel:new o(a)}});;
-;
-<style type='text/css'>
-    .liveExample h3 { line-height: 30px; }
-    .readout { width: 20em;}
-    .readout td { width: 50%; }
-    .kotable { width: 35em; }
-    tr { vertical-align: top }
-    td { padding: 0.2em 0.2em 0.6em 0.2em; }
-    td.kolabel { text-align: right; padding-right: 0.5em; }
-    input[type=radio] { margin: 0 0.25em 0 0.25em }
-</style>
-<div>
-    <h2>Control Types</h2>
-    <div class="well liveExample">
-        <div class="pull-right">
-            <h3>What's in the model?</h3>
-            <table class="table table-bordered">
-                <tr>
-                    <td class="kolabel">Text value:</td>
-                    <td data-bind="text: stringValue"></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Password:</td>
-                    <td data-bind="text: passwordValue"></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Bool value:</td>
-                    <td data-bind='text: booleanValue() ? "True" : "False"'></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Selected option:</td>
-                    <td data-bind="text: selectedOptionValue"></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Multi-selected options:</td>
-                    <td data-bind="text: multipleSelectedOptionValues"></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Radio button selection:</td>
-                    <td data-bind="text: radioSelectedOptionValue"></td>
-                </tr>
-            </table>
-        </div>
-        <div class="kotable">
-            <h3>HTML controls</h3>
-            <table class="table table-bordered">
-                <tr>
-                    <td class="kolabel">Text value (updates on change):</td>
-                    <td><input data-bind="value: stringValue" /></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Text value (updates on keystroke):</td>
-                    <td><input data-bind='value: stringValue, valueUpdate: "afterkeydown"' /></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Text value (multi-line):</td>
-                    <td><textarea data-bind="value: stringValue"> </textarea></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Password:</td>
-                    <td><input type="password" data-bind="value: passwordValue" /></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Checkbox:</td>
-                    <td><input type="checkbox" data-bind="checked: booleanValue" /></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Drop-down list:</td>
-                    <td><select data-bind="options: optionValues, value: selectedOptionValue"></select></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Multi-select drop-down list:</td>
-                    <td><select multiple="multiple" data-bind="options: optionValues, selectedOptions: multipleSelectedOptionValues"></select></td>
-                </tr>
-                <tr>
-                    <td class="kolabel">Radio buttons:</td>
-                    <td>
-                        <label><input type="radio" value="Alpha" data-bind="checked: radioSelectedOptionValue" />Alpha</label>
-                        <label><input type="radio" value="Beta" data-bind="checked: radioSelectedOptionValue" />Beta</label>
-                        <label><input type="radio" value="Gamma" data-bind="checked: radioSelectedOptionValue" />Gamma</label>
-                    </td>
-                </tr>
-            </table>
-        </div> 
-    </div>
-</div>;
 define(["knockout"],function(e){return{stringValue:e.observable("Hello"),passwordValue:e.observable("mypass"),booleanValue:e.observable(!0),optionValues:["Alpha","Beta","Gamma"],selectedOptionValue:e.observable("Gamma"),multipleSelectedOptionValues:e.observable(["Alpha"]),radioSelectedOptionValue:e.observable("Beta")}});;
-;
-<style type='text/css'>
-    .liveExample table, .liveExample td, .liveExample th { padding: 0.2em; border-width: 0; }
-    .liveExample td input { width: 13em; }
-    tr { vertical-align: top; }
-    .liveExample input.error { border: 1px solid red; background-color: #FDC; }
-    .liveExample label.error { display: block; color: Red; font-size: 0.8em; }    
-</style>
-<div>
-    <h2>Grid Editor</h2>
-    <div class='well liveExample'> 
-        <form data-bind='submit: doSubmit'>
-            <p>You have asked for <span data-bind='text: GiftModel.gifts().length'>&nbsp;</span> gift(s)</p>
-            <table data-bind='visible: GiftModel.gifts().length > 0'>
-                <thead>
-                    <tr>
-                        <th>Gift name</th>
-                        <th>Price</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody data-bind='foreach: GiftModel.gifts'>
-                    <tr>
-                        <td><input class='required' data-bind='value: name, uniqueName: true' /></td>
-                        <td><input class='required number' data-bind='value: price, uniqueName: true' /></td>
-                        <td><button data-bind='click: $root.GiftModel.removeGift'>Delete</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        <button data-bind='click: GiftModel.addGift'>Add Gift</button>
-        <button data-bind='enable: GiftModel.gifts().length > 0' type="submit">Submit</button>
-        </form>
-    </div>
-</div>;
 define(["durandal/system","durandal/app","jquery","knockout"],function(e,n,t,i){function o(){return s.GiftModel.save(),!1}var r=function(e){var t=this;t.gifts=i.observableArray(e),t.addGift=function(){t.gifts.push({name:"",price:""})},t.removeGift=function(e){t.gifts.remove(e)},t.save=function(e){n.showMessage("You could now send this to server: <br/>"+i.utils.stringifyJson(t.gifts),"Grid Editor - Results")}},s={GiftModel:new r([{name:"Tall Hat",price:"39.95"},{name:"Long Cloak",price:"120.00"}]),doSubmit:o};return s});;
-;
-<div>
-    <h2>Hello World</h2>
-    <div class="well liveExample">
-        <p>First name: <input data-bind="value: firstName" /></p>
-        <p>Last name: <input data-bind="value: lastName" /></p>
-        <h3>Hello, <span data-bind="text: fullName"> </span>!</h3>
-    </div>
-</div>;
 define(["knockout"],function(e){var t=e.observable("Planet"),a=e.observable("Earth"),n=e.computed(function(){return t()+" "+a()});return{firstName:t,lastName:a,fullName:n}});;
-;
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.css" />
-<style type="text/css">
-        .grid-stack {
-            background: lightgoldenrodyellow;
-        }
-
-        .grid-stack-item-content {
-            color: #2c3e50;
-            text-align: center;
-            background-color: #18bc9c;
-        }
-    </style>
-<div>
-    <h2>Hello World</h2>     
-     <div data-bind="component: {name: 'dashboard-grid', params: controller}"></div>
-</div>
-;
 define(["knockout","jquery-ui","gridstack-jquery","gridstack","lodash"],function(t,i,d,e,a){t.components.register("dashboard-grid",{viewModel:{createViewModel:function(i,d){var e=function(i,d){var e=null;this.widgets=i.widgets,this.afterAddWidget=function(i){null==e&&(e=$(d.element).find(".grid-stack").gridstack({auto:!1}).data("gridstack"));var n=a.find(i,function(t){return 1==t.nodeType});e.addWidget(n),t.utils.domNodeDisposal.addDisposeCallback(n,function(){e.removeWidget(n)})}};return new e(i,d)}},template:['<div class="grid-stack" data-bind="foreach: {data: widgets, afterRender: afterAddWidget}">',"   <div class=\"grid-stack-item\" data-bind=\"attr: {'data-gs-x': $data.x, 'data-gs-y': $data.y, 'data-gs-width': $data.width, 'data-gs-height': $data.height, 'data-gs-auto-position': $data.auto_position}\">",'       <div class="grid-stack-item-content"><button data-bind="click: $root.deleteWidget">Delete me</button></div>',"   </div>","</div> "].join("")});var n=function(i){var d=this;this.widgets=t.observableArray(i),this.addNewWidget=function(){return this.widgets.push({x:0,y:0,width:Math.floor(1+3*Math.random()),height:Math.floor(1+3*Math.random()),auto_position:!0}),!1},this.deleteWidget=function(t){return d.widgets.remove(t),!1}},o={controller:new n([{x:0,y:0,width:2,height:2},{x:2,y:0,width:4,height:2},{x:6,y:0,width:2,height:4},{x:1,y:2,width:4,height:2}])};return o});;
-<link rel="stylesheet" href="../../lib/gridstack/gridstack.min.css" />
-<div class="container-fluid knockout-samples">
-  <div class="row-fluid">
-    <div class="span2 well">
-        <ul class="nav nav-list">
-            <li class="nav-header">Basic Examples</li>
-            
-            <!--ko foreach: introSamples-->
-            <li data-bind="css: { active: isActive }">
-                <a data-bind="attr: { href: hash }, text: title"></a>
-            </li>
-            <!--/ko-->
-
-            <li class="nav-header">Detailed Examples</li>
-            
-
-            <!--ko foreach: detailedSamples-->
-            <li data-bind="css: { active: isActive }">
-                <a data-bind="attr: { href: hash }, text: title"></a>
-            </li>
-            <!--/ko-->
-        </ul>
-    </div>
-      <div class="span10">
-          <!--ko router: { transition:'entrance', cacheViews:true }--><!--/ko-->
-      </div>
-  </div>
-</div>
-;
 define(["plugins/router","global","knockout"],function(t,e,i){var o=t.createChildRouter().makeRelative({moduleId:"ko",fromParent:!0}).map([{route:["","helloWorld"],moduleId:"helloWorld/index",title:"Hello World",type:"intro",nav:!0},{route:"helloWorld2",moduleId:"helloWorld2/index",title:"Hello World",type:"fiddle",nav:!0},{route:"clickCounter",moduleId:"clickCounter/index",title:"Click Counter",type:"intro",nav:!0},{route:"simpleList",moduleId:"simpleList/index",title:"Simple List",type:"intro",nav:!0},{route:"betterList",moduleId:"betterList/index",title:"Better List",type:"intro",nav:!0},{route:"controlTypes",moduleId:"controlTypes/index",title:"Control Types",type:"intro",nav:!0},{route:"collections",moduleId:"collections/index",title:"Collection",type:"intro",nav:!0},{route:"pagedGrid",moduleId:"pagedGrid/index",title:"Paged Grid",type:"intro",nav:!0},{route:"animatedTrans",moduleId:"animatedTrans/index",title:"Animated Transition",type:"intro",nav:!0},{route:"contactsEditor",moduleId:"contactsEditor/index",title:"Contacts Editor",type:"detailed",nav:!0},{route:"gridEditor",moduleId:"gridEditor/index",title:"Grid Editor",type:"detailed",nav:!0},{route:"shoppingCart",moduleId:"shoppingCart/index",title:"Shopping Cart",type:"detailed",nav:!0},{route:"twitterClient",moduleId:"twitterClient/index",title:"Twitter Client",type:"detailed",nav:!0}]).buildNavigationModel();return{global:e,router:o,getItemsByCategoryId:function(t){return i.utils.arrayFilter(o.navigationModel(),function(e){return e.type===t})}}});;
-;
-<div>
-    <h2>Paged Grid</h2>
-    <div class="well liveExample">
-        <div data-bind='compose: gridViewModel'></div>
- 
-        <button class="btn" data-bind='click: addItem'>
-            Add item
-        </button>
- 
-        <button class="btn" data-bind='click: sortByName'>
-            Sort by name
-        </button>
- 
-        <button class="btn" data-bind='click: jumpToFirstPage, enable: gridViewModel.currentPageIndex'>
-            Jump to first page
-        </button> 
-    </div>
-</div>;
 define(["durandal/system","durandal/app","./simpleGrid","knockout"],function(e,a,n,r){var i=[{name:"Well-Travelled Kitten",sales:352,price:75.95},{name:"Speedy Coyote",sales:89,price:190},{name:"Furious Lizard",sales:152,price:25},{name:"Indifferent Monkey",sales:1,price:99.95},{name:"Brooding Dragon",sales:0,price:6350},{name:"Ingenious Tadpole",sales:39450,price:.35},{name:"Optimistic Snail",sales:420,price:1.5}],t=r.observableArray(i),s=new n({data:t,columns:[{headerText:"Item Name",rowText:"name"},{headerText:"Sales Count",rowText:"sales"},{headerText:"Price",rowText:function(e){return"$"+e.price.toFixed(2)}}],pageSize:4}),o=function(){t.push({name:"New item",sales:0,price:100})},d=function(){t.sort(function(e,a){return e.name<a.name?-1:1})},l=function(){s.currentPageIndex(0)};return{items:t,addItem:o,sortByName:d,jumpToFirstPage:l,gridViewModel:s,SimpleGrid:n}});;
-<div>
-    <table class="table table-striped" cellspacing="0 ">
-        <thead>
-            <tr data-bind="foreach: columns">
-                <th data-bind="text: headerText"></th>
-            </tr>
-        </thead>
-        <tbody class="table table-hover" data-bind="foreach: itemsOnCurrentPage">
-            <tr data-bind="foreach: $parent.columns">
-                <td data-bind="text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]"></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="pagination">
-        <ul>
-            <!-- ko foreach: ko.utils.range(0, maxPageIndex) -->
-            <li>
-                <a href="#" data-bind="text: $data + 1, click: function () { $root.currentPageIndex($data); }"></a>
-            </li>
-            <!-- /ko -->
-        </ul>
-    </div>
-</div>;
 define(["knockout"],function(e){var t=function(t){this.data=t.data,this.currentPageIndex=e.observable(0),this.pageSize=t.pageSize||5,this.columns=t.columns||getColumnsForScaffolding(e.utils.unwrapObservable(this.data)),this.itemsOnCurrentPage=e.computed(function(){var e=this.pageSize*this.currentPageIndex();return this.data.slice(e,e+this.pageSize)},this),this.maxPageIndex=e.computed(function(){return Math.ceil(e.utils.unwrapObservable(this.data).length/this.pageSize)-1},this)};return t.prototype.getColumnsForScaffolding=function(e){if("number"!=typeof e.length||0===e.length)return[];var t=[];for(var n in e[0])t.push({headerText:n,rowText:n});return t},t});;
-;
-<style>
-    .liveExample .price  { text-align: center }
-    .liveExample th { width: 11em; }
-    .liveExample input { width: 8em; float:right; text-align:right; padding-right:10px; }
-</style>
-<div>
-    <h2>Shopping Cart</h2>
-    <div class="well liveExample">
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Product</th>
-                    <th class="price">Price</th>
-                    <th class="quantity">Quantity</th>
-                    <th class="price">Subtotal</th>
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody data-bind='foreach: Cart.lines'>
-                <tr>
-                    <td>
-                        <select data-bind='options: sampleProductCategories, optionsText: "name", optionsCaption: "Select...", value: category'> </select>
-                    </td>
-                    <td data-bind="with: category">
-                        <select data-bind='options: products, optionsText: "name", optionsCaption: "Select...", value: $parent.product'> </select>
-                    </td>
-                    <td class='price' data-bind='with: product'>
-                        <span data-bind='text: $root.formatCurrency(price)'> </span>
-                    </td>
-                    <td class='quantity'>
-                        <input data-bind='visible: product, value: quantity, valueUpdate: "afterkeydown"' />
-                    </td>
-                    <td class='price'>
-                        <span data-bind='visible: product, text: $root.formatCurrency(subtotal())' > </span>
-                    </td>
-                    <td>
-                        <button data-bind='click: $root.Cart.removeLine'>Remove</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p class='grandTotal'>
-            Total value: <span data-bind='text: formatCurrency(Cart.grandTotal())'> </span>
-        </p>
-        <button data-bind='click: Cart.addLine'>Add product</button>
-        <button data-bind='click: Cart.save'>Submit order</button>
-    </div>
-</div>;
 define(["durandal/system","durandal/app","./sampleProductCategories","jquery","knockout"],function(t,e,n,r,o){function u(t){return"$"+t.toFixed(2)}var a=function(){var t=this;t.category=o.observable(),t.product=o.observable(),t.quantity=o.observable(1),t.subtotal=o.computed(function(){return t.product()?t.product().price*parseInt("0"+t.quantity(),10):0}),t.category.subscribe(function(){t.product(void 0)})},i=function(){var t=this;t.lines=o.observableArray([new a]),t.grandTotal=o.computed(function(){var e=0;return r.each(t.lines(),function(){e+=this.subtotal()}),e}),t.addLine=function(){t.lines.push(new a)},t.removeLine=function(e){t.lines.remove(e)},t.save=function(){var n=r.map(t.lines(),function(t){return t.product()?{productName:t.product().name,quantity:t.quantity()}:void 0});e.showMessage("You could now send this to server: <br/>"+JSON.stringify(n),"Your Shopping Cart")}};return{Cart:new i,formatCurrency:u,sampleProductCategories:n}});;
 define([],function(){return sampleProductCategories=[{products:[{name:"1948 Porsche 356-A Roadster",price:53.9},{name:"1948 Porsche Type 356 Roadster",price:62.16},{name:"1949 Jaguar XK 120",price:47.25},{name:"1952 Alpine Renault 1300",price:98.58},{name:"1952 Citroen-15CV",price:72.82},{name:"1956 Porsche 356A Coupe",price:98.3},{name:"1957 Corvette Convertible",price:69.93},{name:"1957 Ford Thunderbird",price:34.21},{name:"1958 Chevy Corvette Limited Edition",price:15.91},{name:"1961 Chevrolet Impala",price:32.33},{name:"1962 LanciaA Delta 16V",price:103.42},{name:"1965 Aston Martin DB5",price:65.96},{name:"1966 Shelby Cobra 427 S/C",price:29.18},{name:"1968 Dodge Charger",price:75.16},{name:"1968 Ford Mustang",price:95.34},{name:"1969 Chevrolet Camaro Z28",price:50.51},{name:"1969 Corvair Monza",price:89.14},{name:"1969 Dodge Charger",price:58.73},{name:"1969 Dodge Super Bee",price:49.05},{name:"1969 Ford Falcon",price:83.05},{name:"1970 Chevy Chevelle SS 454",price:49.24},{name:"1970 Dodge Coronet",price:32.37},{name:"1970 Plymouth Hemi Cuda",price:31.92},{name:"1970 Triumph Spitfire",price:91.92},{name:"1971 Alpine Renault 1600s",price:38.58},{name:"1972 Alfa Romeo GTA",price:85.68},{name:"1976 Ford Gran Torino",price:73.49},{name:"1982 Camaro Z28",price:46.53},{name:"1982 Lamborghini Diablo",price:16.24},{name:"1985 Toyota Supra",price:57.01},{name:"1992 Ferrari 360 Spider red",price:77.9},{name:"1992 Porsche Cayenne Turbo Silver",price:69.78},{name:"1993 Mazda RX-7",price:83.51},{name:"1995 Honda Civic",price:93.89},{name:"1998 Chrysler Plymouth Prowler",price:101.51},{name:"1999 Indy 500 Monte Carlo SS",price:56.76},{name:"2001 Ferrari Enzo",price:95.59},{name:"2002 Chevy Corvette",price:62.11}],name:"Classic Cars"},{products:[{name:"1936 Harley Davidson El Knucklehead",price:24.23},{name:"1957 Vespa GS150",price:32.95},{name:"1960 BSA Gold Star DBD34",price:37.32},{name:"1969 Harley Davidson Ultimate Chopper",price:48.81},{name:"1974 Ducati 350 Mk3 Desmo",price:56.13},{name:"1982 Ducati 900 Monster",price:47.1},{name:"1982 Ducati 996 R",price:24.14},{name:"1996 Moto Guzzi 1100i",price:68.99},{name:"1997 BMW F650 ST",price:66.92},{name:"1997 BMW R 1100 S",price:60.86},{name:"2002 Suzuki XREO",price:66.27},{name:"2002 Yamaha YZR M1",price:34.17},{name:"2003 Harley-Davidson Eagle Drag Bike",price:91.02}],name:"Motorcycles"},{products:[{name:"1900s Vintage Bi-Plane",price:34.25},{name:"1900s Vintage Tri-Plane",price:36.23},{name:"1928 British Royal Navy Airplane",price:66.74},{name:"1980s Black Hawk Helicopter",price:77.27},{name:"ATA: B757-300",price:59.33},{name:"America West Airlines B757-200",price:68.8},{name:"American Airlines: B767-300",price:51.15},{name:"American Airlines: MD-11S",price:36.27},{name:"Boeing X-32A JSF",price:32.77},{name:"Corsair F4U ( Bird Cage)",price:29.34},{name:"F/A 18 Hornet 1/72",price:54.4},{name:"P-51-D Mustang",price:49}],name:"Planes"},{products:[{name:"18th century schooner",price:82.34},{name:"1999 Yamaha Speed Boat",price:51.61},{name:"HMS Bounty",price:39.83},{name:"Pont Yacht",price:33.3},{name:"The Mayflower",price:43.3},{name:"The Queen Mary",price:53.63},{name:"The Schooner Bluenose",price:34},{name:"The Titanic",price:51.09},{name:"The USS Constitution Ship",price:33.97}],name:"Ships"},{products:[{name:"1950's Chicago Surface Lines Streetcar",price:26.72},{name:"1962 City of Detroit Streetcar",price:37.49},{name:"Collectable Wooden Train",price:67.56}],name:"Trains"},{products:[{name:"1926 Ford Fire Engine",price:24.92},{name:"1940 Ford Pickup Truck",price:58.33},{name:"1940s Ford truck",price:84.76},{name:"1954 Greyhound Scenicruiser",price:25.98},{name:"1957 Chevy Pickup",price:55.7},{name:"1958 Setra Bus",price:77.9},{name:"1962 Volkswagen Microbus",price:61.34},{name:"1964 Mercedes Tour Bus",price:74.86},{name:"1980â€™s GM Manhattan Express",price:53.93},{name:"1996 Peterbilt 379 Stake Bed with Outrigger",price:33.61},{name:"Diamond T620 Semi-Skirted Tanker",price:68.29}],name:"Trucks and Buses"},{products:[{name:"18th Century Vintage Horse Carriage",price:60.74},{name:"1903 Ford Model A",price:68.3},{name:"1904 Buick Runabout",price:52.66},{name:"1911 Ford Town Car",price:33.3},{name:"1912 Ford Model T Delivery Wagon",price:46.91},{name:"1913 Ford Model T Speedster",price:60.78},{name:"1917 Grand Touring Sedan",price:86.7},{name:"1917 Maxwell Touring Car",price:57.54},{name:"1928 Ford Phaeton Deluxe",price:33.02},{name:"1928 Mercedes-Benz SSK",price:72.56},{name:"1930 Buick Marquette Phaeton",price:27.06},{name:"1932 Alfa Romeo 8C2300 Spider Sport",price:43.26},{name:"1932 Model A Ford J-Coupe",price:58.48},{name:"1934 Ford V8 Coupe",price:34.35},{name:"1936 Chrysler Airflow",price:57.46},{name:"1936 Mercedes Benz 500k Roadster",price:21.75},{name:"1936 Mercedes-Benz 500K Special Roadster",price:24.26},{name:"1937 Horch 930V Limousine",price:26.3},{name:"1937 Lincoln Berline",price:60.62},{name:"1938 Cadillac V-16 Presidential Limousine",price:20.61},{name:"1939 Cadillac Limousine",price:23.14},{name:"1939 Chevrolet Deluxe Coupe",price:22.57},{name:"1940 Ford Delivery Sedan",price:48.64},{name:"1941 Chevrolet Special Deluxe Cabriolet",price:64.58}],name:"Vintage Cars"}]});;
-;
-<div>
-    <h2>Simple List</h2>
-    <div class="well liveExample">
-        <form data-bind="submit: addItem">
-            <label>Add item:</label>
-            <div class="input-append">
-                <input class="span3" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
-                <button class="btn" type="submit" data-bind="enable: itemToAdd().length > 0">Add</button>
-            </div>
-            <br />
-            <p>Your items:</p>
-            <select multiple="multiple" width="50" data-bind="options: items"></select>
-        </form>
-    </div>
-</div>;
 define(["knockout"],function(e){var a=["Alpha","Beta","Gamma"],t=e.observableArray(a),n=e.observable(""),o=function(){""!=n()&&(t.push(n()),n(""))};return{items:t,itemToAdd:n,addItem:o}});;
-;
-<div>
-    <h2>Twitter Client</h2>
-    <div class='configuration'>
-        <div class='listChooser'>
-            <button data-bind='click: deleteList, enable: editingList.name'>Delete</button>
-            <button data-bind='click: saveChanges, enable: hasUnsavedChanges'>Save</button>
-            <select data-bind='options: savedLists, optionsValue: "name", value: editingList.name'> </select>
-        </div>
- 
-        <p>Currently viewing <span data-bind='text: editingList.userNames().length'> </span> user(s):</p>
-        <div class='currentUsers' data-bind='with: editingList'>
-            <ul data-bind='foreach: userNames'>
-                <li>
-                    <button data-bind='click: $root.removeUser'>Remove</button>
-                    <div data-bind="text: $data"> </div>
-                </li>
-            </ul>
-        </div>
- 
-        <form data-bind='submit: addUser'>
-            <label>Add user:</label>
-            <input data-bind='value: userNameToAdd, valueUpdate: "keyup", css: { invalid: !userNameToAddIsValid() }' />
-            <button data-bind='enable: canAddUserName' type='submit'>Add</button>
-        </form>
-    </div>
-    <div class='tweets'>
-        <div class='loadingIndicator'>Loading...</div>
-        <table width='100%' data-bind="foreach: currentTweets">
-            <tr>
-                <td><img data-bind='attr: { src: profile_image_url }' /></td>
-                <td>
-                    <a class='twitterUser' data-bind='attr: { href: "http://twitter.com/" + from_user }, text: from_user' href='http://twitter.com/${ from_user }' > </a>
-                    <span data-bind="text: text"> </span>
-                    <div class='tweetInfo' data-bind='text: created_at'> </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>;
 define(["durandal/system","jquery","knockout"],function(e,r,n){var s=[{name:"SPA Advocates",userNames:["DurandalJS","John_Papa","EisenbergEffect","wardbell","DanWahlin","mikekidder"]},{name:"Celebrities",userNames:["JohnCleese","MCHammer","StephenFry","algore","StevenSanderson"]},{name:"Microsoft people",userNames:["BillGates","shanselman","ScottGu"]},{name:"Tech pundits",userNames:["Scobleizer","LeoLaporte","techcrunch","BoingBoing","timoreilly","codinghorror"]}],a="SPA Advocates",t=function(){var e=function(e,r){var n;return function(){var s=arguments;n&&clearTimeout(n),n=setTimeout(function(){n=null,e.apply(window,s)},r)}},n=e(function(e,n){if(0==e.length)n([]);else{for(var s="http://search.twitter.com/search.json?callback=?&rpp=100&q=",a=0;a<e.length;a++)s+="from:"+e[a]+(a<e.length-1?" OR ":"");r.ajax({url:s,dataType:"jsonp",success:function(e){n(r.grep(e.results||[],function(e){return!e.to_user_id}))}})}},50);return{getTweetsForUser:function(e,r){return this.getTweetsForUsers([e],r)},getTweetsForUsers:function(e,r){return n(e,r)}}}(),u=n.observableArray(s),o={name:n.observable(a),userNames:n.observableArray()},i=n.observable(""),m=n.observableArray([]),c=function(e){var r=u();return n.utils.arrayFirst(r,function(r){return r.name===e})},l=function(){i()&&p()&&(o.userNames.push(i()),i(""))},d=function(e){o.userNames.remove(e)},f=function(){var e=prompt("Save as",o.name());if(e){var r=o.userNames().slice(0),n=c(e);n?n.userNames=r:u.push({name:e,userNames:r}),o.name(e)}},v=function(){var e=o.name(),n=r.grep(u(),function(r){return r.name!=e});o.name(0==n.length?null:n[0].name),u(n)},h=n.computed(function(){if(!o.name())return o.userNames().length>0;var e=c(o.name()).userNames,r=o.userNames();return e.join("|")!=r.join("|")}),p=n.computed(function(){return""==i()||null!=i().match(/^\s*[a-zA-Z0-9_]{1,15}\s*$/)}),N=n.computed(function(){return p()&&""!=i()});return n.computed(function(){t.getTweetsForUsers(o.userNames(),m)}),n.computed(function(){var e=c(o.name());if(e){var r=e.userNames.slice(0);o.userNames(r)}else o.userNames([])}),{savedLists:u,editingList:o,userNameToAdd:i,currentTweets:m,findSavedList:c,addUser:l,removeUser:d,saveChanges:f,deleteList:v,hasUnsavedChanges:h,userNameToAddIsValid:p,canAddUserName:N}});;
-<div class="container-fluid knockout-samples">
-    <div class="row-fluid">
-        <div class="col-md-2">
-            <ul class="nav nav-list">
-                <!--ko foreach: global.categories -->
-                <li class="nav-header" data-bind="text: text"></li>
-                    <!--ko foreach: $parent.getItemsByCategoryId($data.id)-->
-                       <li data-bind="css: { active: isActive }">
-                           <a data-bind="attr: { href: hash }, text: title"></a>
-                       </li>
-                   <!--/ko-->
-                <!--/ko-->
-            </ul>
-        </div>
-        <div class="col-md-10" style="padding: 0">
-            <!-- ko if: $data.global.isDFiddle -->
-            <div class="alert">
-                <strong>dFiddle</strong> code available at <a
-                data-bind="attr: { href: global.dFiddleRepoUrl }, text: global.dFiddleRepoUrl"></a>
-            </div>
-            <!-- /ko -->
-            <!--ko router: { transition:'entrance', cacheViews:false }--><!--/ko-->
-        </div>
-    </div>
-</div>
-;
 requirejs.config({paths:{text:"../lib/require/text",durandal:"../lib/durandal/js",plugins:"../lib/durandal/js/plugins",transitions:"../lib/durandal/js/transitions",knockout:"../lib/knockout/knockout.3.4.1",bootstrap:"../lib/bootstrap/js/bootstrap",jquery:"../lib/jquery/jquery-1.9.1"},shim:{bootstrap:{deps:["jquery"],exports:"jQuery"}}}),define(["durandal/system","durandal/app","durandal/viewLocator"],function(t,n,r){n.title="Durandal Samples",n.configurePlugins({router:!0,dialog:!0,widget:{kinds:["expander"]}}),n.start().then(function(){r.useConvention(),n.setRoot("shell")})});;
-;
-;
-<div>
-    <h1>Master Detail</h1>
-    
-    <label>Select Project</label>
-    <select data-bind="options: projects, optionsText: 'name', value: activeProject"></select>
-    
-    <!--ko compose: activeProject--><!--/ko-->
-</div>;
 define(["./project","durandal/activator","knockout"],function(r,a,i){var e=i.observableArray([new r("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS."),new r("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new r("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]);return{projects:e,activeProject:a.create().forItems(e)}});;
-<div>
-    <h2 data-bind="html: name"></h2>
-    <div data-bind="html: description"></div>
-</div>;
 define(["durandal/system","durandal/app"],function(t,e){var a=function(t,e){this.name=t,this.description=e};return a.prototype.canActivate=function(){return e.showMessage("Do you want to view "+this.name+"?","Master Detail",["Yes","No"])},a.prototype.activate=function(){t.log("Model Activating",this)},a.prototype.canDeactivate=function(){return e.showMessage("Do you want to leave "+this.name+"?","Master Detail",["Yes","No"])},a.prototype.deactivate=function(){t.log("Model Deactivating",this)},a});;
-;
-<div>
-    <h1>Master Detail</h1>
-    
-    <label>Select Project</label>
-    <select data-bind="options: projects, optionsText: 'name', value: activeProject"></select>
-    
-    <!--ko compose: activeProject--><!--/ko-->
-</div>;
 define(["./project","durandal/activator","knockout"],function(r,a,i){var e=i.observableArray([new r("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS."),new r("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new r("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]);return{projects:e,activeProject:a.create().forItems(e)}});;
-<div>
-    <h2 data-bind="html: name"></h2>
-    <div data-bind="html: description"></div>
-</div>;
 define(["durandal/system","durandal/app"],function(t,e){var a=function(t,e){this.name=t,this.description=e};return a.prototype.canActivate=function(){return e.showMessage("Do you want to view "+this.name+"?","Master Detail",["Yes","No"])},a.prototype.activate=function(){t.log("Model Activating",this)},a.prototype.canDeactivate=function(){return e.showMessage("Do you want to leave "+this.name+"?","Master Detail",["Yes","No"])},a.prototype.deactivate=function(){t.log("Model Deactivating",this)},a});;
 define(["plugins/router","global","knockout"],function(e,t,d){var i=e.createChildRouter().makeRelative({moduleId:"masterDetail",route:"master-detail"}).map([{type:"intro",title:"Master Detail",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"Master Detail",route:"dFiddle",moduleId:"dFiddle/index",nav:!0},{type:"fiddle",title:"Wizard",route:"wizard",moduleId:"wizard/index",nav:!0},{type:"fiddle",title:"Wizard2",route:"wizard2",moduleId:"wizard2/index",nav:!0},{type:"fiddle",title:"so19719038",route:"so19719038",moduleId:"so19719038/index",nav:!0}]).buildNavigationModel();return i.on("router:navigation:complete").then(t.createSampleLink),{global:t,router:i,getItemsByCategoryId:function(e){return d.utils.arrayFilter(i.navigationModel(),function(t){return t.type===e})}}});;
-;
-<div>
-    <h1>Master Detail</h1>
-    
-    <label>Select Project</label>
-    <select data-bind="options: projects, optionsText: 'name', value: activeProject"></select>
-    
-    <!--ko compose: activeProject--><!--/ko-->
-</div>;
 define(["./project","durandal/activator","knockout"],function(r,a,i){var e=i.observableArray([new r("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS."),new r("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new r("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]);return{projects:e,activeProject:a.create().forItems(e)}});;
-<div>
-    <h2 data-bind="html: name"></h2>
-    <div data-bind="html: description"></div>
-</div>;
 define(["durandal/system","durandal/app"],function(t,e){var n=function(t,e){this.runInit=!0,this.name=t,this.description=e};return n.prototype.canActivate=function(){return e.showMessage("Do you want to view "+this.name+"?","Master Detail",["Yes","No"])},n.prototype.activate=function(){this.runInit&&(this.runInit=!1,t.log("Model Activating",this))},n.prototype.canDeactivate=function(){return e.showMessage("Do you want to leave "+this.name+"?","Master Detail",["Yes","No"])},n.prototype.deactivate=function(){t.log("Model Deactivating",this)},n});;
-;
-<div>
-
-    <h1 class="alert alert-info">Wizard</h1>
-    <div class="pager">
-     <a href="#" class="btn" data-bind="css: { disabled: !hasPrevious()}, click: previous"><i
-         class="icon-angle-left"></i
-         >previous</a>
-     <a href="#" class="btn" data-bind="css: { disabled: !hasNext()}, click: next">next <i
-        class="icon-angle-right"></i></a>
-    </div>
-
-    <!-- ko compose: activeStep -->
-    <!-- /ko -->
-</div>;
 define(["durandal/activator","./step1","./step2","./step3","knockout"],function(e,t,n,o,r){function u(){a()<p&&(a(a()+1),i(c[a()]))}function s(){a()>0&&(a(a()-1),i(c[a()]))}var c=[new t,new n,new o],a=r.observable(0),i=e.create(),p=c.length,d=r.computed(function(){return a()>0}),f=r.computed(function(){return a()<p-1});return i(c[a()]),{showCodeUrl:!0,steps:c,step:a,activeStep:i,next:u,previous:s,hasPrevious:d,hasNext:f}});;
-<div>
-    <h2 data-bind="text: name"></h2>
-    <p data-bind="text: s1one"></p>
-    <p data-bind="text: s1two"></p>
-</div>;
 define([],function(){return function(){this.name="Step 1",this.s1one="Unique to"+this.name,this.s1two="Another property unique to"+this.name}});;
-<div>
-    <h2 data-bind="text: name"></h2>
-    <p data-bind="text: property"></p>
-    
-</div>;
 define([],function(){return function(){this.name="Step 2",this.property="Unique to"+this.name}});;
-<div>
-    <h2 data-bind="text: name"></h2>
-    <p data-bind="text: property"></p>
-    
-</div>;
 define([],function(){return function(){this.name="Step 3",this.property="Unique to"+this.name}});;
-;
-<div>
-
-    <h1 class="alert alert-info">Wizard</h1>
-
-    <!-- ko compose: activeScreen -->
-    <!-- /ko -->
-</div>;
 define(["durandal/activator","knockout","./wizard"],function(e,p,o){var r=function(){this.activeScreen=p.observable()};return r.prototype.activate=function(e){var p={id:"wizard001",mode:"create",steps:[{id:"s001",name:"step one",props:{prop1:"one",prop2:"Donald"}},{id:"s002",name:"step twoe",props:{prop3:"two",prop4:"Daisy"}},{id:"s003",name:"step three",props:{prop5:"three",prop6:"Daphne"}},{id:"s004",name:"step four",props:{prop7:"four",prop8:"Dagobert"}},{id:"s005",name:"step five",props:{prop9:"five",prop10:"Della"}}]};this.activeScreen(new o(p))},r});;
-<div>
-    <h2 data-bind="text: id"></h2>
-    <p data-bind="text: name"></p>
-    <form data-bind="foreach: props">
-        <label data-bind="attr: {for: id}, text: id"></label>
-        <input data-bind="attr: {id: id}, value: val" />
-    </form>
-</div>;
 define(["knockout"],function(i){var t=function(t,n){this.id=t,this.val=i.observable(n)},n=function(t){this._options=t||{},this.id=i.observable(),this.name=i.observable(),this.props=i.observableArray([]),this.init(this._options)};return n.prototype.init=function(i){function n(i){var n=[];return $.each(i,function(i,o){n.push(new t(i,o))}),n}this.id(i.id||""),this.name(i.name||""),this.props(n(i.props))},n});;
-<div>
-
-   <div class="pager">
-     <a href="#" class="btn" data-bind="css: { disabled: !hasPrevious()}, click: previous"><i
-         class="icon-angle-left"></i>previous</a>
-     <a href="#" class="btn" data-bind="css: { disabled: !hasNext()}, click: next">next <i
-        class="icon-angle-right"></i></a>
-    </div>
-
-    <!-- ko compose: activeStep -->
-    <!-- /ko -->
-</div>;
 define(["durandal/activator","./step","knockout"],function(t,s,e){var i=function(s){this._options=s||{},this.id=e.observable(""),this.mode=e.observable(""),this.steps=e.observableArray([]),this.step=e.observable(0),this.activeStep=t.create(),this.init(this._options),this.stepsLength=e.computed(function(){return this.steps().length},this),this.hasPrevious=e.computed(function(){return this.step()>0},this),this.hasNext=e.computed(function(){return this.step()<this.stepsLength()-1},this)};return i.prototype.next=function(){this.step()<this.stepsLength()&&(this.step(this.step()+1),this.activateStep())},i.prototype.activateStep=function(){this.activeStep(this.steps()[this.step()])},i.prototype.previous=function(){this.step()>0&&(this.step(this.step()-1),this.activateStep())},i.prototype.init=function(t){function e(t){var e=[];return $.each(t,function(t,i){e.push(new s(i))}),e}var i=t;this.id(i.id),this.mode(i.mode),this.steps(e(t.steps)),this.activateStep()},i});;
-;
-;
-<div class="modal-content">
-    <div class="modal-header">
-        <h3>Color</h3>
-    </div>
-    <div class="modal-body">
-        <form data-bind="submit: ok">
-            <p class="message">What is your favorite color?</p>
-            <input data-bind="value: input, valueUpdate: 'afterkeydown'" class="autofocus"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-bind="click: ok">Ok</button>
-    </div>
-</div>;
 define(["plugins/dialog","knockout"],function(o,t){var n=function(){this.input=t.observable("")};return n.prototype.ok=function(){o.close(this,this.input())},n.prototype.canDeactivate=function(){return o.showMessage("Are you sure that's your favorite color?","Just Checking...",["Yes","No"])},n.show=function(){return o.show(new n)},n});;
-<div>
-    <h2>Click the button below to show a custom modal.</h2>
-    <button class="btn" data-bind="click:showCustomModal">Show Custom Modal</button>
-</div>;
 define(["durandal/app","./customModal"],function(n,o){return{showCustomModal:function(){o.show().then(function(o){n.showMessage('You answered "'+o+'".')})}}});;
-;
-<div class="modal-content">
-    <div class="modal-header">
-        <h3>Color</h3>
-    </div>
-    <div class="modal-body">
-        <form data-bind="submit: ok">
-            <p class="message">What is your favorite color?</p>
-            <input data-bind="value: input, valueUpdate: 'afterkeydown'" class="autofocus"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-bind="click: ok">Ok</button>
-    </div>
-</div>;
 define(["plugins/dialog","knockout"],function(o,t){var n=function(){this.input=t.observable("")};return n.prototype.ok=function(){o.close(this,this.input())},n.prototype.canDeactivate=function(){return o.showMessage("Are you sure that's your favorite color?","Just Checking...",["Yes","No"])},n.show=function(){return o.show(new n)},n});;
-<div>
-    <h2>Click the button below to show a custom modal.</h2>
-    <button class="btn" data-bind="click:showCustomModal">Show Custom Modal</button>
-</div>;
 define(["durandal/app","./customModal"],function(n,o){return{showCustomModal:function(){o.show().then(function(o){n.showMessage('You answered "'+o+'".')})}}});;
 define(["plugins/router","global","knockout"],function(e,t,o){var l=e.createChildRouter().makeRelative({moduleId:"modal",route:"modal"}).map([{type:"intro",title:"Modal Dialog",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"Modal Dialog",route:"dFiddle",moduleId:"dFiddle/index",nav:!0}]).buildNavigationModel();return l.on("router:navigation:complete").then(t.createSampleLink),{global:t,router:l,getItemsByCategoryId:function(e){return o.utils.arrayFilter(l.navigationModel(),function(t){return t.type===e})}}});;
-;
 /**
  * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
@@ -1177,115 +356,18 @@ define(["durandal/system"],function(e){return{typeAttribute:"type",space:void 0,
  */
 
 define(["durandal/system","durandal/composition","jquery","knockout"],function(n,i,t,e){function d(n,t){var d=e.utils.domData.get(n,s);d||(d={parts:i.cloneNodes(e.virtualElements.childNodes(n))},e.virtualElements.emptyNode(n),e.utils.domData.set(n,s,d)),t.parts=d.parts}var o={},r={},a=["model","view","kind"],s="durandal-widget-data",u={getSettings:function(i){var t=e.utils.unwrapObservable(i())||{};if(n.isString(t))return{kind:t};for(var d in t)e.utils.arrayIndexOf(a,d)!=-1?t[d]=e.utils.unwrapObservable(t[d]):t[d]=t[d];return t},registerKind:function(n){e.bindingHandlers[n]={init:function(){return{controlsDescendantBindings:!0}},update:function(i,t,e,o,r){var a=u.getSettings(t);a.kind=n,d(i,a),u.create(i,a,r,!0)}},e.virtualElements.allowedBindings[n]=!0,i.composeBindings.push(n+":")},mapKind:function(n,i,t){i&&(r[n]=i),t&&(o[n]=t)},mapKindToModuleId:function(n){return o[n]||u.convertKindToModulePath(n)},convertKindToModulePath:function(n){return"widgets/"+n+"/viewmodel"},mapKindToViewId:function(n){return r[n]||u.convertKindToViewPath(n)},convertKindToViewPath:function(n){return"widgets/"+n+"/view"},createCompositionSettings:function(n,i){return i.model||(i.model=this.mapKindToModuleId(i.kind)),i.view||(i.view=this.mapKindToViewId(i.kind)),i.preserveContext=!0,i.activate=!0,i.activationData=i,i.mode="templated",i},create:function(n,t,e,d){d||(t=u.getSettings(function(){return t},n));var o=u.createCompositionSettings(n,t);i.compose(n,o,e)},install:function(n){if(n.bindingName=n.bindingName||"widget",n.kinds)for(var t=n.kinds,o=0;o<t.length;o++)u.registerKind(t[o]);e.bindingHandlers[n.bindingName]={init:function(){return{controlsDescendantBindings:!0}},update:function(n,i,t,e,o){var r=u.getSettings(i);d(n,r),u.create(n,r,o,!0)}},i.composeBindings.push(n.bindingName+":"),e.virtualElements.allowedBindings[n.bindingName]=!0}};return u});;
-<div>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">
-                <i class="fa fa-home"></i>
-                <span>Durandal</span>
-            </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-           <ul class="nav navbar-nav" data-bind="foreach: router.navigationModel">
-               <li data-bind="css: { active: isActive }">
-                   <a data-bind="attr: { href: hash }, text: title"></a>
-               </li>
-           </ul>
-
-           <ul class="nav navbar-nav navbar-right">
-               <li class="loader" data-bind="css: { active: router.isNavigating }">
-                   <i class="fa fa-spinner fa-spin fa-2x"></i>
-               </li>
-           </ul>
-       </div>
-
-
-    </nav>
-    
-    <div class="container-fluid page-host"
-         data-bind="router: { transition:'entrance', view: 'listing', cacheViews:true }"></div>
-</div>;
 define(["plugins/router"],function(e){return e.guardRoute=function(e,t,o){return""!==t.fragment||e.router.routes[0].hash},{router:e,activate:function(){return e.map([{route:"",moduleId:"hello/index",title:"Hello World"},{route:"hello*details",hash:"#hello",moduleId:"hello/index",title:"Hello World",nav:1},{route:"view-composition*details",hash:"#view-composition",moduleId:"viewComposition/index",title:"View Composition",nav:!0},{route:"modal*details",hash:"#modal",moduleId:"modal/index",title:"Modal Dialogs",nav:3},{route:"event-aggregator*details",hash:"#event-aggregator",moduleId:"eventAggregator/index",title:"Events",nav:2},{route:"widgets*details",hash:"#widgets",moduleId:"widgets/index",title:"Widgets",nav:!0},{route:"master-detail*details",hash:"#master-detail",moduleId:"masterDetail/index",title:"Master Detail",nav:!0},{route:"knockout-samples*details",hash:"#knockout-samples",moduleId:"ko/index",title:"Knockout Samples",nav:!0},{route:"extras*details",hash:"#extras",moduleId:"extras/index",title:"Extras",nav:!0,admin:!0},{route:"so*details",hash:"#so",moduleId:"so/index",title:"so",nav:!0}]).buildNavigationModel(),e.activate()}}});;
-;
-;
 define(["./someothermodule","durandal/app","jquery"],function(e,t,r){"use strict";var s=function(r,s){this.username=r,this.password=s,this.whatever=e.whatever(),t.trigger("whatever",this.whatever)};return s.prototype.getCustomers=function(){return r.getJSON("app/so/19551060/fixtures/customer.json")},s});;
-;
-[
-    {"Id": 1, "Name" : "ABC"},
-    {"Id": 2, "Name" : "DEF"}
-];
-<div>
-    <h3>How to use requires to return constructor functions that have dependencies</h3>
-    
-    <ul data-bind="foreach: customers">
-        <li data-bind="text: ko.toJSON($data)"></li>
-    </ul>
-
-</div>;
 define(["./backend","knockout"],function(e,t){"use strict";return{customers:t.observableArray([]),activate:function(){var t=this,n=new e("username","password");return n.getCustomers().then(function(e){t.customers(e)})}}});;
 define([],function(){"use strict";var e=function(){return"whatever return value"};return{whatever:e}});;
-;
-<div>
-    <h3>require('search') is undefined using RequireJS</h3>
-    
-
-        <p data-bind="text: ko.toJSON($data)"></p>
-
-
-</div>;
 define(["require","./search"],function(e){"use strict";var r=e("./search");return{searchObj:r}});;
 define(["require","knockout"],function(e){"use strict";var r=e("knockout"),b=function(){var e=this;e.DeviceSerialNumber=r.observable(""),e.OrderNumber=r.observable(""),e.PosTranNumber=r.observable(""),e.EmailAddress=r.observable(""),e.SuspendedbarCode=r.observable(""),e.MobileNumber=r.observable("")};return new b});;
-;
-    <div>
-        <h1>Widgets Sample</h1>
-        <!-- ko foreach: new Array(100) -->
-        <div data-bind="expander:{items:$root.projects}">
-            <h3 data-part="header">Project: <span data-bind="text: name"></span></h3>
-        </div>
-        <!-- /ko -->
-        <button class="btn" data-bind="click: addNewProject">Add</button>
-    </div>
-;
 define(["./project","plugins/widget","knockout"],function(e,r,i){return{projects:i.observableArray([new e("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS."),new e("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new e("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]),addNewProject:function(){this.projects.push(new e("New Project ","A test project."))}}});;
-<div>
-    <div data-bind="html: description"></div>
-</div>;
 define([],function(){return function(n,i){this.name=n,this.description=i}});;
-;
-<div class="modal-content">
-    <div class="modal-header">
-        <h3 data-bind="text: title"></h3>
-    </div>
-    <div class="modal-body">
-        <!--ko compose: $data.model-->
-        <!--/ko-->
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-bind="click: ok">Ok</button>
-    </div>
-</div>;
 define(["plugins/dialog"],function(t){var o=function(t,o){this.title=t,this.model=o};return o.prototype.ok=function(){t.close(this,this.model)},o.prototype.show=function(){return t.show(this)},o});;
-<p data-bind="text: title"></p>;
 define([],function(){var i=function(){this.title="I'm an existing view"};return i});;
-<div>
-    <h3>Durandal 2.0 custom dialog</h3>
-    <a href="#" data-bind="click: $data.showCustomModal">click here </a> to open an existing view model in a custom
-    dialog.
-</div>;
 define(["require","durandal/app","./customModal","./existingView"],function(t){"use strict";var i,e=t("durandal/app"),o=t("./customModal"),n=t("./existingView");return i=function(){this.dialog=null},i.prototype.showCustomModal=function(){this.dialog=new o("My title",new n),this.dialog.show().then(function(t){e.showMessage('Model title "'+t.title+'".')})},i});;
 define(["require","knockout"],function(e){"use strict";var r=e("knockout"),b=function(){var e=this;e.DeviceSerialNumber=r.observable(""),e.OrderNumber=r.observable(""),e.PosTranNumber=r.observable(""),e.EmailAddress=r.observable(""),e.SuspendedbarCode=r.observable(""),e.MobileNumber=r.observable("")};return new b});;
-;
-<div>
-    <h2>stackoverflow</h2>
-    <p>dFiddles related to stackoverflow questions</p>
-</div>;
 define([],function(){return{}});;
 define(["plugins/router","durandal/system","global","knockout"],function(e,t,o,i){var n=e.createChildRouter().makeRelative({moduleId:"so",route:"so"}).map([{type:"intro",title:"Default",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"so19551060",route:"19551060",moduleId:"19551060/index",nav:!0},{type:"fiddle",title:"so19857807",route:"19857807",moduleId:"19857807/index",nav:!0},{type:"fiddle",title:"so21566358",route:"21566358",moduleId:"21566358/index",nav:!0},{type:"fiddle",title:"so21821997",route:"21821997",moduleId:"21821997/index",nav:!0}]).buildNavigationModel();return n.on("router:navigation:complete").then(o.createSampleLink),{global:o,router:n,getItemsByCategoryId:function(e){return i.utils.arrayFilter(n.navigationModel(),function(t){return t.type===e})},binding:function(){return t.log("Lifecycle : binding : hello/index"),{cacheViews:!1}}}});;
 /**
@@ -1295,7 +377,6 @@ define(["plugins/router","durandal/system","global","knockout"],function(e,t,o,i
  */
 
 define(["module"],function(e){"use strict";var n,t,r,o,i=["Msxml2.XMLHTTP","Microsoft.XMLHTTP","Msxml2.XMLHTTP.4.0"],a=/^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,s=/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,u="undefined"!=typeof location&&location.href,c=u&&location.protocol&&location.protocol.replace(/\:/,""),l=u&&location.hostname,f=u&&(location.port||void 0),p={},d=e.config&&e.config()||{};return n={version:"2.0.7",strip:function(e){if(e){e=e.replace(a,"");var n=e.match(s);n&&(e=n[1])}else e="";return e},jsEscape:function(e){return e.replace(/(['\\])/g,"\\$1").replace(/[\f]/g,"\\f").replace(/[\b]/g,"\\b").replace(/[\n]/g,"\\n").replace(/[\t]/g,"\\t").replace(/[\r]/g,"\\r").replace(/[\u2028]/g,"\\u2028").replace(/[\u2029]/g,"\\u2029")},createXhr:d.createXhr||function(){var e,n,t;if("undefined"!=typeof XMLHttpRequest)return new XMLHttpRequest;if("undefined"!=typeof ActiveXObject)for(n=0;n<3;n+=1){t=i[n];try{e=new ActiveXObject(t)}catch(e){}if(e){i=[t];break}}return e},parseName:function(e){var n,t,r,o=!1,i=e.indexOf("."),a=0===e.indexOf("./")||0===e.indexOf("../");return i!==-1&&(!a||i>1)?(n=e.substring(0,i),t=e.substring(i+1,e.length)):n=e,r=t||n,i=r.indexOf("!"),i!==-1&&(o="strip"===r.substring(i+1),r=r.substring(0,i),t?t=r:n=r),{moduleName:n,ext:t,strip:o}},xdRegExp:/^((\w+)\:)?\/\/([^\/\\]+)/,useXhr:function(e,t,r,o){var i,a,s,u=n.xdRegExp.exec(e);return!u||(i=u[2],a=u[3],a=a.split(":"),s=a[1],a=a[0],!(i&&i!==t||a&&a.toLowerCase()!==r.toLowerCase()||(s||a)&&s!==o))},finishLoad:function(e,t,r,o){r=t?n.strip(r):r,d.isBuild&&(p[e]=r),o(r)},load:function(e,t,r,o){if(o.isBuild&&!o.inlineText)return void r();d.isBuild=o.isBuild;var i=n.parseName(e),a=i.moduleName+(i.ext?"."+i.ext:""),s=t.toUrl(a),p=d.useXhr||n.useXhr;!u||p(s,c,l,f)?n.get(s,function(t){n.finishLoad(e,i.strip,t,r)},function(e){r.error&&r.error(e)}):t([a],function(e){n.finishLoad(i.moduleName+"."+i.ext,i.strip,e,r)})},write:function(e,t,r,o){if(p.hasOwnProperty(t)){var i=n.jsEscape(p[t]);r.asModule(e+"!"+t,"define(function () { return '"+i+"';});\n")}},writeFile:function(e,t,r,o,i){var a=n.parseName(t),s=a.ext?"."+a.ext:"",u=a.moduleName+s,c=r.toUrl(a.moduleName+s)+".js";n.load(u,r,function(t){var r=function(e){return o(c,e)};r.asModule=function(e,n){return o.asModule(e,c,n)},n.write(e,u,r,i)},i)}},"node"===d.env||!d.env&&"undefined"!=typeof process&&process.versions&&process.versions.node?(t=require.nodeRequire("fs"),n.get=function(e,n,r){try{var o=t.readFileSync(e,"utf8");0===o.indexOf("\ufeff")&&(o=o.substring(1)),n(o)}catch(e){r(e)}}):"xhr"===d.env||!d.env&&n.createXhr()?n.get=function(e,t,r,o){var i,a=n.createXhr();if(a.open("GET",e,!0),o)for(i in o)o.hasOwnProperty(i)&&a.setRequestHeader(i.toLowerCase(),o[i]);d.onXhr&&d.onXhr(a,e),a.onreadystatechange=function(n){var o,i;4===a.readyState&&(o=a.status,o>399&&o<600?(i=new Error(e+" HTTP status: "+o),i.xhr=a,r(i)):t(a.responseText),d.onXhrComplete&&d.onXhrComplete(a,e))},a.send(null)}:"rhino"===d.env||!d.env&&"undefined"!=typeof Packages&&"undefined"!=typeof java?n.get=function(e,n){var t,r,o="utf-8",i=new java.io.File(e),a=java.lang.System.getProperty("line.separator"),s=new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(i),o)),u="";try{for(t=new java.lang.StringBuffer,r=s.readLine(),r&&r.length()&&65279===r.charAt(0)&&(r=r.substring(1)),null!==r&&t.append(r);null!==(r=s.readLine());)t.append(a),t.append(r);u=String(t.toString())}finally{s.close()}n(u)}:("xpconnect"===d.env||!d.env&&"undefined"!=typeof Components&&Components.classes&&Components.interfaces)&&(r=Components.classes,o=Components.interfaces,Components.utils.import("resource://gre/modules/FileUtils.jsm"),n.get=function(e,n){var t,i,a={},s=new FileUtils.File(e);try{t=r["@mozilla.org/network/file-input-stream;1"].createInstance(o.nsIFileInputStream),t.init(s,1,0,!1),i=r["@mozilla.org/intl/converter-input-stream;1"].createInstance(o.nsIConverterInputStream),i.init(t,"utf-8",t.available(),o.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER),i.readString(t.available(),a),i.close(),t.close(),n(a.value)}catch(e){throw new Error((s&&s.path||"")+": "+e)}}),n});;
-;
 /**
  * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
@@ -1303,151 +384,17 @@ define(["module"],function(e){"use strict";var n,t,r,o,i=["Msxml2.XMLHTTP","Micr
  */
 
 define(["durandal/system","durandal/composition","jquery"],function(i,t,e){function n(i,t){i.classList.remove(t?"entrance-in-fade":"entrance-in"),i.classList.remove("entrance-out")}var a=100,o={left:"0px",opacity:1},s={left:"",top:"",right:"",bottom:"",position:"",opacity:""},c=navigator.userAgent.match(/Trident/)||navigator.userAgent.match(/MSIE/),r=!1,l="Webkit Moz O ms Khtml".split(" "),d=document.createElement("div");if(void 0!==d.style.animationName&&(r=!0),!r)for(var u=0;u<l.length;u++)if(void 0!==d.style[l[u]+"AnimationName"]){r=!0;break}r?c?i.log("Using CSS3/jQuery mixed animations."):i.log("Using CSS3 animations."):i.log("Using jQuery animations.");var m=function(t){return i.defer(function(i){function l(){i.resolve()}function d(){t.keepScrollPosition||e(document).scrollTop(0)}function u(){d(),t.triggerAttach(),r?(n(t.child,v),t.child.classList.add(v?"entrance-in-fade":"entrance-in"),setTimeout(function(){n(t.child,v),t.activeView&&n(t.activeView,v),f.css(s),l()},m)):f.animate(o,{duration:m,easing:"swing",always:function(){f.css(s),l()}})}if(t.child){var m=t.duration||500,f=e(t.child),v=!!t.fadeOnly,g={display:"block",opacity:0,position:"absolute",left:v||r?"0px":"20px",right:0,top:0,bottom:0};f.css(g),t.activeView?r&&!c?(n(t.activeView,v),t.activeView.classList.add("entrance-out"),setTimeout(u,a)):e(t.activeView).fadeOut({duration:a,always:u}):u()}else e(t.activeView).fadeOut(a,l)}).promise()};return m});;
-;
-;
-<div>
-    <h1>The Views Below Are Composed In Different Ways</h1>
-    
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-
-    <!--ko compose: { model:'viewComposition/default/inlineModule', mode:'inline'}-->
-        <h3 data-bind="text: someProperty"></h3>
-    <!--/ko-->
-
-    <!--ko compose: { view:'childView2.html', mode:'templated' }-->
-        <div data-part="content">This is a view part override of the default content....</div>
-    <!--/ko-->
-</div>;
 define([],function(){return{propertyOne:"This is a databound property from the root context.",propertyTwo:"This property demonstrates that binding contexts flow through composed views."}});;
 define([],function(){return{someProperty:"This is being bound against an inline view."}});;
-;
-<div>
-    <h1>The Views Below Are Composed In Different Ways</h1>
-    
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-
-    <!--ko compose: { model:'viewComposition/dFiddle/inlineModule', mode:'inline'}-->
-        <h3 data-bind="text: someProperty"></h3>
-    <!--/ko-->
-
-    <!--ko compose: { view:'childView2.html', mode:'templated' }-->
-        <div data-part="content">This is a view part override of the default content....</div>
-    <!--/ko-->
-</div>;
 define([],function(){return{propertyOne:"This is a databound property from the root context.",propertyTwo:"This property demonstrates that binding contexts flow through composed views."}});;
 define([],function(){return{someProperty:"This is being bound against an inline view."}});;
-;
-<div>
-
-    <h1 class="alert alert-info">The Views Below Are Composed</h1>
-    <select name="roles" data-bind="options: roles, value: role"></select>
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-</div>;
 define(["knockout"],function(e){var o=["default","role1","role2"],t=e.observable("default"),r=e.computed(function(){var e={default:"viewComposition/getView/index.html",role1:"viewComposition/getView/role1.html",role2:"viewComposition/getView/role2.html"};return this.role=t()||"default",e[this.role]});return{showCodeUrl:!0,roles:o,role:t,getView:r,propertyOne:"This is a databound property from the root context.",propertyTwo:"This property demonstrates that binding contexts flow through composed views."}});;
-<div>
-    <h1 class="alert alert-success">Role1 View</h1>
-    <select name="roles" data-bind="options: roles, value: role"></select>
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-</div>;
-<div>
-
-    <h1 class="alert">Role2 View</h1>
-    <select name="roles" data-bind="options: roles, value: role"></select>
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-</div>;
 define(["plugins/router","global","knockout"],function(e,t,i){var o=e.createChildRouter().makeRelative({moduleId:"viewComposition",route:"view-composition"}).map([{type:"intro",title:"View composition",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"ViewUrl",route:"SO16483013",moduleId:"SO16483013/index",nav:!0},{type:"fiddle",title:"GetView()",route:"getView",moduleId:"getView/index",nav:!0},{type:"fiddle",title:"View composition",route:"dFiddle",moduleId:"dFiddle/index",nav:!0}]).buildNavigationModel();return o.on("router:navigation:complete").then(t.createSampleLink),{global:t,router:o,getItemsByCategoryId:function(e){return i.utils.arrayFilter(o.navigationModel(),function(t){return t.type===e})}}});;
-;
-<div>
-  <h1>The Views Below Are Composed</h1>
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-</div>;
 define(["knockout"],function(o){function e(){this.role=t()||"default";var o={default:"viewComposition/SO16483013/index.html",role1:"viewComposition/SO16483013/role1.html",role2:"viewComposition/SO16483013/role2.html"};return o[this.role]}var t=o.observable("role2");return{showCodeUrl:!0,role:t,viewUrl:e(),propertyOne:"This is a databound property from the root context.",propertyTwo:"This property demonstrates that binding contexts flow through composed views."}});;
-<div>
-    <h1 class="alert alert-success">Role1 View</h1>
-
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-</div>;
-<div>
-
-    <h1 class="alert">Role2 View</h1>
-
-    <!--ko compose: 'childView1.html'--><!--/ko-->
-    <!--ko compose: 'childView2.html'--><!--/ko-->
-</div>;
-;
-<div>
-    <h2>Child View One</h2>
-    <span data-bind="text: $root.propertyOne"></span>
-</div>;
-<div>
-    <h2>Child View Two</h2>
-    <span data-bind="text: propertyTwo"></span>
-    <div data-part="content">Some default content goes here.</div>
-</div>;
-;
-;
-<div>
-    <h1>Widgets Sample</h1>
-    <div data-bind="expander:{items:projects}">
-        <h3 data-part="header">Project: <span data-bind="text: name"></span></h3>
-    </div>
-    <button class="btn" data-bind="click: addNewProject">Add</button>
-</div>;
 define(["./project","plugins/widget","knockout"],function(e,r,i){return{projects:i.observableArray([new e("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS."),new e("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new e("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]),addNewProject:function(){this.projects.push(new e("New Project ","A test project."))}}});;
-<div>
-    <div data-bind="html: description"></div>
-</div>;
 define([],function(){return function(n,i){this.name=n,this.description=i}});;
-# Note
-Expander is a demo widget.
-It was created solely for the sample, to teach the basic strategy for widget creation.;
-;
-<div>
-    <h1>Widgets Sample</h1>
-    <div data-bind="expander:{items:projects}">
-        <h3 data-part="header">Project: <span data-bind="text: name"></span></h3>
-    </div>
-    <button class="btn" data-bind="click: addNewProject">Add</button>
-</div>;
 define(["./project","plugins/widget","knockout"],function(e,r,i){return{projects:i.observableArray([new e("Durandal","A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS."),new e("UnityDatabinding","A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library."),new e("Caliburn.Micro","Caliburn.Micro is a small, yet powerful framework, designed for building applications across all Xaml Platforms. With strong support for MVVM and other proven UI patterns, Caliburn.Micro will enable you to build your solution quickly, without the need to sacrifice code quality or testability.")]),addNewProject:function(){this.projects.push(new e("New Project ","A test project."))}}});;
-<div>
-    <div data-bind="html: description"></div>
-</div>;
 define([],function(){return function(n,i){this.name=n,this.description=i}});;
-;
-<div class="accordion" data-bind="foreach: { data: settings.items, afterRender: afterRenderItem }">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a data-part="headerContainer" class="accordion-toggle">
-        <div data-part="header" data-bind="html: $parent.getHeaderText($data)"></div>
-      </a>
-    </div>
-    <div class="accordion-body collapse in">
-      <div class="accordion-inner" data-part="itemContainer" >
-        <div data-part="item" data-bind="compose: $data"></div>
-      </div>
-    </div>
-  </div>
-</div>;
 define(["durandal/composition","jquery"],function(t,e){var n=function(){};return n.prototype.activate=function(t){this.settings=t},n.prototype.detached=function(){console.log("expander/viewModel: detached",arguments,this)},n.prototype.getHeaderText=function(t){return this.settings.headerProperty?t[this.settings.headerProperty]:t.toString()},n.prototype.afterRenderItem=function(n,o){var r=t.getParts(n),i=e(r.itemContainer);i.hide(),e(r.headerContainer).bind("click",function(){i.toggle("fast")})},n});;
 define(["plugins/router","global","knockout"],function(e,t,i){var d=e.createChildRouter().makeRelative({moduleId:"widgets",route:"widgets"}).map([{type:"intro",title:"Widget Sample",route:["","default"],moduleId:"default/index",nav:!0},{type:"fiddle",title:"Widget Sample",route:"dFiddle",moduleId:"dFiddle/index",nav:!0}]).buildNavigationModel();return d.on("router:navigation:complete").then(t.createSampleLink),{global:t,router:d,getItemsByCategoryId:function(e){return i.utils.arrayFilter(d.navigationModel(),function(t){return t.type===e})}}});;
-;
-<div class="tabs">
-    <ul class="nav nav-tabs" data-bind="foreach: { data: settings.items }">
-        <li data-bind="css: {active: isActive}">
-            <a data-bind="text: name, click: $parent.toggle.bind($parent)"></a>
-        </li>
-    </ul>
-
-    <div class="tab-content" data-bind="foreach: { data: settings.items}">
-        <div class="tab-pane"  data-bind="html: content, css: {active: isActive}"></div>
-    </div>
-</div>;
 define(["durandal/composition","jquery"],function(t,e){var i=function(){};return i.prototype.activate=function(t){this.settings=t},i.prototype.detached=function(){console.log("bootstrap/widget/viewmodel: detached",arguments,this)},i.prototype.toggle=function(t,e){this.deactivateAll(),t.isActive(!0)},i.prototype.deactivateAll=function(){e.each(this.settings.items(),function(t,e){e.isActive(!1)})},i});

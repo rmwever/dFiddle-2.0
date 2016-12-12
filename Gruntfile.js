@@ -57,7 +57,7 @@ module.exports = function (grunt) {
         concat: {
             options: { separator: ';\n' },
             standard: {
-                src: ['./build/src/**/*'],
+                src: ['./build/src/**/*.js'],
                 dest: './build/dist/<%= pkg.name %>-<%= pkg.version %>.js'
             }
         }
