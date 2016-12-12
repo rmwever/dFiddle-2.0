@@ -23,8 +23,10 @@ module.exports = function (grunt) {
                     mainConfigFile: "app/main.js",
                     dir: "./build/src",
                     // findNestedDependencies: true,
+                    name: "main",
                     optimize: 'uglify2',
                     // paths: mixIn({}, {},  { "almond": "Scripts/almond-custom.js" }),
+                    include: ['almond'],
                     uglify2: {
                         compress: {
                             global_defs: {
